@@ -1,4 +1,4 @@
-# name of non-profit
+# Operation Surf
 
 {One sentence description of the project}
 
