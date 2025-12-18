@@ -1,6 +1,6 @@
 # Operation Surf
 
-{One sentence description of the project}
+Operation Surf is a nonprofit that runs surf-therapy and ocean-based wellness programs,including week-long surf trips and longer-term local sessions, for injured veterans and active-duty service members to support healing, mental health, and community.
 
 ## Table of Contents
 
@@ -19,10 +19,19 @@
 
 The {non-profit name} team consists of {#} Cal Poly students. Over the course of about 9 months, we worked as a team to deploy this web application. The team members are listed below:
 
-- [First Last](https://www.linkedin.com/) - Project Manager
+- [Soha Roy](https://www.linkedin.com/in/soharoy/) - Project Manager
+
+- [Nick Carboni](https://www.linkedin.com/in/nick-carboni/) - Tech Lead
+- [Jason Yu](https://www.linkedin.com/in/jasonyu101/) - Tech Lead
+
 - [First Last](https://www.linkedin.com/) - Designer
-- [First Last](https://www.linkedin.com/) - Tech Lead
-- [First Last](https://www.linkedin.com/) - Tech Lead
+- [First Last](https://www.linkedin.com/) - Designer
+- [First Last](https://www.linkedin.com/) - Designer
+    
+- [First Last](https://www.linkedin.com/) - Software Developer
+- [First Last](https://www.linkedin.com/) - Software Developer
+- [First Last](https://www.linkedin.com/) - Software Developer
+- [First Last](https://www.linkedin.com/) - Software Developer
 - [First Last](https://www.linkedin.com/) - Software Developer
 
 ## Getting Started And Contributing
