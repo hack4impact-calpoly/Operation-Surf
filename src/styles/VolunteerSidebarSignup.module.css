@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  padding: 24px;
+  gap: 16px;
+
+  background-color: #f7f7f5;
+  border: 2px solid #cfcfcf;
+  border-radius: 24px;
+
+  box-sizing: border-box;
+}
+
+.title {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: bolder;
+  letter-spacing: 0.2px;
+}
+
+.button {
+  border: none;
+  background-color: #6f9faf;
+  border-radius: 32px;
+
+  padding: 15px 0px;
+
+  font-size: 18px;
+  font-weight: 300;
+  color: white;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
