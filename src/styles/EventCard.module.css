@@ -16,14 +16,18 @@ build configuration doesn't allow global css variables
 
 .eventCard {
   background-color: rgb(151, 148, 131);
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
   overflow: hidden;
-  width: 300px;
+  width: 30%;
+  min-width: 315px;
+  height: 20%;
+  min-height: 248px;
   margin: 20px;
-  color: black;
-  font-family: Arial, sans-serif;
+  color: #000;
+  font-family: Arial;
+  object-fit: cover;
 }
+
 .imageWrapper {
   display: flex;
   flex-direction: column;
@@ -31,14 +35,10 @@ build configuration doesn't allow global css variables
   position: relative;
   width: 100%;
   height: 200px;
+  object-fit: cover;
 }
 
 .image {
-  width: 300px;
-  height: 200px;
-}
-
-.date {
 }
 
 .name {
@@ -51,4 +51,35 @@ build configuration doesn't allow global css variables
 }
 
 .availability {
+}
+
+/* date component styles*/
+
+.dateContainer {
+  background-color: #737144;
+  border-radius: 30px;
+  overflow: hidden;
+  width: 30%;
+  min-width: 200px;
+  height: 20%;
+  min-height: 150px;
+  color: #000;
+  font-family: Arial;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  place-self: end;
+  transform: translate(-10%, 10%);
+  position: relative;
+  z-index: 1;
+}
+
+.date {
+  margin: 0;
+}
+
+.dateDay {
+  color: white;
+  margin: 10px;
 }
