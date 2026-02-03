@@ -25,9 +25,9 @@ export default function EventCard({ place, name, host, availability, date, image
     <div className={style.eventCard}>
       {/* assuming event card is a link for now */}
       <a>
-        <div className={style.dateWrapper}>{dateComponent(date)}</div>
         <div className={style.imageWrapper}>
           <Image src={image} alt={`${name}-image`} className={style.image} fill />
+          <div className={style.dateWrapper}>{dateComponent(date)}</div>
         </div>
         <h2 className={style.name}>{name}</h2>
         <p className={style.place}>Place: {place}</p>
