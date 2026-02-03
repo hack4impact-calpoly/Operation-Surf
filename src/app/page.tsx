@@ -14,7 +14,7 @@ export default function Home() {
         host="Operation Surf"
         availability="0/3"
         date={new Date("2024-07-15")}
-        image="/docs/images/vs-code-settings.png"
+        image="/operation-surf.png"
       />
     </main>
   );

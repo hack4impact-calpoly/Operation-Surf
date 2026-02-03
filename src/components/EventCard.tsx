@@ -25,7 +25,7 @@ export default function EventCard({ place, name, host, availability, date, image
     <div className={style.eventCard}>
       {/* assuming event card is a link for now */}
       <a>
-        <p className={style.date}>Date: {date.toDateString()}</p>
+        <div className={style.dateWrapper}>{dateComponent(date)}</div>
         <div className={style.imageWrapper}>
           <Image src={image} alt={`${name}-image`} className={style.image} fill />
         </div>
@@ -34,6 +34,44 @@ export default function EventCard({ place, name, host, availability, date, image
         <p className={style.host}>Host: {host}</p>
         <p className={style.availability}>Availability: {availability}</p>
       </a>
+    </div>
+  );
+}
+
+const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+/* 
+dateComponent:
+  pass date to component and it will return the formatted date
+  in a div with day of the week, day of the month, and month name
+
+  date object methods return 0-indexed values for month and day of the week, uses that as an index to get the string from the days/months arrays
+  
+props:
+- date: javascript Date object
+*/
+
+function dateComponent(date: Date) {
+  return (
+    <div className={style.dateContainer}>
+      <p className={style.date}>{days[date.getDay()]}</p>
+      <p className={style.dateDay}>{date.getDate()}</p>
+      <p className={style.date}>{months[date.getMonth()]}</p>
     </div>
   );
 }
