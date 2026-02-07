@@ -29,10 +29,10 @@ export default function EventCard({ place, name, host, availability, date, image
           <Image src={image} alt={`${name}-image`} className={style.image} fill />
           <div className={style.dateWrapper}>{dateComponent(date)}</div>
         </div>
+        <p className={style.place}> {place}</p>
         <h2 className={style.name}>{name}</h2>
-        <p className={style.place}>Place: {place}</p>
-        <p className={style.host}>Host: {host}</p>
-        <p className={style.availability}>Availability: {availability}</p>
+        <p className={style.host}>{host}</p>
+        <p className={style.availability}>{availability} Spots</p>
       </a>
     </div>
   );
