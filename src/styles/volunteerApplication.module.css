@@ -98,4 +98,40 @@
 }
 
 /* BUTTONS AT THE BOTTOM OF THE COMPONENT */
-.va-buttons {}
+
+/* shared button styles */
+.va-buttons button {
+  height: 36px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* BACK button */
+.va-buttons button:first-child {
+  background: white;
+  color: #1f6feb;
+  border: 1.5px solid #1f6feb;
+}
+
+/* SUBMIT button */
+.va-buttons button:last-child {
+  background: #1f6f7a;
+  color: white;
+  border: none;
+  padding: 0 22px;
+}
+
+.va-buttons button:first-child:hover {
+  background: #f5f9ff;
+}
+
+.va-buttons button:last-child:hover {
+  background: #185f68;
+}
