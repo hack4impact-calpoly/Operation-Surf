@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "mongoose": "^8",
-    "next": "^16.1.6",
+    "next": "^14",
     "react": "^18",
     "react-dom": "^18"
   },
@@ -22,8 +22,8 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^9.39.2",
-    "eslint-config-next": "^16.1.6",
+    "eslint": "^8",
+    "eslint-config-next": "^14",
     "eslint-config-prettier": "^9",
     "eslint-plugin-prettier": "^5",
     "husky": "^9",
