@@ -37,7 +37,7 @@ export default function VolunteerApplication() {
 
         {/* buttons at bottom of component (back/submit) */}
         <div className={style["va-buttons"]}>
-          <button>Back</button>
+          <button>← Back</button>
           <button type="submit">Submit</button>
         </div>
       </div>

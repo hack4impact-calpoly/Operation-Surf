@@ -5,6 +5,7 @@
 }
 
 .va-container {
+  position: relative;
   width: 800px;
   height: 15vw;
   background: white;
@@ -99,6 +100,17 @@
 
 /* BUTTONS AT THE BOTTOM OF THE COMPONENT */
 
+.va-buttons {
+  position: absolute;
+  bottom: 24px;
+  left: 36px;
+  right: 36px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* shared button styles */
 .va-buttons button {
   height: 36px;
@@ -111,6 +123,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  font-family: "Futura";
 }
 
 /* BACK button */
@@ -122,7 +135,7 @@
 
 /* SUBMIT button */
 .va-buttons button:last-child {
-  background: #1f6f7a;
+  background: #266578;
   color: white;
   border: none;
   padding: 0 22px;
