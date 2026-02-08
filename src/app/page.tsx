@@ -12,7 +12,8 @@ export default function Home() {
         place="Place"
         name="Event Name"
         host="Operation Surf"
-        availability="0/3"
+        availability={0}
+        MaxAvailability={3}
         date={new Date("2024-07-15")}
         image="/operation-surf.png"
       />

@@ -1,5 +1,8 @@
 /*eventCard.tsx styles*/
 
+/* Please add these variables to the develop branch
+  these will not build because of the next.confing.js  */
+
 /* 
 colors from figma 
 
@@ -49,10 +52,10 @@ build configuration doesn't allow global css variables
 }
 
 .name {
-  font-size: 2.0rem;
+  font-size: 2rem;
   font-weight: bold;
   margin: 0 0 8px 0;
-  color:#000;
+  color: #000;
 }
 
 .place {
