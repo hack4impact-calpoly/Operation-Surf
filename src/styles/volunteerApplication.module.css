@@ -111,14 +111,12 @@
   align-items: center;
 }
 
-/* shared button styles */
 .va-buttons button {
   height: 36px;
   padding: 0 18px;
   border-radius: 999px;
   font-family: inherit;
   font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
