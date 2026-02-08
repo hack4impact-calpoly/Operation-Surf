@@ -43,7 +43,7 @@ export async function GET(): Promise<NextResponse> {
   } catch (error: unknown) {
     // Handle errors and return a detailed error response
     console.error("Database Test Error:", error);
-
+    console.log("hello");
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
 
     return NextResponse.json(
