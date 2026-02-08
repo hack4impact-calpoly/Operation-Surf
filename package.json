@@ -13,7 +13,9 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "mongoose": "^8",
+    "dotenv": "^17.2.4",
+    "mongodb": "^6.21.0",
+    "mongoose": "^8.22.1",
     "next": "^14",
     "react": "^18",
     "react-dom": "^18"
@@ -30,5 +32,13 @@
     "lint-staged": "^15",
     "prettier": "^3",
     "typescript": "^5"
-  }
+  },
+  "description": "Operation Surf is a nonprofit that runs surf-therapy and ocean-based wellness programs,including week-long surf trips and longer-term local sessions, for injured veterans and active-duty service members to support healing, mental health, and community.",
+  "main": "next.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
