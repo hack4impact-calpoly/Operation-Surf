@@ -28,7 +28,7 @@ build configuration doesn't allow global css variables
   min-height: 248px;
   margin: 20px;
   color: #000;
-  font-family: Arial;
+  font-family: Rockwell;
   object-fit: cover;
 }
 
@@ -52,7 +52,7 @@ build configuration doesn't allow global css variables
 }
 
 .name {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin: 0 0 8px 0;
   color: #000;
@@ -85,19 +85,19 @@ build configuration doesn't allow global css variables
 /* date component styles*/
 
 .dateContainer {
-  background-color: rgb(124, 121, 69);
+  background-color: rgb(151, 148, 131);
   border-radius: 30px;
   overflow: hidden;
   width: fit-content;
   min-width: 100px;
   padding: 10px;
   color: #000;
-  font-family: Arial;
+  font-family: Rockwell;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 6px 10px rgb(124, 121, 69);
+  box-shadow: 0 6px 10px rgb(151, 148, 131);
 }
 
 .dateWrapper {
