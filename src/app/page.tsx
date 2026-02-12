@@ -16,6 +16,7 @@ export default function Home() {
         MaxAvailability={3}
         date={new Date("2024-07-15")}
         image="/operation-surf.png"
+        hostIcon="/operation-surf.png"
       />
     </main>
   );

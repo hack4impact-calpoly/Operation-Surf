@@ -21,9 +21,10 @@ interface EventCardProps {
   MaxAvailability: number;
   date: Date;
   image: string;
+  hostIcon: string;
 }
 
-export default function EventCard({ place, name, host, availability, MaxAvailability, date, image }: EventCardProps) {
+export default function EventCard({ place, name, host, availability, MaxAvailability, date, image, hostIcon }: EventCardProps) {
   return (
     <div className={style.eventCard}>
       {/* assuming event card is a link for now */}
@@ -33,9 +34,20 @@ export default function EventCard({ place, name, host, availability, MaxAvailabi
             <Image src={image} alt={`${name}-image`} className={style.image} fill />
             <div className={style.dateWrapper}>{dateComponent(date)}</div>
           </div>
-          <p className={style.place}> {place}</p>
+          <p className={style.place}>{place}</p>
           <h2 className={style.name}>{name}</h2>
-          <p className={style.host}>{host}</p>
+          <div className={style.host}>
+            {hostIcon && (
+              <Image 
+                src={hostIcon} 
+                alt={`${host}-logo`} 
+                width={24} 
+                height={24} 
+                className={style.hostIcon}
+              />
+            )}
+            <span>{host}</span>
+          </div>
           <p className={style.availability}>
             {availability}/{MaxAvailability} Spots
           </p>
