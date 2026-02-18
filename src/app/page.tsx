@@ -7,7 +7,7 @@ export default function Home() {
       <Navbar />
       <h1>Home</h1>
 
-      {/* placeholder for testing */}
+      {/* placeholder for testing
       <EventCard
         place="Place"
         name="Event Name"
@@ -17,7 +17,7 @@ export default function Home() {
         date={new Date("2024-07-15")}
         image="/operation-surf.png"
         hostIcon="/operation-surf.png"
-      />
+      /> */}
     </main>
   );
 }
