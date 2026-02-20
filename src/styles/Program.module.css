@@ -1,0 +1,47 @@
+.cardContainer {
+  width: 100%; /* Make the card take up the full width of its parent container */
+  display: flex;
+  flex-direction: column;
+  max-width: 450px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Top Image */
+.cardImage {
+  height: auto;
+  object-fit: cover;
+}
+
+/* Meta Section */
+.cardMeta {
+  display: flex;
+  flex-direction: column;
+  margin-left: 36px;
+}
+
+/* Title */
+.cardTitle {
+  font-size: 28px;
+  font-weight: 500;
+  color: #1e5f7a;
+}
+
+/* Button */
+.cardButton {
+  width: 90%;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 14px;
+  border: none;
+  background-color: #177db7;
+  color: white;
+  margin: 0 auto 20px auto;
+  display: block;
+}
+
+/* On Hover */
+.cardButton:hover {
+  background-color: #126a9c;
+}

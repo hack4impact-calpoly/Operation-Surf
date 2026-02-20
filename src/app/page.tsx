@@ -1,11 +1,21 @@
 import Navbar from "@/components/Navbar";
 import EventCard from "@/components/EventCard";
+import Program from "@/components/Program";
 
 export default function Home() {
   return (
     <main>
       <Navbar />
       <h1>Home</h1>
+
+      {/* placeholder for testing 
+      <Program
+        image="/operation-surf.png"
+        title="Operation Surf"
+        location="Santa Cruz, CA"
+        date="July 15, 2024"
+        time="10:00 AM - 2:00 PM"
+      /> */}
 
       {/* placeholder for testing
       <EventCard
