@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-type Project = {
+type program = {
   imageURI: string;
   location: string;
   date: Date;
@@ -9,7 +9,7 @@ type Project = {
   programId: string;
 };
 
-const programSchema = new Schema<Project>({
+const programSchema = new Schema<program>({
   imageURI: { type: String, required: true },
   location: { type: String, required: true },
   date: { type: Date, required: true },
@@ -18,8 +18,6 @@ const programSchema = new Schema<Project>({
   programId: { type: String, required: true },
 });
 
-// temporary model names
-// waiting on finalized names
-const Program = mongoose.models["Programs"] || mongoose.model("Programs", programSchema);
+const Program = mongoose.models["program_data"] || mongoose.model("program_data", programSchema, "program_data");
 
 export default Program;

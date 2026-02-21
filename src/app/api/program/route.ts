@@ -4,14 +4,16 @@ import Program from "@/database/models/programSchema";
 
 /**
  * gets all programs from the database
- * @returns {Promise<NextResponse>}
+ * returns all programs in the database as a JSON response
+ * if an error occurs, returns a JSON response with an error message and status code 500
  */
+
 export async function GET(): Promise<NextResponse> {
   // Attempt to connect to the database
   await connectDB();
 
   try {
-    let programs = await Program.find().orFail();
+    const programs = await Program.find();
     return NextResponse.json({
       programs: programs,
       status: 200,
