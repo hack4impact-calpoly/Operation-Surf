@@ -6,6 +6,7 @@
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
 }
 
 /* Top Image */
@@ -19,6 +20,11 @@
   display: flex;
   flex-direction: column;
   margin-left: 36px;
+  gap: 10px;
+}
+
+.cardMeta p {
+  margin: 0;
 }
 
 /* Title */
@@ -26,6 +32,7 @@
   font-size: 28px;
   font-weight: 500;
   color: #1e5f7a;
+  margin-bottom: 10px;
 }
 
 /* Button */
@@ -39,9 +46,25 @@
   color: white;
   margin: 0 auto 20px auto;
   display: block;
+  margin-top: 20px;
 }
 
 /* On Hover */
 .cardButton:hover {
   background-color: #126a9c;
+}
+
+.cardLocation::before {
+  content: "📍";
+  margin-right: 8px;
+}
+
+.cardDate::before {
+  content: "📅";
+  margin-right: 8px;
+}
+
+.cardTime::before {
+  content: "🕒";
+  margin-right: 8px;
 }
