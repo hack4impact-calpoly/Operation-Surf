@@ -8,7 +8,7 @@ export default function Home() {
       <Navbar />
       <h1>Home</h1>
 
-      {
+      {/* placehodler for testing
         <Program
           image="/waves.png"
           title="Operation Surf"
@@ -16,7 +16,7 @@ export default function Home() {
           date="July 15, 2024"
           time="10:00 AM - 2:00 PM"
         />
-      }
+      */}
 
       {/* placeholder for testing
       <EventCard
