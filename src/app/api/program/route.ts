@@ -27,3 +27,53 @@ export async function GET(): Promise<NextResponse> {
     });
   }
 }
+
+/**
+ * creates a new program in the database
+ * request must require the following fields: 
+ *  imageURI: string;
+    location: string;
+    date: Date;
+    duration: string;
+    programName: string;
+    programId: string;
+ */
+export async function POST(request: Request): Promise<NextResponse> {
+  await connectDB();
+
+  try {
+    const body = await request.json();
+
+    // ensure required fields are present
+    const requiredFields = ["imageURI", "location", "date", "duration", "programName", "programId"];
+
+    for (const field of requiredFields) {
+      if (!body[field]) {
+        return NextResponse.json({ message: `Missing required field: ${field}`, status: 400 });
+      }
+    }
+
+    const newProgram = new Program({
+      imageURI: body.imageURI,
+      location: body.location,
+      date: new Date(body.date),
+      duration: body.duration,
+      programName: body.programName,
+      programId: body.programId,
+    });
+
+    const saved = await newProgram.save();
+
+    return NextResponse.json({
+      program: saved,
+      status: 201,
+    });
+  } catch (err) {
+    console.error("Error creating program:", err);
+    return NextResponse.json({
+      message: "Failed to create program.",
+      error: err instanceof Error ? err.message : "An unknown error occurred.",
+      status: 500,
+    });
+  }
+}
