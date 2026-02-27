@@ -22,6 +22,14 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
 
   try {
     const program = await Program.findOne({ programId: programId });
+    // check if program exists
+    if (!program) {
+      return NextResponse.json({
+        message: "Program not found.",
+        status: 404,
+      });
+    }
+    // if program exists, return it
     return NextResponse.json({
       program: program,
       status: 200,
