@@ -2,27 +2,87 @@ import Image from "next/image";
 import { Suspense } from "react";
 import style from "@/app/landing-page/landing-page.module.css";
 
+async function getPrograms() {
+  // placeholder until schemas for programs/events are created
+}
+
 export default function LandingPage() {
   return (
     <div className={style.pageContainer}>
       {/* Page Header */}
-      <div className={style.pageHeader}>
-        <Image src="operation-surf.png" alt="Operation Surf Logo"></Image>
-        <div className={style.loginButtons}>
-          <button>Sign in</button>
-          <button>Sign up</button>
-        </div>
-      </div>
+      <header className={style.pageHeader}>
+        <Image
+          src="/operation-surf.png"
+          alt="Operation Surf Logo"
+          width={84}
+          height={67}
+        />
 
-      {/* Explore Programs */}
-      <div className={style.explore}>
-        {/* TODO */}
-      </div>
+        <div className={style.headerButtons}>
+          <button className={style.headerBtnOutline}>Sign In</button>
+          <button className={style.headerBtnFilled}>Sign Up</button>
+        </div>
+      </header>
+
+      {/* Explore Programs (Hero) */}
+      <section className={style.hero}>
+        {/* Background image */}
+        <Image
+          className={style.heroBg}
+          src="/hero-img.png"  
+          alt="Operation Surf members by the ocean"
+          fill
+        />
+
+        {/* Overlay content */}
+        <div className={style.heroContent}>
+          <h1 className={style.heroTitle}>Operation Surf</h1>
+          <p className={style.heroSubtitle}>
+            Empowering wounded, ill, and injured service members, veterans, and youth
+            through the healing powers of the ocean.
+          </p>
+          <button className={style.exploreButton}>Explore Programs</button>
+        </div>
+      </section>
 
       {/* About Us */}
-      <div className={style.about}>
-        {/* TODO */}
-      </div>
+      <section className={style.about}>
+        {/* About text */}
+        <h2 className={style.sectionTitle}>About Us</h2>
+        <p className={style.sectionText}>
+          Operation Surf is a non-profit organization dedicated to providing free surf 
+          therapy programs for wounded warriors, veterans, and at-risk youth. Through
+          the healing power of the ocean, we help individuals overcome physical and
+          mental challenges while building community and confidence.
+        </p>
+
+        {/* About cards */}
+        <div className={style.aboutCards}>
+          <div className={style.infoCard}>
+            <div className={style.cardIcon}>🌊</div>
+            <h3 className={style.cardTitle}>Surf Therapy</h3>
+            <p className={style.cardText}>
+              Therapeutic surfing sessions led by certified instructors
+            </p>
+          </div>
+
+          <div className={style.infoCard}>
+            <div className={style.cardIcon} aria-hidden="true">🤝</div>
+            <h3 className={style.cardTitle}>Community</h3>
+            <p className={style.cardText}>
+              Building lasting connections and support networks
+            </p>
+          </div>
+
+          <div className={style.infoCard}>
+            <div className={style.cardIcon} aria-hidden="true">💪</div>
+            <h3 className={style.cardTitle}>Empowerment</h3>
+            <p className={style.cardText}>
+              Helping individuals overcome challenges and thrive
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* Our Programs */}
       <div className={style.programs}>

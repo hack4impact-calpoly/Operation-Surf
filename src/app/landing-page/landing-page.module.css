@@ -1,0 +1,192 @@
+.pageContainer {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* ================= HEADER ================= */
+
+.pageHeader {
+  height: 72px;
+  padding: 0 35px 1vh 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  box-shadow: 0 15px 0 0 #000000;
+}
+
+.headerButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.headerBtnOutline {
+  border: 1px solid #7C7845;
+  background: transparent;
+  color: #7C7845;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 24px;
+  transition: background-color 0.5s;
+}
+
+.headerBtnOutline:hover {
+  background-color: #fbf8f8;
+}
+
+.headerBtnOutline:active {
+  background-color: #efefef;
+}
+
+.headerBtnFilled {
+  border: 1px solid #737144;
+  background: #737144;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 24px;
+  transition: background-color 0.5s;
+}
+
+.headerBtnFilled:hover {
+  background-color: #7e7c4a;
+}
+
+.headerBtnFilled:active {
+  background-color: #888750;
+}
+
+/* ================= HERO ================= */
+.hero {
+  display: flex;
+  position: relative;
+  height: min(100vh, 955px);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroBg {
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+/* Olive overlay tint */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(124, 120, 69, 0.70) 0%, rgba(115, 113, 68, 0.80) 100%);
+  z-index: 1;
+}
+
+/* Overlay content */
+.heroContent {
+  position: relative;
+  z-index: 2; /* above overlay */
+  width: 100%;
+  max-width: 1100px;
+  padding: 0 24px;
+  text-align: center;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Title */
+.heroTitle {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  color: #ffffff;
+  text-align: center;
+  font-size: 96px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: min(100vh, 96px);
+  letter-spacing: 4px;
+}
+
+/* Subtitle */
+.heroSubtitle {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  color: #E5E5E5;
+  text-align: center;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 250;
+  line-height: 32px;
+  letter-spacing: 0.07px;
+  width: 750px;
+  margin-top: -40px;
+}
+
+.exploreButton {
+  display: flex;
+  padding: 11.492px 31.127px 12.486px 31.992px;
+  justify-content: center;
+  align-items: center;
+  color: #FFF;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  letter-spacing: -0.312px;
+  border: none;
+  border-radius: 20971500px;
+  background: #737144;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.4s;
+}
+
+.exploreButton:hover {
+  background: #737144b9;
+}
+
+.exploreButton:active {
+  background: #73714474;
+  transform: translateY(2px);
+}
+
+/* ================= SECTION BASICS ================= */
+.cardIcon {
+  color: #737144;
+  text-align: center;
+  font-family: Inter;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 40px; /* 111.111% */
+  letter-spacing: 0.369px;
+}
+
+.cardTitle {
+  color: #7C7845;
+  text-align: center;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px; /* 140% */
+  letter-spacing: -0.449px;
+}
+
+.cardText {
+  color: #4A5565;
+  text-align: center;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
+  letter-spacing: -0.312px;
+}
+
+/* ================= ABOUT ================= */
