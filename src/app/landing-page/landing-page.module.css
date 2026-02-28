@@ -15,7 +15,7 @@ body {
 /* ================= HEADER ================= */
 .pageHeader {
   height: 72px;
-  padding: 6px 35px 1vh 50px;
+  padding: 6px 35px 1vh 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
