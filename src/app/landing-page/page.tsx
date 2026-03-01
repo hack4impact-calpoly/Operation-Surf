@@ -11,12 +11,7 @@ export default function LandingPage() {
     <div className={style.pageContainer}>
       {/* Page Header */}
       <header className={style.pageHeader}>
-        <Image
-          src="/operation-surf.png"
-          alt="Operation Surf Logo"
-          width={84}
-          height={67}
-        />
+        <Image src="/operation-surf.png" alt="Operation Surf Logo" width={84} height={67} />
 
         <div className={style.headerButtons}>
           <button className={style.headerBtnOutline}>Sign In</button>
@@ -27,19 +22,14 @@ export default function LandingPage() {
       {/* Explore Programs (Hero) */}
       <section className={style.hero}>
         {/* Background image */}
-        <Image
-          className={style.heroBg}
-          src="/hero-img.png"  
-          alt="Operation Surf members by the ocean"
-          fill
-        />
+        <Image className={style.heroBg} src="/hero-img.png" alt="Operation Surf members by the ocean" fill />
 
         {/* Overlay content */}
         <div className={style.heroContent}>
           <h1 className={style.heroTitle}>Operation Surf</h1>
           <p className={style.heroSubtitle}>
-            Empowering wounded, ill, and injured service members, veterans, and youth
-            through the healing powers of the ocean.
+            Empowering wounded, ill, and injured service members, veterans, and youth through the healing powers of the
+            ocean.
           </p>
           <button className={style.exploreButton}>Explore Programs</button>
         </div>
@@ -50,36 +40,35 @@ export default function LandingPage() {
         {/* About text */}
         <h2 className={style.sectionTitle}>About Us</h2>
         <p className={style.sectionText}>
-          Operation Surf is a non-profit organization dedicated to providing free surf 
-          therapy programs for wounded warriors, veterans, and at-risk youth. Through
-          the healing power of the ocean, we help individuals overcome physical and
-          mental challenges while building community and confidence.
+          Operation Surf is a non-profit organization dedicated to providing free surf therapy programs for wounded
+          warriors, veterans, and at-risk youth. Through the healing power of the ocean, we help individuals overcome
+          physical and mental challenges while building community and confidence.
         </p>
 
         {/* About cards */}
         <div className={style.aboutCards}>
           <div className={style.infoCard}>
-            <div className={style.cardIcon}>🌊</div>
+            <div className={style.cardIcon} aria-hidden="true">
+              🌊
+            </div>
             <h3 className={style.cardTitle}>Surf Therapy</h3>
-            <p className={style.cardText}>
-              Therapeutic surfing sessions led by certified instructors
-            </p>
+            <p className={style.cardText}>Therapeutic surfing sessions led by certified instructors</p>
           </div>
 
           <div className={style.infoCard}>
-            <div className={style.cardIcon} aria-hidden="true">🤝</div>
+            <div className={style.cardIcon} aria-hidden="true">
+              🤝
+            </div>
             <h3 className={style.cardTitle}>Community</h3>
-            <p className={style.cardText}>
-              Building lasting connections and support networks
-            </p>
+            <p className={style.cardText}>Building lasting connections and support networks</p>
           </div>
 
           <div className={style.infoCard}>
-            <div className={style.cardIcon} aria-hidden="true">💪</div>
+            <div className={style.cardIcon} aria-hidden="true">
+              💪
+            </div>
             <h3 className={style.cardTitle}>Empowerment</h3>
-            <p className={style.cardText}>
-              Helping individuals overcome challenges and thrive
-            </p>
+            <p className={style.cardText}>Helping individuals overcome challenges and thrive</p>
           </div>
         </div>
       </section>
@@ -89,35 +78,34 @@ export default function LandingPage() {
         <h2 className={style.sectionTitle}>Our Programs</h2>
 
         <div className={style.programCards}>
-          <div className={style.programCard}/>
-          <div className={style.programCard}/>
-          <div className={style.programCard}/>
+          <div className={style.programCard} />
+          <div className={style.programCard} />
+          <div className={style.programCard} />
         </div>
       </div>
 
       {/* Contact Footer */}
       <div className={style.pageFooter}>
         <h2 className={style.footerTitle}>Contact Us</h2>
-        <p className={style.footerSubtitle}>Have questions or want to learn more about our programs?</p>  
-
+        <p className={style.footerSubtitle}>Have questions or want to learn more about our programs?</p>
 
         <div className={style.footerColumns}>
           <div className={style.footerColumn}>
             <h3>Email</h3>
             <p>info@operationsurf.org</p>
-        </div>
+          </div>
 
-        <div className={style.footerColumn}>
-          <h3>Phone</h3>
-          <p>(555) 123-4567</p>
-        </div>
+          <div className={style.footerColumn}>
+            <h3>Phone</h3>
+            <p>(555) 123-4567</p>
+          </div>
 
-        <div className={style.footerColumn}>
-          <h3>Address</h3>
-          <p>123 Ocean Ave, San Diego, CA 92109</p>
-        </div>
+          <div className={style.footerColumn}>
+            <h3>Address</h3>
+            <p>123 Ocean Ave, San Diego, CA 92109</p>
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
