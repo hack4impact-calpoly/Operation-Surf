@@ -86,12 +86,37 @@ export default function LandingPage() {
 
       {/* Our Programs */}
       <div className={style.programs}>
-        {/* TODO */}
+        <h2 className={style.sectionTitle}>Our Programs</h2>
+
+        <div className={style.programCards}>
+          <div className={style.programCard}/>
+          <div className={style.programCard}/>
+          <div className={style.programCard}/>
+        </div>
       </div>
 
       {/* Contact Footer */}
       <div className={style.pageFooter}>
-        {/* TODO */}
+        <h2 className={style.footerTitle}>Contact Us</h2>
+        <p className={style.footerSubtitle}>Have questions or want to learn more about our programs?</p>  
+
+
+        <div className={style.footerColumns}>
+          <div className={style.footerColumn}>
+            <h3>Email</h3>
+            <p>info@operationsurf.org</p>
+        </div>
+
+        <div className={style.footerColumn}>
+          <h3>Phone</h3>
+          <p>(555) 123-4567</p>
+        </div>
+
+        <div className={style.footerColumn}>
+          <h3>Address</h3>
+          <p>123 Ocean Ave, San Diego, CA 92109</p>
+        </div>
+        </div>
       </div>
     </div>
   )
