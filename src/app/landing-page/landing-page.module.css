@@ -1,4 +1,8 @@
-
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
 
 .pageContainer {
   font-family:
@@ -202,7 +206,7 @@
 }
 
 .aboutCards {
-  max-width: 1000px;
+  max-width: 1151.992px;
   margin: 0 auto;
   padding: 0 24px;
   display: grid;
@@ -256,7 +260,7 @@
 /* ================= PROGRAMS DISPLAY ================= */
 .programs {
   padding: 80px 24px;
-  background: linear-gradient(180deg, rgba(243, 244, 246, 1) 0%, rgba(249, 250, 251, 1) 100%); 
+  background: linear-gradient(180deg, rgba(243, 244, 246, 1) 0%, rgba(249, 250, 251, 1) 100%);
 }
 
 .programCards {
@@ -275,7 +279,7 @@
 
 /* ================= FOOTER ================= */
 .pageFooter {
-  background: #7C7845FF;
+  background: #7c7845ff;
   padding: 64px 24px;
   color: #ffffff;
   text-align: center;
@@ -288,7 +292,7 @@
 }
 
 .footerSubtitle {
-  font-size: 18px;        
+  font-size: 18px;
   font-weight: 400;
   opacity: 0.85;
   margin-bottom: 40px;
@@ -312,4 +316,3 @@
   font-size: 16px;
   opacity: 0.9;
 }
-
