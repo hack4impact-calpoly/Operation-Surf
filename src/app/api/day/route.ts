@@ -72,7 +72,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       startTime: body.startTime,
       endTime: body.endTime,
       programId: body.programId,
-      eventId: body.eventId,
+      dayId: body.dayId,
     });
 
     const saved = await newDay.save();
