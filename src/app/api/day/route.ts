@@ -40,7 +40,7 @@ export async function GET(): Promise<NextResponse> {
     startTime: string;
     endTime: string;
     programId: string;
-    eventId: string;
+    dayId: string;
  */
 export async function POST(request: Request): Promise<NextResponse> {
   await connectDB();
@@ -51,7 +51,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     // ensure required fields are present
 
     // "dayOfWeek" is not required because it will be derived from the "date" field
-    const requiredFields = ["name", "date", "startTime", "endTime", "programId", "eventId"];
+    const requiredFields = ["name", "date", "startTime", "endTime", "programId", "dayId"];
 
     for (const field of requiredFields) {
       if (!body[field]) {

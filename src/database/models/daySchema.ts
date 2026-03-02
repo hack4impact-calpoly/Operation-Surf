@@ -11,7 +11,7 @@ type day = {
   startTime: string;
   endTime: string;
   programId: string;
-  eventId: string;
+  dayId: string;
 };
 
 const daySchema = new Schema<day>({
@@ -21,7 +21,7 @@ const daySchema = new Schema<day>({
   startTime: { type: String, required: true },
   endTime: { type: String, required: true },
   programId: { type: String, required: true },
-  eventId: { type: String, required: true },
+  dayId: { type: String, required: true },
 });
 
 /* 
