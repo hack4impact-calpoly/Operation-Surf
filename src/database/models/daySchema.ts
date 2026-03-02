@@ -1,12 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 
 /* 
-Use the "date" for the "dayOfWeek" field to determine the day of the week. This is because the "dayOfWeek" field is currently a Date type, which can be used to extract the day of the week. The "date" field can be used to determine the specific date of the event.
+Use the "date" for the "dayOfWeek" field to determine the day of the week.
 */
 
 type day = {
   name: string;
-  dayOfWeek: Date;
+  dayOfWeek: string;
   date: Date;
   startTime: string;
   endTime: string;
@@ -16,7 +16,7 @@ type day = {
 
 const daySchema = new Schema<day>({
   name: { type: String, required: true },
-  dayOfWeek: { type: Date, required: true },
+  dayOfWeek: { type: String, required: true },
   date: { type: Date, required: true },
   startTime: { type: String, required: true },
   endTime: { type: String, required: true },
