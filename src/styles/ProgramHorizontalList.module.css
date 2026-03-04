@@ -1,0 +1,30 @@
+.scrollFrame {
+  max-width: 1100px;
+  margin: 48px auto 0;
+  padding: 8px 4px 16px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(280px, 380px);
+  gap: 24px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+}
+
+.cardSlot {
+  scroll-snap-align: start;
+}
+
+.emptyState {
+  min-height: 280px;
+  max-width: 1100px;
+  margin: 48px auto 0;
+  border-radius: 16px;
+  background: #f1f5f9;
+  display: grid;
+  place-items: center;
+  color: #4a5565;
+  font-size: 18px;
+  text-align: center;
+  padding: 24px;
+}

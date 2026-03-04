@@ -13,7 +13,7 @@ export async function GET(): Promise<NextResponse> {
   await connectDB();
 
   try {
-    const programs = await Program.find();
+    const programs = await Program.find().sort({ date: 1 });
     return NextResponse.json({
       programs: programs,
       status: 200,
