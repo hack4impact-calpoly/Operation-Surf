@@ -24,12 +24,6 @@ const daySchema = new Schema<day>({
   dayId: { type: String, required: true },
 });
 
-/* 
-"event" term has changed to "day"
-MongoDB still has this as event_data, but from now on
-events will be referred to as days in the codebase.
-*/
-
-const Day = mongoose.models["event_data"] || mongoose.model("event_data", daySchema, "event_data");
+const Day = mongoose.models["day"] || mongoose.model("day", daySchema, "day");
 
 export default Day;

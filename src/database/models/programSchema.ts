@@ -18,6 +18,6 @@ const programSchema = new Schema<program>({
   programId: { type: String, required: true },
 });
 
-const Program = mongoose.models["program_data"] || mongoose.model("program_data", programSchema, "program_data");
+const Program = mongoose.models["program"] || mongoose.model("program", programSchema, "program");
 
 export default Program;
