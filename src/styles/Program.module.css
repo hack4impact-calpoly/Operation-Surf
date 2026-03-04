@@ -1,0 +1,91 @@
+.cardContainer {
+  width: 100%; /* Make the card take up the full width of its parent container */
+  font-family: "Inter", sans-serif;
+  display: flex;
+  font-weight: 300;
+  flex-direction: column;
+  max-width: 450px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+/* Top Image */
+.cardImage {
+  height: auto;
+  object-fit: cover;
+}
+
+/* Meta Section */
+.cardMeta {
+  display: flex;
+  flex-direction: column;
+  margin-left: 36px;
+  gap: 10px;
+}
+
+.cardMeta p {
+  margin: 0;
+}
+
+/* Title */
+.cardTitle {
+  font-size: 24px;
+  font-weight: 400;
+  color: #737144;
+  margin-bottom: 10px;
+  margin-top: 40px;
+}
+
+/* Button */
+.cardButton {
+  width: 90%;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 14px;
+  border: none;
+  background-color: #737144;
+  color: white;
+  margin: 0 auto 20px auto;
+  display: block;
+  margin-top: 20px;
+}
+
+/* On Hover */
+.cardButton:hover {
+  background-color: #737144;
+}
+
+.cardLocation::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23737144' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22s7-5.5 7-12a7 7 0 1 0-14 0c0 6.5 7 12 7 12z'/%3E%3Ccircle cx='12' cy='10' r='2.5'/%3E%3C/svg%3E");
+}
+
+.cardDate::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23737144' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4.5' width='18' height='16' rx='2.5'/%3E%3Cpath d='M8 2.5v4'/%3E%3Cpath d='M16 2.5v4'/%3E%3Cpath d='M3 9.5h18'/%3E%3C/svg%3E");
+}
+
+.cardTime::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23737144' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3.5 2'/%3E%3C/svg%3E");
+}
+
+.cardLocation,
+.cardDate,
+.cardTime {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cardLocation::before,
+.cardDate::before,
+.cardTime::before {
+  content: "";
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
