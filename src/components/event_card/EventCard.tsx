@@ -1,7 +1,7 @@
 import Image from "next/image";
 import style from "@/styles/EventCard.module.css";
 import { Suspense } from "react";
-import EventCardLoading from "@/components/EventCardLoading";
+import EventCardLoading from "@/components/event_card/EventCardLoading";
 
 // definition of the props for the eventCard component
 /* 
