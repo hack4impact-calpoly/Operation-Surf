@@ -34,7 +34,7 @@ The {non-profit name} team consists of {#} Cal Poly students. Over the course of
 - [Brian Li](https://www.linkedin.com/in/brianlidesign/) - Software Developer
 - [Kyle Morgan](https://www.linkedin.com/in/kyle-morgan0) - Software Developer
 - [Winnie Trinh](https://www.linkedin.com/in/winnie-trinh/) - Software Developer
-- [Karina Lee](www.linkedin.com/in/karinaalee) - Software Developer
+- [Karina Lee](https://www.linkedin.com/in/karinaalee) - Software Developer
 - Ashley Navos - Software Developer
 
 ## Getting Started And Contributing
