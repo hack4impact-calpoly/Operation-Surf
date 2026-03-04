@@ -1,7 +1,46 @@
 import Image from "next/image";
 import style from "./page.module.css";
+import ProgramCard from "@/components/Program";
+import connectDB from "@/database/db";
+import ProgramModel from "@/database/models/programSchema";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+type ProgramRecord = {
+  imageURI: string;
+  location: string;
+  date: Date | string;
+  duration: string;
+  programName: string;
+  programId: string;
+};
+
+const formatProgramDate = (value: Date | string) => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "Date TBD";
+  }
+
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+
+const getPrograms = async (): Promise<ProgramRecord[]> => {
+  try {
+    await connectDB();
+    return await ProgramModel.find().sort({ date: 1 }).lean<ProgramRecord[]>();
+  } catch (error) {
+    console.error("Error fetching programs for home page:", error);
+    return [];
+  }
+};
+
+export default async function Home() {
+  const programs = await getPrograms();
+
   return (
     <div className={style.pageContainer}>
       <header className={style.pageHeader}>
@@ -65,9 +104,20 @@ export default function Home() {
         <h2 className={style.sectionTitle}>Our Programs</h2>
 
         <div className={style.programCards}>
-          <div className={style.programCard} />
-          <div className={style.programCard} />
-          <div className={style.programCard} />
+          {programs.length > 0 ? (
+            programs.map((program) => (
+              <ProgramCard
+                key={program.programId}
+                image={program.imageURI}
+                title={program.programName}
+                location={program.location}
+                date={formatProgramDate(program.date)}
+                time={program.duration}
+              />
+            ))
+          ) : (
+            <div className={style.programCard}>No programs available right now.</div>
+          )}
         </div>
       </div>
 

@@ -263,12 +263,20 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 32px;
+  justify-items: center;
 }
 
 .programCard {
-  height: 280px;
+  min-height: 280px;
+  width: 100%;
   border-radius: 16px;
   background: #f1f5f9;
+  display: grid;
+  place-items: center;
+  color: #4a5565;
+  font-size: 18px;
+  text-align: center;
+  padding: 24px;
 }
 
 /* ================= FOOTER ================= */
