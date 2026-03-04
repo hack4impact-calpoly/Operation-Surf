@@ -1,0 +1,312 @@
+.pageContainer {
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+/* ================= HEADER ================= */
+.pageHeader {
+  height: 72px;
+  padding: 6px 35px 1vh 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  position: relative;
+}
+
+.headerButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.headerBtnOutline {
+  border: 1px solid #7c7845;
+  background: transparent;
+  color: #7c7845;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 24px;
+  transition: background-color 0.5s;
+}
+
+.headerBtnOutline:hover {
+  background-color: #fbf8f8;
+}
+
+.headerBtnOutline:active {
+  background-color: #efefef;
+}
+
+.headerBtnFilled {
+  border: 1px solid #737144;
+  background: #737144;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 150%;
+  transition: background-color 0.5s;
+}
+
+.headerBtnFilled:hover {
+  background-color: #7e7c4a;
+}
+
+.headerBtnFilled:active {
+  background-color: #888750;
+}
+
+/* ================= HERO ================= */
+.hero {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: min(100vh, 955px);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroBg {
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+/* Olive overlay tint */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(124, 120, 69, 0.7) 0%, rgba(115, 113, 68, 0.8) 100%);
+  z-index: 1;
+}
+
+/* Overlay content */
+.heroContent {
+  position: relative;
+  z-index: 2; /* above overlay */
+  width: 100%;
+  max-width: 1100px;
+  padding: 0 24px;
+  text-align: center;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Title */
+.heroTitle {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    sans-serif;
+  color: #ffffff;
+  text-align: center;
+  font-size: 96px;
+  font-style: normal;
+  font-weight: 350;
+  line-height: min(100vh, 96px);
+  letter-spacing: 2px;
+}
+
+/* Subtitle */
+.heroSubtitle {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    sans-serif;
+  color: #e5e5e5;
+  text-align: center;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 250;
+  line-height: 32px;
+  letter-spacing: 0.07px;
+  width: 100%;
+  max-width: 750px;
+  margin-top: -40px;
+}
+
+.exploreButton {
+  display: flex;
+  padding: 11.492px 31.127px 12.486px 31.992px;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: -0.312px;
+  border: none;
+  border-radius: 20971500px;
+  background: #737144;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    transform 0.4s;
+}
+
+.exploreButton:hover {
+  background: #737144b9;
+}
+
+.exploreButton:active {
+  background: #73714474;
+  transform: translateY(2px);
+}
+
+/* ================= SECTION BASICS ================= */
+.sectionTitle {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 400;
+  color: #7c7845;
+  margin: 80px 0 12px;
+  letter-spacing: 0.369px;
+}
+
+.sectionText {
+  max-width: 756px;
+  margin: 26px auto 47px;
+  padding: 0 20px;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #444;
+}
+
+/* ================= ABOUT ================= */
+.about {
+  padding-bottom: 40px;
+}
+
+.aboutCards {
+  max-width: 1151.992px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+}
+
+.infoCard {
+  border-radius: 10px;
+  background: #f5f5f5;
+  border: None;
+  padding: 20px 16px;
+  text-align: center;
+  justify-items: center;
+}
+
+.cardIcon {
+  color: #737144;
+  text-align: center;
+  font-family: Inter;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 111.111%;
+  letter-spacing: 0.369px;
+}
+
+.cardTitle {
+  color: #7c7845;
+  text-align: center;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  letter-spacing: -0.449px;
+}
+
+.cardText {
+  max-width: 296px;
+  width: 100%;
+  margin: 0 auto;
+  color: #4a5565;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: -0.312px;
+}
+
+/* ================= PROGRAMS DISPLAY ================= */
+.programs {
+  padding: 80px 24px;
+  background: linear-gradient(180deg, rgba(243, 244, 246, 1) 0%, rgba(249, 250, 251, 1) 100%);
+}
+
+.programCards {
+  max-width: 1100px;
+  margin: 48px auto 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+}
+
+.programCard {
+  height: 280px;
+  border-radius: 16px;
+  background: #f1f5f9;
+}
+
+/* ================= FOOTER ================= */
+.pageFooter {
+  background: #7c7845ff;
+  padding: 64px 24px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.footerTitle {
+  font-size: 36px;
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+
+.footerSubtitle {
+  font-size: 18px;
+  font-weight: 400;
+  opacity: 0.85;
+  margin-bottom: 40px;
+}
+
+.footerColumns {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px;
+}
+
+.footerColumn h3 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.footerColumn p {
+  font-size: 16px;
+  opacity: 0.9;
+}
