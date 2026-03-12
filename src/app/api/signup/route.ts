@@ -1,6 +1,8 @@
 import connectDB from "@/database/db";
 import { NextResponse } from "next/server";
 import Signup from "@/database/models/signupSchema";
+import { ObjectId } from "mongodb";
+import { sign } from "crypto";
 
 /**
  * gets all signups from the database
@@ -54,11 +56,16 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     for (const field of requiredFields) {
       if (!body[field]) {
+        // if waiver is false, it will be sent as "false" in the request body, which is a falsy value in JavaScript. To account for this, we need to check if the field is explicitly undefined rather than just falsy.
+        if (field === "waiver" && body[field] === false) {
+          continue; // skip the check for waiver if it's false
+        }
         return NextResponse.json({ message: `Missing required field: ${field}` }, { status: 400 });
       }
     }
 
     const newSignup = new Signup({
+      signupId: crypto.randomUUID(),
       shiftId: body.shiftId,
       profileId: body.profileId,
       waiver: body.waiver,
