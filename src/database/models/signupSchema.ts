@@ -5,9 +5,11 @@ figma shows that liability form is yes/no
 so used a boolean for the waiver field. If it's true, the user has signed the waiver; if it's false, they haven't
 
 Using Date for timestamp because it will automatically store the date and time when the signup is created, which can be useful for tracking when users signed up for shifts.
+
  */
 
 type signup = {
+  signupId: String;
   shiftId: String;
   profileId: String;
   waiver: Boolean;
@@ -15,6 +17,7 @@ type signup = {
 };
 
 const signupSchema = new Schema<signup>({
+  signupId: { type: String, required: true },
   shiftId: { type: String, required: true },
   profileId: { type: String, required: true },
   waiver: { type: Boolean, required: true },
