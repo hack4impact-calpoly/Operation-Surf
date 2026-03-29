@@ -2,7 +2,6 @@ import connectDB from "@/database/db";
 import bcrypt from "bcrypt";
 import Volunteer from "@/database/models/volunteerSchema";
 import { NextRequest, NextResponse } from "next/server";
-import { create } from "domain";
 
 const SALT_ROUNDS = 10;
 
@@ -24,6 +23,55 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+/* 
+Frontend should enforce validation of required fields such as email format, password strength, and valid shirt sizes before sending the request. The backend will check for the presence of required fields but will rely on the frontend for detailed validation.
+
+Note: height = number in cm
+      sex = one of "female", "male", "intersex", "prefer_not_to_say", "other"
+      shirtSize = one of "XS", "S", "M", "L", "XL", "2XL", "3XL"
+
+Example JSON body for creating a volunteer:
+{
+  "name": "hey",
+  "username": "heyDoe",
+  "password": "password",
+  "email": "johndoe@example.com",
+  "phone": "555-123-4567",
+  "height": 180,
+  "weight": 170,
+  "sex": "male",
+  "birthday": "1995-06-15",
+  "location": "Sacramento, CA",
+
+  "emergencyContact": {
+    "name": "Jane Doe",
+    "relationship": "Sister",
+    "phone": "555-987-6543",
+    "email": "janedoe@example.com"
+  },
+
+  "skillsOrExperience": "First aid certified, event setup experience",
+  "shirtSize": "XL",
+  "interests": "Community service, outdoor events",
+
+  "liabilityWaiver": [
+    {
+      "shiftId": "shift_000",
+      "accepted": true,
+      "acceptedAt": "2026-03-27",
+      "expiresAt": "2027-03-27"
+    },
+    {
+      "shiftId": "shift_123",
+      "accepted": false,
+    }
+  ],
+
+  "backgroundCheck": false
+}
+
+*/
 
 export async function POST(request: NextRequest) {
   try {

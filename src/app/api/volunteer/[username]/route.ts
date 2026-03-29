@@ -8,11 +8,16 @@ type IParams = {
   };
 };
 
+/* 
+Get a volunteer by username
+*/
+
 export async function GET(request: Request, { params }: IParams): Promise<NextResponse> {
   try {
     await connectDB();
 
     const { username } = params;
+
     if (!username) {
       return NextResponse.json({ message: "Username is required." }, { status: 400 });
     }
