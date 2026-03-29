@@ -1,10 +1,10 @@
 // src/database/models/VolunteerApplication.ts
 import mongoose, { Schema, Types, Model } from "mongoose";
 
-export type Sex = "female" | "male" | "intersex" | "prefer_not_to_say" | "other";
-export type ShirtSize = "XS" | "S" | "M" | "L" | "XL" | "2XL" | "3XL";
+type Sex = "female" | "male" | "intersex" | "prefer_not_to_say" | "other";
+type ShirtSize = "XS" | "S" | "M" | "L" | "XL" | "2XL" | "3XL";
 
-export interface EmergencyContact {
+interface EmergencyContact {
   name: string;
   relationship?: string;
   phone: string;
@@ -18,23 +18,25 @@ const EmergencyContactSchema = new Schema<EmergencyContact>({
   email: { type: String, required: true, trim: true, lowercase: true },
 });
 
-export interface LiabilityWaiver {
-  shiftId?: string; // optional: if you want to track which shift/event the annual waiver acceptance applies to
+interface LiabilityWaiver {
+  shiftId: string; // optional: if you want to track which shift/event the annual waiver acceptance applies to
   accepted: boolean;
   acceptedAt?: Date;
   // annual renewal logic uses acceptedAt + expiresAt
   expiresAt?: Date;
 }
 
-export interface IVolunteer {
+interface IVolunteer {
   // Basic bio
   name: string;
   username: string;
   password: string;
   email: string;
   phone: string;
+
+  // ht/wt in cm
   height: number;
-  weight: number; // lbs (or kg)
+  weight: number;
   sex: Sex;
   birthday: Date;
   location: string;
@@ -57,7 +59,7 @@ export interface IVolunteer {
 
 const LiabilityWaiverSchema = new Schema<LiabilityWaiver>(
   {
-    shiftId: { type: String, required: false, trim: true },
+    shiftId: { type: String, required: true, trim: true },
     accepted: { type: Boolean, required: true },
     acceptedAt: { type: Date },
     expiresAt: { type: Date },
