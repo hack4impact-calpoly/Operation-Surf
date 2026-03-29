@@ -19,7 +19,7 @@ const EmergencyContactSchema = new Schema<EmergencyContact>({
 });
 
 interface LiabilityWaiver {
-  shiftId: string; // optional: if you want to track which shift/event the annual waiver acceptance applies to
+  shiftId: string;
   accepted: boolean;
   acceptedAt?: Date;
   // annual renewal logic uses acceptedAt + expiresAt
@@ -50,7 +50,6 @@ interface IVolunteer {
   // Liability waiver logic
   liabilityWaiver: LiabilityWaiver[]; // must be accepted to sign up for any shift
 
-  // Optional: screening / background check (third-party)
   backgroundCheck: boolean;
 
   createdAt: Date;
@@ -67,23 +66,17 @@ const LiabilityWaiverSchema = new Schema<LiabilityWaiver>(
   { _id: false },
 );
 
-/**
- * Shirt size "10 hour logic"
- * You mentioned "Shirt size [with 10 hour logic]".
- * Typically this means: shirt is granted/required after 10 volunteer hours.
- * The application can store shirtSize regardless, but enforcement is business logic.
- * You can also track hours elsewhere (VolunteerHours), and only issue shirt when >= 10.
- */
 const VolunteerSchema = new Schema<IVolunteer>(
   {
     name: { type: String, required: true, trim: true },
-    username: { type: String, required: true, trim: true },
+    username: { type: String, required: true, trim: true, unique: true },
     password: { type: String, required: true },
     email: {
       type: String,
       required: true,
       trim: true,
       lowercase: true,
+      unique: true,
     },
     phone: { type: String, required: true, trim: true },
 
