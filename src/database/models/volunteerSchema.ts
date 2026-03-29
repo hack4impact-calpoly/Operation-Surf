@@ -29,6 +29,8 @@ export interface LiabilityWaiver {
 export interface IVolunteer {
   // Basic bio
   name: string;
+  username: string;
+  password: string;
   email: string;
   phone: string;
   height: number;
@@ -73,12 +75,13 @@ const LiabilityWaiverSchema = new Schema<LiabilityWaiver>(
 const VolunteerSchema = new Schema<IVolunteer>(
   {
     name: { type: String, required: true, trim: true },
+    username: { type: String, required: true, trim: true },
+    password: { type: String, required: true },
     email: {
       type: String,
       required: true,
       trim: true,
       lowercase: true,
-      index: true,
     },
     phone: { type: String, required: true, trim: true },
 
