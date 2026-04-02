@@ -29,6 +29,8 @@ export async function GET(request: NextRequest) {
 Frontend should enforce validation of required fields such as email format, password strength, and valid shirt sizes before sending the request. The backend will check for the presence of required fields but will rely on the frontend for detailed validation.
 
 Better Auth signin first to validate username and get userId
+- checks username/email is not taken
+-creates session
 
 Note: height = number in cm
       sex = one of "female", "male", "intersex", "prefer_not_to_say", "other"

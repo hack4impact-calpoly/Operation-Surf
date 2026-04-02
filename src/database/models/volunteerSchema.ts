@@ -28,6 +28,7 @@ interface LiabilityWaiver {
 
 interface IVolunteer {
   // Basic bio
+  // userId to join on user/account tables
   userId: string;
   name: string;
   username: string;
@@ -68,6 +69,7 @@ const LiabilityWaiverSchema = new Schema<LiabilityWaiver>(
 
 const VolunteerSchema = new Schema<IVolunteer>(
   {
+    // userId to join on user/account tables
     userId: { type: String, required: true },
     name: { type: String, required: true, trim: true },
     username: { type: String, required: true, trim: true, unique: true },
