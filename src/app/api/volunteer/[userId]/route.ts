@@ -4,32 +4,31 @@ import { NextResponse } from "next/server";
 
 type IParams = {
   params: {
-    username: string;
+    userId: string;
   };
 };
 
 /* 
-Get a volunteer by username
+Get a volunteer by userId
 */
 
 export async function GET(request: Request, { params }: IParams): Promise<NextResponse> {
   try {
     await connectDB();
 
-    const { username } = params;
+    const { userId } = params;
 
-    if (!username) {
-      return NextResponse.json({ message: "Username is required." }, { status: 400 });
+    if (!userId) {
+      return NextResponse.json({ message: "UserId is required." }, { status: 400 });
     }
 
-    const volunteer = await Volunteer.findOne({ username: username });
+    const volunteer = await Volunteer.findOne({ userId: userId });
     if (!volunteer) {
       return NextResponse.json({ message: "Volunteer not found." }, { status: 404 });
     }
 
     return NextResponse.json(volunteer, { status: 200 });
   } catch (err) {
-    console.error("Error fetching volunteer by username:", err);
     return NextResponse.json(
       {
         message: "Failed to fetch volunteer.",
