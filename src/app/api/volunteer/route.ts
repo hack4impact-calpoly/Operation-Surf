@@ -1,10 +1,7 @@
 import connectDB from "@/database/db";
-import bcrypt from "bcrypt";
 import Volunteer from "@/database/models/volunteerSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-
-const SALT_ROUNDS = 10;
 
 export async function GET(request: NextRequest) {
   try {
