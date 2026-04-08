@@ -10,7 +10,7 @@
 
 .topBar {
   height: 80px;
-  background: #8a8446;
+  background: #737144;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,7 +43,7 @@
   max-width: 660px;
   background: #ffffff;
   border: 1px solid #ddd8cc;
-  border-top: 4px solid #8a8446;
+  border-top: 4px solid #737144;
   border-radius: 16px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
   overflow: hidden;
@@ -65,7 +65,7 @@
   width: 32px;
   height: 32px;
   border-radius: 10px;
-  background: #8a8446;
+  background: #737144;
   color: white;
   display: flex;
   align-items: center;
@@ -79,7 +79,7 @@
   margin: 0;
   font-size: 26px;
   font-weight: 700;
-  color: #8a8446;
+  color: #737144;
   line-height: 1.1;
 }
 
@@ -202,7 +202,7 @@
   margin: 0 0 4px;
   font-size: 16px;
   font-weight: 700;
-  color: #8a8446;
+  color: #737144;
 }
 
 .visibilityText {
@@ -220,7 +220,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #8a8446;
+  color: #737144;
   cursor: pointer;
   text-align: center;
   padding: 20px;
@@ -231,7 +231,7 @@
   width: 54px;
   height: 54px;
   border-radius: 50%;
-  background: #8a8446;
+  background: #737144;
   color: white;
   display: flex;
   align-items: center;
@@ -244,7 +244,7 @@
 .uploadTitle {
   margin: 0;
   font-size: 18px;
-  color: #8a8446;
+  color: #737144;
   font-weight: 500;
 }
 
@@ -276,7 +276,7 @@
   height: 52px;
   border: none;
   border-radius: 12px;
-  background: #8a8446;
+  background: #737144;
   color: white;
   font-size: 18px;
   font-family: inherit;
