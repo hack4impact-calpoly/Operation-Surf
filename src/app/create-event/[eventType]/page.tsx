@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Suspense } from "react";
 import CreateProgram from "@/components/event-creation/CreateProgram";
-// import CreateDay from "@/components/event-creation/CreateDay";
+import CreateDay from "@/components/event-creation/CreateDay";
 // import CreateShift from "@/components/event-creation/CreateShift";
 
 type Props = {
@@ -18,7 +18,7 @@ export default function CreateEventPage({ params }: Props) {
   }
 
   if (eventType === "day") {
-    return <div>create day coming soon</div>;
+    return <CreateDay />;
   }
 
   if (eventType === "shift") {
