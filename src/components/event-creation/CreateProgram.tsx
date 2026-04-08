@@ -5,6 +5,11 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import styles from "@/styles/CreateProgram.module.css";
 import { ArrowLeft, ClipboardList, MapPin, CalendarDays, Eye, Upload, FileText } from "lucide-react";
+import { Roboto_Slab } from "next/font/google";
+
+const roboto = Roboto_Slab({
+  subsets: ["latin"],
+});
 
 // array used later to display visibility options
 const visibilityOptions = [
@@ -123,160 +128,168 @@ export default function CreateProgram() {
   }
 
   return (
-    <div className={styles.page}>
-      <div className={styles.topBar}>
-        <Image src="/op_surf_logo_no_bg.png" alt="Operation Surf Logo" width={58} height={46} className={styles.logo} />
+    <div className={roboto.className}>
+      <div className={styles.page}>
+        <div className={styles.topBar}>
+          <Image
+            src="/op_surf_logo_no_bg.png"
+            alt="Operation Surf Logo"
+            width={58}
+            height={46}
+            className={styles.logo}
+          />
 
-        <button className={styles.backButton} type="button" onClick={() => router.back()}>
-          <ArrowLeft size={18} className={styles.labelIcon} />
-          <span>Back</span>
-        </button>
-      </div>
+          <button className={styles.backButton} type="button" onClick={() => router.back()}>
+            <ArrowLeft size={18} className={styles.labelIcon} />
+            <span>Back</span>
+          </button>
+        </div>
 
-      <div className={styles.formWrapper}>
-        <form className={styles.card} onSubmit={handleSubmit}>
-          <div className={styles.cardHeader}>
-            <div className={styles.titleRow}>
-              <div className={styles.titleIcon}>
-                <ClipboardList size={18} className={styles.labelIcon} />
+        <div className={styles.formWrapper}>
+          <form className={styles.card} onSubmit={handleSubmit}>
+            <div className={styles.cardHeader}>
+              <div className={styles.titleRow}>
+                <div className={styles.titleIcon}>
+                  <ClipboardList size={18} className={styles.labelIcon} />
+                </div>
+
+                <div>
+                  <h1 className={styles.title}>Create Program</h1>
+                  <p className={styles.subtitle}>Set up a new program to organize events and opportunities</p>
+                </div>
               </div>
-
-              <div>
-                <h1 className={styles.title}>Create Program</h1>
-                <p className={styles.subtitle}>Set up a new program to organize events and opportunities</p>
-              </div>
-            </div>
-          </div>
-
-          {/* field: program Name */}
-          <div className={styles.cardBody}>
-            <div className={styles.field}>
-              <label className={styles.label}>
-                <FileText size={18} className={styles.labelIcon} />
-                <span>
-                  Program Name <span className={styles.required}>*</span>
-                </span>
-              </label>
-              <input
-                className={styles.input}
-                type="text"
-                name="programName"
-                placeholder="e.g. Adaptive Surf Therapy"
-                value={formData.programName}
-                onChange={handleChange}
-              />
-              {errors.programName && <p className={styles.error}>{errors.programName}</p>}
             </div>
 
-            {/* field: description */}
-            <div className={styles.field}>
-              <label className={styles.label}>
-                <FileText size={18} className={styles.labelIcon} />
-                <span>Description</span>
-              </label>
-              <textarea
-                className={styles.textarea}
-                name="description"
-                placeholder="Describe the program, its goals, and what participants can expect..."
-                value={formData.description}
-                onChange={handleChange}
-              />
-            </div>
-
-            {/* field: general location */}
-            <div className={styles.row}>
-              <div className={styles.halfField}>
+            {/* field: program Name */}
+            <div className={styles.cardBody}>
+              <div className={styles.field}>
                 <label className={styles.label}>
-                  <MapPin size={18} className={styles.labelIcon} />
-                  <span>General Location</span>
+                  <FileText size={18} className={styles.labelIcon} />
+                  <span>
+                    Program Name <span className={styles.required}>*</span>
+                  </span>
                 </label>
                 <input
                   className={styles.input}
                   type="text"
-                  name="location"
-                  placeholder="e.g. San Diego, CA"
-                  value={formData.location}
+                  name="programName"
+                  placeholder="e.g. Adaptive Surf Therapy"
+                  value={formData.programName}
                   onChange={handleChange}
                 />
+                {errors.programName && <p className={styles.error}>{errors.programName}</p>}
               </div>
 
-              {/* field: month */}
-              <div className={styles.halfField}>
+              {/* field: description */}
+              <div className={styles.field}>
                 <label className={styles.label}>
-                  <CalendarDays size={18} className={styles.labelIcon} />
-                  <span>Month</span>
-                  <span className={styles.required}>*</span>
+                  <FileText size={18} className={styles.labelIcon} />
+                  <span>Description</span>
                 </label>
-                <input
-                  className={styles.input}
-                  type="month"
-                  name="month"
-                  value={formData.month}
+                <textarea
+                  className={styles.textarea}
+                  name="description"
+                  placeholder="Describe the program, its goals, and what participants can expect..."
+                  value={formData.description}
                   onChange={handleChange}
                 />
-                {errors.month && <p className={styles.error}>{errors.month}</p>}
               </div>
-            </div>
 
-            {/* field: visibility */}
-            <div className={styles.field}>
-              <label className={styles.label}>
-                <Eye size={18} className={styles.labelIcon} />
-                Visibility <span className={styles.required}>*</span>
-              </label>
-
-              {visibilityOptions.map((option) => (
-                <label key={option.value} className={styles.visibilityBox}>
+              {/* field: general location */}
+              <div className={styles.row}>
+                <div className={styles.halfField}>
+                  <label className={styles.label}>
+                    <MapPin size={18} className={styles.labelIcon} />
+                    <span>General Location</span>
+                  </label>
                   <input
-                    type="radio"
-                    name="visibility"
-                    value={option.value}
-                    checked={formData.visibility === option.value}
+                    className={styles.input}
+                    type="text"
+                    name="location"
+                    placeholder="e.g. San Diego, CA"
+                    value={formData.location}
                     onChange={handleChange}
-                    className={styles.radioInput}
                   />
-                  <div>
-                    <p className={styles.visibilityTitle}>{option.title}</p>
-                    <p className={styles.visibilityText}>{option.text}</p>
-                  </div>
-                </label>
-              ))}
-
-              {errors.visibility && <p className={styles.error}>{errors.visibility}</p>}
-            </div>
-
-            {/* field: upload photo */}
-            <div className={styles.field}>
-              <label className={styles.label}>
-                <Upload size={18} className={styles.labelIcon} />
-                <span>Photo</span>
-              </label>
-
-              <label htmlFor="photoUpload" className={styles.uploadBox}>
-                <div className={styles.uploadIcon}>
-                  <Upload size={28} className={styles.labelIcon} />
                 </div>
-                <p className={styles.uploadTitle}>Click to upload photo</p>
-                <p className={styles.uploadText}>JPG, PNG or WebP up to 10MB</p>
-                {photoName && <p className={styles.fileName}>{photoName}</p>}
-              </label>
 
-              <input
-                id="photoUpload"
-                className={styles.hiddenInput}
-                type="file"
-                accept=".jpg,.jpeg,.png,.webp,"
-                onChange={handlePhotoChange}
-              />
+                {/* field: month */}
+                <div className={styles.halfField}>
+                  <label className={styles.label}>
+                    <CalendarDays size={18} className={styles.labelIcon} />
+                    <span>Month</span>
+                    <span className={styles.required}>*</span>
+                  </label>
+                  <input
+                    className={styles.input}
+                    type="month"
+                    name="month"
+                    value={formData.month}
+                    onChange={handleChange}
+                  />
+                  {errors.month && <p className={styles.error}>{errors.month}</p>}
+                </div>
+              </div>
 
-              {errors.photo && <p className={styles.error}>{errors.photo}</p>}
+              {/* field: visibility */}
+              <div className={styles.field}>
+                <label className={styles.label}>
+                  <Eye size={18} className={styles.labelIcon} />
+                  Visibility <span className={styles.required}>*</span>
+                </label>
+
+                {visibilityOptions.map((option) => (
+                  <label key={option.value} className={styles.visibilityBox}>
+                    <input
+                      type="radio"
+                      name="visibility"
+                      value={option.value}
+                      checked={formData.visibility === option.value}
+                      onChange={handleChange}
+                      className={styles.radioInput}
+                    />
+                    <div>
+                      <p className={styles.visibilityTitle}>{option.title}</p>
+                      <p className={styles.visibilityText}>{option.text}</p>
+                    </div>
+                  </label>
+                ))}
+
+                {errors.visibility && <p className={styles.error}>{errors.visibility}</p>}
+              </div>
+
+              {/* field: upload photo */}
+              <div className={styles.field}>
+                <label className={styles.label}>
+                  <Upload size={18} className={styles.labelIcon} />
+                  <span>Photo</span>
+                </label>
+
+                <label htmlFor="photoUpload" className={styles.uploadBox}>
+                  <div className={styles.uploadIcon}>
+                    <Upload size={28} className={styles.labelIcon} />
+                  </div>
+                  <p className={styles.uploadTitle}>Click to upload photo</p>
+                  <p className={styles.uploadText}>JPG, PNG or WebP up to 10MB</p>
+                  {photoName && <p className={styles.fileName}>{photoName}</p>}
+                </label>
+
+                <input
+                  id="photoUpload"
+                  className={styles.hiddenInput}
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.webp,"
+                  onChange={handlePhotoChange}
+                />
+
+                {errors.photo && <p className={styles.error}>{errors.photo}</p>}
+              </div>
+
+              <button className={styles.submitButton} type="submit">
+                Create Program
+              </button>
             </div>
-
-            <button className={styles.submitButton} type="submit">
-              Create Program
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );
