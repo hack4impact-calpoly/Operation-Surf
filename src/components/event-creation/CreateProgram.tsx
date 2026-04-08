@@ -87,13 +87,13 @@ export default function CreateProgram() {
       return;
     }
 
-    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
     if (!validTypes.includes(file.type)) {
       setPhotoName("");
       setErrors((prev) => ({
         ...prev,
-        photo: "Photo must be a jpg, png, webp, or gif file",
+        photo: "Photo must be a jpg, png, or webp file",
       }));
       return;
     }
@@ -257,7 +257,7 @@ export default function CreateProgram() {
                   <Upload size={28} className={styles.labelIcon} />
                 </div>
                 <p className={styles.uploadTitle}>Click to upload photo</p>
-                <p className={styles.uploadText}>JPG, PNG or GIF up to 10MB</p>
+                <p className={styles.uploadText}>JPG, PNG or WebP up to 10MB</p>
                 {photoName && <p className={styles.fileName}>{photoName}</p>}
               </label>
 
@@ -265,7 +265,7 @@ export default function CreateProgram() {
                 id="photoUpload"
                 className={styles.hiddenInput}
                 type="file"
-                accept=".jpg,.jpeg,.png,.webp,.gif"
+                accept=".jpg,.jpeg,.png,.webp,"
                 onChange={handlePhotoChange}
               />
 

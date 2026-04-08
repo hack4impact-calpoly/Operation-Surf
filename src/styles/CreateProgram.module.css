@@ -111,11 +111,6 @@
   background: #fff8f8;
 }
 
-.uploadBoxError {
-  border: 2px dashed #c43f3f;
-  background: #fff8f8;
-}
-
 .row {
   display: flex;
   gap: 20px;
@@ -192,10 +187,16 @@
   margin-bottom: 12px;
   cursor: pointer;
   background: #ffffff;
+  padding-left: 30px;
 }
 
 .radioInput {
-  margin-top: 4px;
+  display: none;
+}
+
+.visibilityBox:has(.radioInput:checked) {
+  background: #f2f1ed;
+  border-color: #737144;
 }
 
 .visibilityTitle {
