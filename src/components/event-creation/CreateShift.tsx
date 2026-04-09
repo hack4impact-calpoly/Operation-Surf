@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "@/styles/CreateShift.module.css";
+import styles from "@/styles/CreateEvent/CreateShift.module.css";
 import {
   UsersRound,
   FileText,

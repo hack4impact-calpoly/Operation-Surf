@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "@/styles/CreateDay.module.css";
+import styles from "@/styles/CreateEvent/CreateDay.module.css";
 import { ClipboardList, MapPin, CalendarDays, Eye, Upload, FileText, Camera } from "lucide-react";
 import { Roboto_Slab } from "next/font/google";
 import CreateEventNavbar from "./CreateEventNavbar";

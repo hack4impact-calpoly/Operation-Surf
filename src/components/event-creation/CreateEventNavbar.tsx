@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import styles from "@/styles/CreateEventNavbar.module.css";
+import styles from "@/styles/CreateEvent/CreateEventNavbar.module.css";
 
 export default function CreateEventNavbar() {
   const router = useRouter();
