@@ -24,18 +24,18 @@ The {non-profit name} team consists of {#} Cal Poly students. Over the course of
 - [Nick Carboni](https://www.linkedin.com/in/nick-carboni/) - Tech Lead
 - [Jason Yu](https://www.linkedin.com/in/jasonyu101/) - Tech Lead
 
-- [First Last](https://www.linkedin.com/) - Designer
-- [First Last](https://www.linkedin.com/) - Designer
-- [First Last](https://www.linkedin.com/) - Designer
+- [Brooke Higuera](https://www.linkedin.com/in/brooke-higuera/) - Designer
+- [Kris Huang](https://www.linkedin.com/in/krishuang47/) - Designer
+- [Ishika Jain](https://www.linkedin.com/in/ishika-jain-973686215/) - Designer
     
-- [Alfredo Galicia](https://www.linkedin.com/in/alfredo-galicia2?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app) - Software Developer
+- [Alfredo Galicia](https://www.linkedin.com/in/alfredo-galicia2) - Software Developer
 - [Kyle Fan](https://www.linkedin.com/in/kylemfan/) - Software Developer
 - [Valeria Arnao](https://www.linkedin.com/in/valeria-arnao-039b202b6/) - Software Developer
 - [Brian Li](https://www.linkedin.com/in/brianlidesign/) - Software Developer
 - [Kyle Morgan](https://www.linkedin.com/in/kyle-morgan0) - Software Developer
 - [Winnie Trinh](https://www.linkedin.com/in/winnie-trinh/) - Software Developer
-- [Karina Lee](www.linkedin.com/in/karinaalee) - Software Developer
-- [Asheley Navos](https://www.linkedin.com/) - Software Developer
+- [Karina Lee](https://www.linkedin.com/in/karinaalee) - Software Developer
+- Ashley Navos - Software Developer
 
 ## Getting Started And Contributing
 

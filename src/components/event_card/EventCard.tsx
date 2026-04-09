@@ -1,7 +1,7 @@
 import Image from "next/image";
 import style from "@/styles/EventCard.module.css";
 import { Suspense } from "react";
-import EventCardLoading from "@/components/EventCardLoading";
+import EventCardLoading from "@/components/event_card/EventCardLoading";
 
 // definition of the props for the eventCard component
 /* 
@@ -24,7 +24,16 @@ interface EventCardProps {
   hostIcon: string;
 }
 
-export default function EventCard({ place, name, host, availability, MaxAvailability, date, image, hostIcon }: EventCardProps) {
+export default function EventCard({
+  place,
+  name,
+  host,
+  availability,
+  MaxAvailability,
+  date,
+  image,
+  hostIcon,
+}: EventCardProps) {
   return (
     <div className={style.eventCard}>
       {/* assuming event card is a link for now */}
@@ -38,13 +47,7 @@ export default function EventCard({ place, name, host, availability, MaxAvailabi
           <h2 className={style.name}>{name}</h2>
           <div className={style.host}>
             {hostIcon && (
-              <Image 
-                src={hostIcon} 
-                alt={`${host}-logo`} 
-                width={24} 
-                height={24} 
-                className={style.hostIcon}
-              />
+              <Image src={hostIcon} alt={`${host}-logo`} width={24} height={24} className={style.hostIcon} />
             )}
             <span>{host}</span>
           </div>
