@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import styles from "@/styles/CreateProgram.module.css";
-import { ArrowLeft, ClipboardList, MapPin, CalendarDays, Eye, Upload, FileText } from "lucide-react";
+import { ClipboardList, MapPin, CalendarDays, Eye, Upload, FileText } from "lucide-react";
 import { Roboto_Slab } from "next/font/google";
 import CreateEventNavbar from "./CreateEventNavbar";
 
