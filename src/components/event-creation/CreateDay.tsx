@@ -141,7 +141,7 @@ export default function CreateDay() {
     if (hasError) return;
 
     console.log("submitted event form");
-    alert("Event successfully submitted!");
+    alert("Day successfully submitted!");
   }
 
   return (
@@ -165,7 +165,7 @@ export default function CreateDay() {
         <div className={styles.content}>
           <div className={styles.leftColumn}>
             <div className={styles.pageIntro}>
-              <h1 className={styles.pageTitle}>Create Event</h1>
+              <h1 className={styles.pageTitle}>Create Day</h1>
               <p className={styles.pageSubtitle}>Add a new event to your program</p>
             </div>
 
@@ -329,7 +329,7 @@ export default function CreateDay() {
                 </div>
 
                 <button className={styles.submitButton} type="submit">
-                  Create Event
+                  Create Day
                 </button>
               </div>
             </form>
