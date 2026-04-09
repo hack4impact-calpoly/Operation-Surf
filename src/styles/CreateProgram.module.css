@@ -7,30 +7,6 @@
   box-sizing: border-box;
 }
 
-.topBar {
-  height: 80px;
-  background: #737144;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 22px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
-}
-
-.logo {
-  filter: brightness(0) invert(1);
-}
-
-.backButton {
-  display: flex;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 15px;
-  cursor: pointer;
-  gap: 3px;
-}
-
 .formWrapper {
   display: flex;
   justify-content: center;

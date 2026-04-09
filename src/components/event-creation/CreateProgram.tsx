@@ -6,6 +6,7 @@ import Image from "next/image";
 import styles from "@/styles/CreateProgram.module.css";
 import { ArrowLeft, ClipboardList, MapPin, CalendarDays, Eye, Upload, FileText } from "lucide-react";
 import { Roboto_Slab } from "next/font/google";
+import CreateEventNavbar from "./CreateEventNavbar";
 
 const roboto = Roboto_Slab({
   subsets: ["latin"],
@@ -130,20 +131,7 @@ export default function CreateProgram() {
   return (
     <div className={roboto.className}>
       <div className={styles.page}>
-        <div className={styles.topBar}>
-          <Image
-            src="/op_surf_logo_no_bg.png"
-            alt="Operation Surf Logo"
-            width={58}
-            height={46}
-            className={styles.logo}
-          />
-
-          <button className={styles.backButton} type="button" onClick={() => router.back()}>
-            <ArrowLeft size={18} className={styles.labelIcon} />
-            <span>Back</span>
-          </button>
-        </div>
+        <CreateEventNavbar />
 
         <div className={styles.formWrapper}>
           <form className={styles.card} onSubmit={handleSubmit}>
@@ -269,7 +257,7 @@ export default function CreateProgram() {
                     <Upload size={28} className={styles.labelIcon} />
                   </div>
                   <p className={styles.uploadTitle}>Click to upload photo</p>
-                  <p className={styles.uploadText}>JPG, PNG or WebP up to 10MB</p>
+                  <p className={styles.uploadText}>JPG, PNG, or WebP up to 10MB</p>
                   {photoName && <p className={styles.fileName}>{photoName}</p>}
                 </label>
 

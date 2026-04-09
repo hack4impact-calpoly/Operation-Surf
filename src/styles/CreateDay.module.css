@@ -7,31 +7,6 @@
   box-sizing: border-box;
 }
 
-.topBar {
-  height: 80px;
-  background: #737144;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 24px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
-}
-
-.logo {
-  filter: brightness(0) invert(1);
-}
-
-.backButton {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 16px;
-}
-
 .content {
   max-width: 1280px;
   margin: 0 auto;

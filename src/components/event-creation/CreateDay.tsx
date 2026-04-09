@@ -6,6 +6,7 @@ import Image from "next/image";
 import styles from "@/styles/CreateDay.module.css";
 import { ArrowLeft, ClipboardList, MapPin, CalendarDays, Eye, Upload, FileText, Camera } from "lucide-react";
 import { Roboto_Slab } from "next/font/google";
+import CreateEventNavbar from "./CreateEventNavbar";
 
 const roboto = Roboto_Slab({
   subsets: ["latin"],
@@ -60,6 +61,7 @@ export default function CreateDay() {
       [name]: value,
     }));
 
+    // clear errors & input validation once required fields are filled
     if (name === "eventName" && value.trim() !== "") {
       setErrors((prev) => ({ ...prev, eventName: "" }));
     }
@@ -147,20 +149,7 @@ export default function CreateDay() {
   return (
     <div className={roboto.className}>
       <div className={styles.page}>
-        <div className={styles.topBar}>
-          <Image
-            src="/op_surf_logo_no_bg.png"
-            alt="Operation Surf Logo"
-            width={58}
-            height={46}
-            className={styles.logo}
-          />
-
-          <button className={styles.backButton} type="button" onClick={() => router.back()}>
-            <ArrowLeft size={18} className={styles.labelIcon} />
-            <span>Back</span>
-          </button>
-        </div>
+        <CreateEventNavbar />
 
         <div className={styles.content}>
           <div className={styles.leftColumn}>
@@ -181,7 +170,7 @@ export default function CreateDay() {
                 </div>
                 <p className={styles.uploadTitle}>Upload Event Photo</p>
                 <p className={styles.uploadText}>Drag and drop or click to browse</p>
-                <p className={styles.uploadSubtext}>JPG, PNG or WebP · Max 10MB</p>
+                <p className={styles.uploadSubtext}>JPG, PNG, or WebP · Max 10MB</p>
                 {photoName && <p className={styles.fileName}>{photoName}</p>}
               </label>
 
