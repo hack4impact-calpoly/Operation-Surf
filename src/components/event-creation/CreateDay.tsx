@@ -16,17 +16,17 @@ const visibilityOptions = [
   {
     value: "listed",
     title: "Listed",
-    text: "(Public)",
+    text: "(Public access)",
   },
   {
     value: "unlisted",
     title: "Unlisted",
-    text: "(Link Only)",
+    text: "(Link only)",
   },
   {
     value: "private",
     title: "Private",
-    text: "(Invite Only)",
+    text: "(Invite only)",
   },
 ];
 
@@ -153,7 +153,7 @@ export default function CreateDay() {
         <div className={styles.content}>
           <div className={styles.leftColumn}>
             <div className={styles.pageIntro}>
-              <h1 className={styles.pageTitle}>Create Day</h1>
+              <h1 className={styles.pageTitle}>Add Day</h1>
               <p className={styles.pageSubtitle}>Add a new event to your program</p>
             </div>
 
@@ -317,7 +317,7 @@ export default function CreateDay() {
                 </div>
 
                 <button className={styles.submitButton} type="submit">
-                  Create Day
+                  Add Day
                 </button>
               </div>
             </form>
