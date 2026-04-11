@@ -9,7 +9,6 @@ export async function GET(): Promise<NextResponse> {
 
     return NextResponse.json(
       {
-        status: "success",
         data: shifts,
       },
       { status: 200 },
@@ -19,7 +18,6 @@ export async function GET(): Promise<NextResponse> {
 
     return NextResponse.json(
       {
-        status: "error",
         message: "Failed to retrieve shifts.",
         error: errorMessage,
       },
@@ -51,7 +49,6 @@ export async function POST(request: Request): Promise<NextResponse> {
     if (missingFields.length > 0) {
       return NextResponse.json(
         {
-          status: "error",
           message: "Missing required fields.",
           missingFields,
         },
@@ -67,7 +64,6 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     return NextResponse.json(
       {
-        status: "success",
         data: newShift,
       },
       { status: 201 },
@@ -77,7 +73,6 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     return NextResponse.json(
       {
-        status: "error",
         message: "Failed to create shift.",
         error: errorMessage,
       },
