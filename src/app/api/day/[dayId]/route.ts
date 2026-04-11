@@ -39,10 +39,39 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
       { status: 200 },
     );
   } catch (err) {
-    console.error("Error fetching day:", err);
     return NextResponse.json(
       {
-        message: "Failed to fetch program.",
+        message: "Failed to fetch day.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(request: Request, { params }: IParams): Promise<NextResponse> {
+  // Attempt to connect to the database
+  await connectDB();
+
+  const { dayId } = params;
+
+  try {
+    const day = await Day.findOneAndDelete({ dayId: dayId });
+    // check if day exists
+    if (!day) {
+      return NextResponse.json({ message: "Day not found." }, { status: 404 });
+    }
+
+    return NextResponse.json(
+      {
+        message: "Day deleted successfully.",
+      },
+      { status: 200 },
+    );
+  } catch (err) {
+    return NextResponse.json(
+      {
+        message: "Failed to delete day.",
         error: err instanceof Error ? err.message : "An unknown error occurred.",
       },
       { status: 500 },
