@@ -36,11 +36,13 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
     );
   } catch (err) {
     console.error("Error fetching signup:", err);
-    return NextResponse.json({
-      message: "Failed to fetch signup.",
-      error: err instanceof Error ? err.message : "An unknown error occurred.",
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        message: "Failed to fetch signup.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
   }
 }
 
@@ -64,7 +66,6 @@ export async function DELETE(request: Request, { params }: IParams): Promise<Nex
       { status: 200 },
     );
   } catch (err) {
-    console.error("Error deleting signup:", err);
     return NextResponse.json(
       {
         message: "Failed to delete signup.",
