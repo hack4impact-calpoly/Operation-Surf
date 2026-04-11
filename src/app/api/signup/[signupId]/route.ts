@@ -43,3 +43,34 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
     });
   }
 }
+
+export async function DELETE(request: Request, { params }: IParams): Promise<NextResponse> {
+  // Attempt to connect to the database
+  await connectDB();
+
+  const { signupId } = params;
+
+  try {
+    const signup = await Signup.findOneAndDelete({ signupId: signupId });
+    // check if signup exists
+    if (!signup) {
+      return NextResponse.json({ message: "Signup not found." }, { status: 404 });
+    }
+
+    return NextResponse.json(
+      {
+        message: "Signup deleted successfully.",
+      },
+      { status: 200 },
+    );
+  } catch (err) {
+    console.error("Error deleting signup:", err);
+    return NextResponse.json(
+      {
+        message: "Failed to delete signup.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
+  }
+}
