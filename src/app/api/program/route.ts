@@ -14,17 +14,21 @@ export async function GET(): Promise<NextResponse> {
 
   try {
     const programs = await Program.find().sort({ date: 1 });
-    return NextResponse.json({
-      programs: programs,
-      status: 200,
-    });
+    return NextResponse.json(
+      {
+        programs: programs,
+      },
+      { status: 200 },
+    );
   } catch (err) {
     console.error("Error fetching programs:", err);
-    return NextResponse.json({
-      message: "Failed to fetch programs.",
-      error: err instanceof Error ? err.message : "An unknown error occurred.",
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        message: "Failed to fetch programs.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
   }
 }
 
@@ -64,16 +68,20 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     const saved = await newProgram.save();
 
-    return NextResponse.json({
-      program: saved,
-      status: 201,
-    });
+    return NextResponse.json(
+      {
+        program: saved,
+      },
+      { status: 201 },
+    );
   } catch (err) {
     console.error("Error creating program:", err);
-    return NextResponse.json({
-      message: "Failed to create program.",
-      error: err instanceof Error ? err.message : "An unknown error occurred.",
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        message: "Failed to create program.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
   }
 }
