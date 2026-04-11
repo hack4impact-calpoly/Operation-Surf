@@ -49,3 +49,33 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
     );
   }
 }
+
+export async function DELETE(request: Request, { params }: IParams): Promise<NextResponse> {
+  // Attempt to connect to the database
+  await connectDB();
+
+  const { programId } = params;
+
+  try {
+    const program = await Program.findOneAndDelete({ programId: programId });
+    // check if program exists
+    if (!program) {
+      return NextResponse.json({ message: "Program not found." }, { status: 404 });
+    }
+
+    return NextResponse.json(
+      {
+        message: "Program deleted successfully.",
+      },
+      { status: 200 },
+    );
+  } catch (err) {
+    return NextResponse.json(
+      {
+        message: "Failed to delete program.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
+  }
+}
