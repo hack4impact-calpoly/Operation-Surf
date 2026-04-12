@@ -74,6 +74,13 @@ export async function GET(request: Request): Promise<NextResponse> {
       },
       { status: 500 },
     );
+    return NextResponse.json(
+      {
+        message: "Failed to fetch programs.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
   }
 }
 
@@ -125,8 +132,21 @@ export async function POST(request: Request): Promise<NextResponse> {
       },
       { status: 201 },
     );
+    return NextResponse.json(
+      {
+        program: saved,
+      },
+      { status: 201 },
+    );
   } catch (err) {
     console.error("Error creating program:", err);
+    return NextResponse.json(
+      {
+        message: "Failed to create program.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
     return NextResponse.json(
       {
         message: "Failed to create program.",
