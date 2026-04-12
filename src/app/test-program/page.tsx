@@ -7,7 +7,7 @@ export default function TestPage() {
     date: "2026-04-10",
     imageURI: "waves.png",
     programId: "100",
-    duration: "3 days",
+    duration: "5 days",
   };
 
   return <ProgramDetail programId="100" program={mockProgram} />;
