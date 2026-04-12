@@ -1,8 +1,8 @@
 import connectDB from "@/database/db";
 import { NextResponse } from "next/server";
 import Signup from "@/database/models/signupSchema";
-import { ObjectId } from "mongodb";
-import { sign } from "crypto";
+import Day from "@/database/models/daySchema";
+import Program from "@/database/models/programSchema";
 
 /**
  * gets all signups from the database
@@ -10,15 +10,69 @@ import { sign } from "crypto";
  * if an error occurs, returns a JSON response with an error message and status code 500
  */
 
-export async function GET(): Promise<NextResponse> {
+export async function GET(request: Request): Promise<NextResponse> {
   // Attempt to connect to the database
   await connectDB();
 
   try {
-    const signups = await Signup.find();
+    const { searchParams } = new URL(request.url);
+    const profileId = searchParams.get("profileId");
+    const view = searchParams.get("view");
+
+    const signupQuery = profileId ? { profileId } : {};
+    const signups = await Signup.find(signupQuery).sort({ timestamp: -1 });
+
+    if (view === "registered-shifts") {
+      const shiftIds = signups.map((signup) => signup.shiftId);
+      const shifts = await Day.find({ dayId: { $in: shiftIds } });
+      const programIds = Array.from(new Set(shifts.map((shift) => shift.programId)));
+      const programs = await Program.find({ programId: { $in: programIds } });
+
+      const shiftById = new Map(shifts.map((shift) => [shift.dayId, shift]));
+      const programById = new Map(programs.map((program) => [program.programId, program]));
+
+      const registeredShifts = signups.map((signup) => {
+        const shift = shiftById.get(signup.shiftId);
+        const program = shift ? programById.get(shift.programId) : null;
+
+        return {
+          signupId: signup.signupId,
+          profileId: signup.profileId,
+          timestamp: signup.timestamp,
+          waiver: signup.waiver,
+          shift: {
+            shiftId: shift?.dayId ?? signup.shiftId,
+            name: shift?.name ?? null,
+            dayOfWeek: shift?.dayOfWeek ?? null,
+            date: shift?.date ?? null,
+            startTime: shift?.startTime ?? null,
+            endTime: shift?.endTime ?? null,
+            location: null,
+            role: null,
+            description: null,
+          },
+          program: program
+            ? {
+                programId: program.programId,
+                title: program.programName,
+                location: program.location,
+                imageURI: program.imageURI,
+              }
+            : null,
+        };
+      });
+
+      return NextResponse.json(
+        {
+          registeredShifts,
+        },
+        { status: 200 },
+      );
+    }
+
     return NextResponse.json(
       {
-        signups: signups,
+        signups,
       },
       { status: 200 },
     );
@@ -45,9 +99,15 @@ export async function GET(): Promise<NextResponse> {
 export async function POST(request: Request): Promise<NextResponse> {
   await connectDB();
 
-  try {
-    const body = await request.json();
+  let body: Record<string, unknown>;
 
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ message: "Invalid JSON body." }, { status: 400 });
+  }
+
+  try {
     // ensure required fields are present
 
     // "timestamp" is not required in the request body because it will be generated automatically when the signup is created

@@ -24,22 +24,28 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
     const program = await Program.findOne({ programId: programId });
     // check if program exists
     if (!program) {
-      return NextResponse.json({
-        message: "Program not found.",
-        status: 404,
-      });
+      return NextResponse.json(
+        {
+          message: "Program not found.",
+        },
+        { status: 404 },
+      );
     }
     // if program exists, return it
-    return NextResponse.json({
-      program: program,
-      status: 200,
-    });
+    return NextResponse.json(
+      {
+        program,
+      },
+      { status: 200 },
+    );
   } catch (err) {
     console.error("Error fetching program:", err);
-    return NextResponse.json({
-      message: "Failed to fetch program.",
-      error: err instanceof Error ? err.message : "An unknown error occurred.",
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        message: "Failed to fetch program.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
   }
 }

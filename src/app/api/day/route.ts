@@ -45,9 +45,15 @@ export async function GET(): Promise<NextResponse> {
 export async function POST(request: Request): Promise<NextResponse> {
   await connectDB();
 
-  try {
-    const body = await request.json();
+  let body: Record<string, unknown>;
 
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ message: "Invalid JSON body." }, { status: 400 });
+  }
+
+  try {
     // ensure required fields are present
 
     // "dayOfWeek" is not required because it will be derived from the "date" field
@@ -59,7 +65,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       }
     }
 
-    const dayDate = new Date(body.date);
+    const dayDate = new Date(body.date as string);
 
     // convert the date to a day of the week string (e.g., "Monday", "Tuesday", etc.)
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -68,7 +74,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     const newDay = new Day({
       name: body.name,
       dayOfWeek: dayName,
-      date: new Date(body.date),
+      date: new Date(body.date as string),
       startTime: body.startTime,
       endTime: body.endTime,
       programId: body.programId,

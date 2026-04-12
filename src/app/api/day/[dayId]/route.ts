@@ -1,6 +1,7 @@
 import connectDB from "@/database/db";
 import { NextResponse } from "next/server";
 import Day from "@/database/models/daySchema";
+import Program from "@/database/models/programSchema";
 
 /**
  * gets 1 day from the database based on the dayId
@@ -21,6 +22,9 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
   const { dayId } = params;
 
   try {
+    const { searchParams } = new URL(request.url);
+    const view = searchParams.get("view");
+
     const day = await Day.findOne({ dayId: dayId });
     // check if day exists
     if (!day) {
@@ -31,6 +35,40 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
         { status: 404 },
       );
     }
+
+    if (view === "expanded-shift-details") {
+      const program = await Program.findOne({ programId: day.programId });
+      const dayRecord = day.toObject() as Record<string, unknown>;
+
+      return NextResponse.json(
+        {
+          expandedShiftDetails: {
+            shiftId: day.dayId,
+            title: day.name,
+            description: dayRecord.description ?? null,
+            dayOfWeek: day.dayOfWeek,
+            date: day.date,
+            startTime: day.startTime,
+            endTime: day.endTime,
+            location: dayRecord.location ?? null,
+            address: dayRecord.address ?? null,
+            mapLink: dayRecord.mapLink ?? null,
+            role: dayRecord.role ?? null,
+            contactInfo: dayRecord.contactInfo ?? null,
+            program: program
+              ? {
+                  programId: program.programId,
+                  title: program.programName,
+                  location: program.location,
+                  imageURI: program.imageURI,
+                }
+              : null,
+          },
+        },
+        { status: 200 },
+      );
+    }
+
     // if day exists, return it
     return NextResponse.json(
       {
@@ -42,7 +80,7 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
     console.error("Error fetching day:", err);
     return NextResponse.json(
       {
-        message: "Failed to fetch program.",
+        message: "Failed to fetch day.",
         error: err instanceof Error ? err.message : "An unknown error occurred.",
       },
       { status: 500 },
