@@ -38,6 +38,23 @@ function formatDate(dateStr: string): string {
   return d.toLocaleDateString("en-US", { month: "long", day: "numeric" });
 }
 
+function CalendarIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={styles.calendarIcon}
+    >
+      <rect x="1" y="2" width="14" height="13" rx="2" stroke="#9ca3af" strokeWidth="1.5" />
+      <path d="M1 6h14" stroke="rgba(124, 120, 69, 1)" strokeWidth="1.5" />
+      <path d="M5 1v2M11 1v2" stroke="rgba(124, 120, 69, 1)" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function DayCard({ day }: { day: Day }) {
   return (
     <div className={styles.dayCard}>
@@ -47,7 +64,7 @@ function DayCard({ day }: { day: Day }) {
       </div>
       <p className={styles.dayName}>{day.name}</p>
       <div className={styles.timeRow}>
-        <span>🗓</span>
+        <CalendarIcon />
         <span className={styles.time}>{day.startTime} - {day.endTime}</span>
       </div>
     </div>
@@ -79,6 +96,32 @@ export default function ProgramDetail({ programId, program }: ProgramDetailProps
   return (
     <div className={styles.page}>
 
+      {/* navbar */}
+      <nav className={styles.navbar}>
+        <div className={styles.navLogo}>
+          {/* Replace with your actual <Image> or <img> for the Operation Surf logo */}
+          <img src="/operation-surf.png" alt="Operation Surf" className={styles.logoImg} />
+        </div>
+        <div className={styles.navLinks}>
+          <a href="/" className={styles.navLink}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+              <path d="M6 15V9h4v6" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+            </svg>
+            Home
+          </a>
+          <a href="/programs" className={styles.navLink}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+              <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+              <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+              <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+            </svg>
+            Programs
+          </a>
+        </div>
+      </nav>
+
       {/* hero */}
       <header className={styles.hero}>
         <img
@@ -90,8 +133,8 @@ export default function ProgramDetail({ programId, program }: ProgramDetailProps
         <div className={styles.heroContent}>
           <h1 className={styles.programName}>{program.programName}</h1>
           <div className={styles.heroMeta}>
-            <span>📍 {program.location}</span>
-            <span>🗓 {formatMonthYear(program.date)}</span>
+            <span className={styles.heroMetaText}>📍 {program.location}</span>
+            <span className={styles.heroMetaText}>🗓 {formatMonthYear(program.date)}</span>
           </div>
         </div>
       </header>
