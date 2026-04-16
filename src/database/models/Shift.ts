@@ -11,6 +11,7 @@ const ShiftSchema = new Schema(
     location: { type: String, required: true, trim: true },
     shiftId: { type: String, required: true, unique: true, trim: true },
     eventId: { type: String, required: true, trim: true },
+    invited: { type: [String], required: true }, // array of volunteerIds to check if someone is invited to the shift
   },
   {
     timestamps: true,

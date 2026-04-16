@@ -41,6 +41,10 @@ interface IVolunteer {
   sex: Sex;
   birthday: Date;
   location: string;
+  // hours volunteered
+  hours: number;
+  // number of times volunteered for
+  volunteerCount: number;
 
   emergencyContact: EmergencyContact;
 
@@ -93,6 +97,8 @@ const VolunteerSchema = new Schema<IVolunteer>(
 
     birthday: { type: Date, required: true },
     location: { type: String, required: true, trim: true },
+    hours: { type: Number, required: true, default: 0, min: 0 },
+    volunteerCount: { type: Number, required: true, default: 0, min: 0 },
 
     emergencyContact: { type: EmergencyContactSchema, required: true },
 
