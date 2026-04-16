@@ -10,7 +10,7 @@ const ShiftSchema = new Schema(
     totalSlots: { type: Number, required: true, min: 0 },
     location: { type: String, required: true, trim: true },
     shiftId: { type: String, required: true, unique: true, trim: true },
-    eventId: { type: String, required: true, trim: true },
+    dayId: { type: String, required: true, trim: true },
     invited: { type: [String], required: true }, // array of volunteerIds to check if someone is invited to the shift
     description: { type: String, required: true, trim: true },
   },

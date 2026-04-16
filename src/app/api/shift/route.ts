@@ -33,14 +33,14 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     const requiredFields = [
       "name",
-      "dayOfWeek",
       "date",
       "startTime",
       "endTime",
       "totalSlots",
       "location",
       "shiftId",
-      "eventId",
+      "dayId",
+      "description",
     ];
     const missingFields = requiredFields.filter(
       (field) => body[field] === undefined || body[field] === null || body[field] === "",
@@ -56,9 +56,16 @@ export async function POST(request: Request): Promise<NextResponse> {
       );
     }
 
+    const dayDate = new Date(body.date as string);
+
+    // convert the date to a day of the week string (e.g., "Monday", "Tuesday", etc.)
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dayName = days[dayDate.getDay()];
+
     const newShift = await Shift.create({
       ...body,
-      date: new Date(body.date),
+      dayOfWeek: dayName,
+      date: dayDate,
       totalSlots: Number(body.totalSlots),
     });
 
