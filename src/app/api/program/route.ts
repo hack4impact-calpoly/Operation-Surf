@@ -47,6 +47,8 @@ export async function GET(request: Request): Promise<NextResponse> {
             date: day.date,
             startTime: day.startTime,
             endTime: day.endTime,
+            private: day.private,
+            ghost_program: day.ghost_program,
           })),
         };
       });
@@ -67,13 +69,6 @@ export async function GET(request: Request): Promise<NextResponse> {
     );
   } catch (err) {
     console.error("Error fetching programs:", err);
-    return NextResponse.json(
-      {
-        message: "Failed to fetch programs.",
-        error: err instanceof Error ? err.message : "An unknown error occurred.",
-      },
-      { status: 500 },
-    );
     return NextResponse.json(
       {
         message: "Failed to fetch programs.",
@@ -132,21 +127,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       },
       { status: 201 },
     );
-    return NextResponse.json(
-      {
-        program: saved,
-      },
-      { status: 201 },
-    );
   } catch (err) {
     console.error("Error creating program:", err);
-    return NextResponse.json(
-      {
-        message: "Failed to create program.",
-        error: err instanceof Error ? err.message : "An unknown error occurred.",
-      },
-      { status: 500 },
-    );
     return NextResponse.json(
       {
         message: "Failed to create program.",
