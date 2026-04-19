@@ -2,6 +2,7 @@ import connectDB from "@/database/db";
 import { NextResponse } from "next/server";
 import Program from "@/database/models/programSchema";
 import Day from "@/database/models/daySchema";
+import { getAuthContext } from "@/lib/authz";
 
 /**
  * gets all programs from the database
@@ -14,13 +15,32 @@ export async function GET(request: Request): Promise<NextResponse> {
   await connectDB();
 
   try {
+    const authContext = await getAuthContext();
     const { searchParams } = new URL(request.url);
     const view = searchParams.get("view");
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
 
-    const programs = await Program.find().sort({ date: 1 });
+    const programFilter: Record<string, unknown> = {
+      ghost_program: false,
+      date: { $gte: now },
+    };
+
+    if (!authContext.isAuthenticated) {
+      programFilter.private = false;
+    }
+
+    const programs = await Program.find(programFilter).sort({ date: 1 });
 
     if (view === "available-programs") {
-      const days = await Day.find().sort({ date: 1 });
+      const dayFilter: Record<string, unknown> = {
+        date: { $gte: now },
+      };
+      if (!authContext.isAuthenticated) {
+        dayFilter.private = false;
+      }
+
+      const days = await Day.find(dayFilter).sort({ date: 1 });
 
       const daysByProgramId = new Map<string, typeof days>();
       for (const day of days) {
@@ -48,7 +68,6 @@ export async function GET(request: Request): Promise<NextResponse> {
             startTime: day.startTime,
             endTime: day.endTime,
             private: day.private,
-            ghost_program: day.ghost_program,
           })),
         };
       });
@@ -117,6 +136,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       duration: body.duration,
       programName: body.programName,
       programId: body.programId,
+      private: body.private,
+      ghost_program: body.ghost_program,
     });
 
     const saved = await newProgram.save();
