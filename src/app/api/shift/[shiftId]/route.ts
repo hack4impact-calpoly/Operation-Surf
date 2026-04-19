@@ -1,6 +1,7 @@
 import connectDB from "@/database/db";
 import Shift from "@/database/models/Shift";
 import { NextResponse } from "next/server";
+import { getAuthContext } from "@/lib/authz";
 
 type IParams = {
   params: {
@@ -11,6 +12,7 @@ type IParams = {
 export async function GET(request: Request, { params }: IParams): Promise<NextResponse> {
   try {
     await connectDB();
+    const authContext = await getAuthContext();
 
     const shift = await Shift.findOne({ shiftId: params.shiftId }).lean();
 
@@ -21,6 +23,21 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
         },
         { status: 404 },
       );
+    }
+
+    if (!authContext.isAdmin) {
+      const visibility = (shift as { visibility?: string }).visibility ?? "public";
+      if (visibility === "invited") {
+        const invitedList = ((shift as { invited?: string[] }).invited ?? []) as string[];
+        if (!authContext.isAuthenticated || !authContext.userId || invitedList.indexOf(authContext.userId) < 0) {
+          return NextResponse.json(
+            {
+              message: "You are not authorized to view this invited shift.",
+            },
+            { status: 403 },
+          );
+        }
+      }
     }
 
     return NextResponse.json(
