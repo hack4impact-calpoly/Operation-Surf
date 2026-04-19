@@ -2,6 +2,7 @@ import connectDB from "@/database/db";
 import { NextResponse } from "next/server";
 import Day from "@/database/models/daySchema";
 import Program from "@/database/models/programSchema";
+import { getAuthContext } from "@/lib/authz";
 
 /**
  * gets 1 day from the database based on the dayId
@@ -18,6 +19,7 @@ type IParams = {
 export async function GET(request: Request, { params }: IParams): Promise<NextResponse> {
   // Attempt to connect to the database
   await connectDB();
+  const authContext = await getAuthContext();
 
   const { dayId } = params;
 
@@ -36,8 +38,26 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
       );
     }
 
+    if (day.private && !authContext.isAuthenticated) {
+      return NextResponse.json(
+        {
+          message: "Day not found.",
+        },
+        { status: 404 },
+      );
+    }
+
+    const program = await Program.findOne({ programId: day.programId });
+    if ((program?.private || program?.ghost_program) && !authContext.isAuthenticated) {
+      return NextResponse.json(
+        {
+          message: "Day not found.",
+        },
+        { status: 404 },
+      );
+    }
+
     if (view === "expanded-shift-details") {
-      const program = await Program.findOne({ programId: day.programId });
       const dayRecord = day.toObject() as Record<string, unknown>;
 
       return NextResponse.json(
