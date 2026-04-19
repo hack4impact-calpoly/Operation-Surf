@@ -1,6 +1,8 @@
 import connectDB from "@/database/db";
 import { NextResponse } from "next/server";
 import Day from "@/database/models/daySchema";
+import Program from "@/database/models/programSchema";
+import { getAuthContext } from "@/lib/authz";
 
 /**
  * gets all days from the database
@@ -13,7 +15,27 @@ export async function GET(): Promise<NextResponse> {
   await connectDB();
 
   try {
-    const days = await Day.find();
+    const authContext = await getAuthContext();
+    const dayFilter: Record<string, unknown> = {};
+
+    if (!authContext.isAuthenticated) {
+      dayFilter.private = false;
+    }
+
+    const visibleProgramsFilter: Record<string, unknown> = {
+      ghost_program: false,
+    };
+
+    if (!authContext.isAuthenticated) {
+      visibleProgramsFilter.private = false;
+    }
+
+    const visiblePrograms = await Program.find(visibleProgramsFilter, { programId: 1 });
+    const visibleProgramIds = visiblePrograms.map((program) => program.programId);
+
+    dayFilter.programId = { $in: visibleProgramIds };
+
+    const days = await Day.find(dayFilter).sort({ date: 1, startTime: 1 });
     return NextResponse.json(
       {
         days: days,
@@ -79,6 +101,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       endTime: body.endTime,
       programId: body.programId,
       dayId: body.dayId,
+      private: body.private,
     });
 
     const saved = await newDay.save();
