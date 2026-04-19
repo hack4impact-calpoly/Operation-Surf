@@ -1,11 +1,49 @@
 import connectDB from "@/database/db";
 import Shift from "@/database/models/Shift";
+import Day from "@/database/models/daySchema";
+import Program from "@/database/models/programSchema";
 import { NextResponse } from "next/server";
+import { getAuthContext } from "@/lib/authz";
 
 export async function GET(): Promise<NextResponse> {
   try {
     await connectDB();
-    const shifts = await Shift.find({}).sort({ date: 1, startTime: 1 }).lean();
+    const authContext = await getAuthContext();
+    const shiftFilter: Record<string, unknown> = {};
+
+    if (!authContext.isAdmin) {
+      if (!authContext.isAuthenticated || !authContext.userId) {
+        shiftFilter.visibility = "public";
+      } else {
+        shiftFilter.$or = [{ visibility: "public" }, { visibility: "invited", invited: authContext.userId }];
+      }
+
+      const visibleProgramsFilter: Record<string, unknown> = {
+        ghost_program: false,
+      };
+
+      if (!authContext.isAuthenticated) {
+        visibleProgramsFilter.private = false;
+      }
+
+      const visiblePrograms = await Program.find(visibleProgramsFilter, { programId: 1 }).lean();
+      const visibleProgramIds = visiblePrograms.map((program) => program.programId);
+
+      const visibleDaysFilter: Record<string, unknown> = {
+        programId: { $in: visibleProgramIds },
+      };
+
+      if (!authContext.isAuthenticated) {
+        visibleDaysFilter.private = false;
+      }
+
+      const visibleDays = await Day.find(visibleDaysFilter, { dayId: 1 }).lean();
+      const visibleDayIds = visibleDays.map((day) => day.dayId);
+
+      shiftFilter.dayId = { $in: visibleDayIds };
+    }
+
+    const shifts = await Shift.find(shiftFilter).sort({ date: 1, startTime: 1 }).lean();
 
     return NextResponse.json(
       {
@@ -30,6 +68,17 @@ export async function POST(request: Request): Promise<NextResponse> {
   try {
     await connectDB();
     const body = await request.json();
+
+    const visibility = body.visibility ?? "public";
+
+    if (visibility !== "public" && visibility !== "invited") {
+      return NextResponse.json(
+        {
+          message: "Invalid visibility value. Allowed values are 'public' and 'invited'.",
+        },
+        { status: 400 },
+      );
+    }
 
     const requiredFields = [
       "name",
@@ -56,6 +105,16 @@ export async function POST(request: Request): Promise<NextResponse> {
       );
     }
 
+    const invited = Array.isArray(body.invited) ? body.invited : [];
+    if (visibility === "invited" && invited.length === 0) {
+      return NextResponse.json(
+        {
+          message: "Invited shifts require at least one invited volunteer userId.",
+        },
+        { status: 400 },
+      );
+    }
+
     const dayDate = new Date(body.date as string);
 
     // convert the date to a day of the week string (e.g., "Monday", "Tuesday", etc.)
@@ -67,6 +126,8 @@ export async function POST(request: Request): Promise<NextResponse> {
       dayOfWeek: dayName,
       date: dayDate,
       totalSlots: Number(body.totalSlots),
+      visibility,
+      invited,
     });
 
     return NextResponse.json(
