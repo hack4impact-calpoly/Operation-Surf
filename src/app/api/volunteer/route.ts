@@ -2,14 +2,37 @@ import connectDB from "@/database/db";
 import Volunteer from "@/database/models/volunteerSchema";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { getAuthContext } from "@/lib/authz";
+
+const toAdminVolunteerPayload = (volunteer: Record<string, unknown>) => {
+  const createdAt = volunteer.createdAt ? new Date(String(volunteer.createdAt)) : null;
+  const tenureDays = createdAt
+    ? Math.max(0, Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24)))
+    : 0;
+
+  return {
+    ...volunteer,
+    volunteerTenureDays: tenureDays,
+  };
+};
+
+const toNonAdminVolunteerPayload = (volunteer: Record<string, unknown>) => {
+  const { hours, volunteerCount, ...rest } = volunteer;
+  return rest;
+};
 
 export async function GET(request: NextRequest) {
   try {
     // Attempt to connect to the database
     await connectDB();
+    const authContext = await getAuthContext();
 
-    const volunteers = await Volunteer.find();
-    return NextResponse.json({ volunteers: volunteers }, { status: 200 });
+    const volunteers = (await Volunteer.find().lean()) as Record<string, unknown>[];
+    const payload = authContext.isAdmin
+      ? volunteers.map((volunteer) => toAdminVolunteerPayload(volunteer))
+      : volunteers.map((volunteer) => toNonAdminVolunteerPayload(volunteer));
+
+    return NextResponse.json({ volunteers: payload }, { status: 200 });
   } catch (err) {
     console.error("Error fetching signups:", err);
     return NextResponse.json(
