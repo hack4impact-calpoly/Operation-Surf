@@ -4,9 +4,11 @@ import Program from "@/database/models/programSchema";
 import { getAuthContext } from "@/lib/authz";
 
 /**
- * gets 1 program from the database based on the programId
- * returns all programs in the database as a JSON response
- * if an error occurs, returns a JSON response with an error message and status code 500
+ * GET /api/program/[programId]
+ * Retrieves a program by its programId.
+ * - Returns 404 if the program is missing.
+ * - Returns 404 for private or ghost programs when the caller is not authenticated.
+ * - Returns 500 on unexpected errors.
  */
 
 type IParams = {
@@ -34,6 +36,7 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
       );
     }
 
+    // Hide private or ghosted programs from unauthenticated users.
     if ((program.private || program.ghost_program) && !authContext.isAuthenticated) {
       return NextResponse.json(
         {
@@ -62,6 +65,11 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
   }
 }
 
+/**
+ * DELETE /api/program/[programId]
+ * Deletes a program by its programId.
+ * Returns 404 if the program does not exist and 500 on error.
+ */
 export async function DELETE(request: Request, { params }: IParams): Promise<NextResponse> {
   // Attempt to connect to the database
   await connectDB();

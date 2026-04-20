@@ -5,6 +5,13 @@ import Program from "@/database/models/programSchema";
 import { NextResponse } from "next/server";
 import { getAuthContext } from "@/lib/authz";
 
+/**
+ * GET /api/shift
+ * Returns shifts visible to the current user.
+ * - Admin users see all shifts.
+ * - Authenticated non-admin users see public shifts plus invited shifts addressed to them.
+ * - Unauthenticated visitors only see public shifts for non-private programs and days.
+ */
 export async function GET(): Promise<NextResponse> {
   try {
     await connectDB();
@@ -18,11 +25,13 @@ export async function GET(): Promise<NextResponse> {
         shiftFilter.$or = [{ visibility: "public" }, { visibility: "invited", invited: authContext.userId }];
       }
 
+      // Only include programs that are not ghosted.
       const visibleProgramsFilter: Record<string, unknown> = {
         ghost_program: false,
       };
 
       if (!authContext.isAuthenticated) {
+        // Unauthenticated users cannot see private programs.
         visibleProgramsFilter.private = false;
       }
 
@@ -34,6 +43,7 @@ export async function GET(): Promise<NextResponse> {
       };
 
       if (!authContext.isAuthenticated) {
+        // Unauthenticated users cannot see private days.
         visibleDaysFilter.private = false;
       }
 
@@ -64,6 +74,13 @@ export async function GET(): Promise<NextResponse> {
   }
 }
 
+/**
+ * POST /api/shift
+ * Creates a new shift record.
+ * Validates required fields, enforces allowed visibility values,
+ * and computes the day of week from the provided date.
+ * Invited shifts must include at least one invited volunteer userId.
+ */
 export async function POST(request: Request): Promise<NextResponse> {
   try {
     await connectDB();
@@ -117,7 +134,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     const dayDate = new Date(body.date as string);
 
-    // convert the date to a day of the week string (e.g., "Monday", "Tuesday", etc.)
+    // Convert the date into a human-readable weekday name.
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const dayName = days[dayDate.getDay()];
 

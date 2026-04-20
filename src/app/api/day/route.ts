@@ -5,11 +5,11 @@ import Program from "@/database/models/programSchema";
 import { getAuthContext } from "@/lib/authz";
 
 /**
- * gets all days from the database
- * returns all days in the database as a JSON response
- * if an error occurs, returns a JSON response with an error message and status code 500
+ * GET /api/day
+ * Returns days that belong to visible programs.
+ * - Authenticated users may see private and public days for visible programs.
+ * - Unauthenticated users only see days for public, non-ghost programs.
  */
-
 export async function GET(): Promise<NextResponse> {
   // Attempt to connect to the database
   await connectDB();
@@ -19,6 +19,7 @@ export async function GET(): Promise<NextResponse> {
     const dayFilter: Record<string, unknown> = {};
 
     if (!authContext.isAuthenticated) {
+      // Only public days are visible to unauthenticated users.
       dayFilter.private = false;
     }
 
@@ -27,6 +28,7 @@ export async function GET(): Promise<NextResponse> {
     };
 
     if (!authContext.isAuthenticated) {
+      // Unauthenticated users should not see private programs.
       visibleProgramsFilter.private = false;
     }
 
@@ -54,15 +56,11 @@ export async function GET(): Promise<NextResponse> {
   }
 }
 
-/*
- * creates a new program in the database
- * request must require the following fields: 
- *  name: string;
-    date: Date;
-    startTime: string;
-    endTime: string;
-    programId: string;
-    dayId: string;
+/**
+ * POST /api/day
+ * Creates a new day (shift schedule entry) in the database.
+ * Required fields: name, date, startTime, endTime, programId, dayId.
+ * The dayOfWeek field is derived automatically from the date.
  */
 export async function POST(request: Request): Promise<NextResponse> {
   await connectDB();
@@ -96,7 +94,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     const newDay = new Day({
       name: body.name,
       dayOfWeek: dayName,
-      date: new Date(body.date as string),
+      date: dayDate,
       startTime: body.startTime,
       endTime: body.endTime,
       programId: body.programId,

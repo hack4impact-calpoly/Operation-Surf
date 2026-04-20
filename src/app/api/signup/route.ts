@@ -5,9 +5,13 @@ import Day from "@/database/models/daySchema";
 import Program from "@/database/models/programSchema";
 
 /**
- * gets all signups from the database
- * returns all signups in the database as a JSON response
- * if an error occurs, returns a JSON response with an error message and status code 500
+ * GET /api/signup
+ * Retrieves signups from the database.
+ * Optional query parameters:
+ * - profileId: Filter signups by a specific profile ID
+ * - view: If set to "registered-shifts", returns enriched data including shift and program details
+ * Returns a JSON response with signups or registered shifts data.
+ * On error, returns a 500 status with error details.
  */
 
 export async function GET(request: Request): Promise<NextResponse> {
@@ -19,6 +23,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     const profileId = searchParams.get("profileId");
     const view = searchParams.get("view");
 
+    // Build query: filter by profileId if provided, otherwise fetch all
     const signupQuery = profileId ? { profileId } : {};
     const signups = await Signup.find(signupQuery).sort({ timestamp: -1 });
 
@@ -70,6 +75,7 @@ export async function GET(request: Request): Promise<NextResponse> {
       );
     }
 
+    // Default response: return raw signups
     return NextResponse.json(
       {
         signups,

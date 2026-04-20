@@ -5,9 +5,11 @@ import Day from "@/database/models/daySchema";
 import { getAuthContext } from "@/lib/authz";
 
 /**
- * gets all programs from the database
- * returns all programs in the database as a JSON response
- * if an error occurs, returns a JSON response with an error message and status code 500
+ * GET /api/program
+ * Retrieves programs from the database.
+ * - Filters out ghost programs and programs before today.
+ * - Unauthenticated users also filter out private programs.
+ * - Optional `view=available-programs` returns program summaries with available shift details.
  */
 
 export async function GET(request: Request): Promise<NextResponse> {
@@ -18,6 +20,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     const authContext = await getAuthContext();
     const { searchParams } = new URL(request.url);
     const view = searchParams.get("view");
+
     const now = new Date();
     now.setHours(0, 0, 0, 0);
 
@@ -27,6 +30,7 @@ export async function GET(request: Request): Promise<NextResponse> {
     };
 
     if (!authContext.isAuthenticated) {
+      // Only public programs are visible to unauthenticated users.
       programFilter.private = false;
     }
 
@@ -37,6 +41,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         date: { $gte: now },
       };
       if (!authContext.isAuthenticated) {
+        // Only public day schedules are visible to unauthenticated users.
         dayFilter.private = false;
       }
 
@@ -99,14 +104,10 @@ export async function GET(request: Request): Promise<NextResponse> {
 }
 
 /**
- * creates a new program in the database
- * request must require the following fields: 
- *  imageURI: string;
-    location: string;
-    date: Date;
-    duration: string;
-    programName: string;
-    programId: string;
+ * POST /api/program
+ * Creates a new program entry in the database.
+ * Required fields: imageURI, location, date, duration, programName, programId.
+ * Optional fields include private and ghost_program flags.
  */
 export async function POST(request: Request): Promise<NextResponse> {
   await connectDB();
@@ -120,7 +121,6 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   try {
-    // ensure required fields are present
     const requiredFields = ["imageURI", "location", "date", "duration", "programName", "programId"];
 
     for (const field of requiredFields) {

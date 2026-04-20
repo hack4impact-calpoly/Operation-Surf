@@ -5,11 +5,12 @@ import Program from "@/database/models/programSchema";
 import { getAuthContext } from "@/lib/authz";
 
 /**
- * gets 1 day from the database based on the dayId
- * returns the day in the database as a JSON response
- * if an error occurs, returns a JSON response with an error message and status code 500
+ * GET /api/day/[dayId]
+ * Retrieves a single day entry by its dayId.
+ * - Returns 404 when the day does not exist.
+ * - Restricts private or ghosted program/day records to authenticated users.
+ * - Supports `view=expanded-shift-details` for richer shift metadata.
  */
-
 type IParams = {
   params: {
     dayId: string;
@@ -38,6 +39,7 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
       );
     }
 
+    // Private days are hidden from unauthenticated users.
     if (day.private && !authContext.isAuthenticated) {
       return NextResponse.json(
         {
@@ -107,6 +109,11 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
   }
 }
 
+/**
+ * DELETE /api/day/[dayId]
+ * Deletes a day record by its dayId.
+ * Returns 404 if the day does not exist and 500 on unexpected errors.
+ */
 export async function DELETE(request: Request, { params }: IParams): Promise<NextResponse> {
   // Attempt to connect to the database
   await connectDB();

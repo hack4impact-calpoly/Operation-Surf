@@ -9,10 +9,13 @@ type IParams = {
   };
 };
 
-/* 
-Get a volunteer by userId
-*/
-
+/**
+ * GET /api/volunteer/[userId]
+ * Retrieves volunteer profile data by userId.
+ * Admin users receive full volunteer data plus a computed tenure field.
+ * Non-admin users receive a limited view with sensitive fields removed.
+ * Returns 400 if userId is missing, 404 if the volunteer is not found, and 500 on error.
+ */
 export async function GET(request: Request, { params }: IParams): Promise<NextResponse> {
   try {
     await connectDB();
@@ -24,12 +27,14 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
       return NextResponse.json({ message: "UserId is required." }, { status: 400 });
     }
 
+    // Fetch the volunteer record from database
     const volunteer = (await Volunteer.findOne({ userId: userId }).lean()) as Record<string, unknown> | null;
     if (!volunteer) {
       return NextResponse.json({ message: "Volunteer not found." }, { status: 404 });
     }
 
     if (!authContext.isAdmin) {
+      // Non-admin callers should not see administrative volunteer metrics
       const { hours, volunteerCount, ...rest } = volunteer;
       return NextResponse.json(rest, { status: 200 });
     }

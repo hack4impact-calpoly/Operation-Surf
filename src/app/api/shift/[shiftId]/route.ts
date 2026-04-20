@@ -9,6 +9,13 @@ type IParams = {
   };
 };
 
+/**
+ * GET /api/shift/[shiftId]
+ * Retrieves a single shift by its shiftId.
+ * - Admin users can view all shifts.
+ * - Non-admin users can view public shifts and invited shifts only if they are invited.
+ * Returns 404 if the shift does not exist, 403 if access is denied, and 500 on error.
+ */
 export async function GET(request: Request, { params }: IParams): Promise<NextResponse> {
   try {
     await connectDB();
@@ -59,6 +66,11 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
   }
 }
 
+/**
+ * DELETE /api/shift/[shiftId]
+ * Deletes a shift by its shiftId.
+ * Returns 404 if the shift does not exist, and 500 on error.
+ */
 export async function DELETE(request: Request, { params }: IParams): Promise<NextResponse> {
   // Attempt to connect to the database
   await connectDB();
