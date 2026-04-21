@@ -1,6 +1,5 @@
 import ProgramDetail from "@/components/ProgramDetail";
 
-
 export default function TestPage() {
   const mockProgram = {
     programName: "Operation Surf SLO",
