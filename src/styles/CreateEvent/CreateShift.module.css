@@ -1,0 +1,218 @@
+.page {
+  min-height: 100vh;
+  background: #f6f5f2;
+}
+
+.page * {
+  box-sizing: border-box;
+}
+
+.content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.pageIntro {
+  margin-bottom: 24px;
+}
+
+.pageTitle {
+  margin: 0 0 8px;
+  font-size: 28px;
+  color: #737144;
+  font-weight: 700;
+}
+
+.pageSubtitle {
+  margin: 0;
+  font-size: 16px;
+  color: #7d7768;
+}
+
+.sectionCard {
+  background: white;
+  border: 1px solid #ddd8cc;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+  margin-bottom: 22px;
+}
+
+.sectionHeader {
+  background: #737144;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+}
+
+.sectionIcon {
+  display: flex;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: white;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 16px;
+  color: white;
+  font-weight: 700;
+}
+
+.sectionBody {
+  padding: 28px 28px 26px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.row {
+  display: flex;
+  gap: 18px;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.halfField {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: #827a4b;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.labelIcon {
+  flex-shrink: 0;
+  color: #827a4b;
+}
+
+.required {
+  color: #d64b49;
+}
+
+.input {
+  width: 100%;
+  height: 48px;
+  border: 2px solid #d9d6cf;
+  border-radius: 14px;
+  padding: 0 14px;
+  font-size: 14px;
+  color: #5f5b52;
+  background: white;
+  outline: none;
+  font-family: inherit;
+}
+
+.input::placeholder {
+  color: #9c978d;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 108px;
+  border: 2px solid #d9d6cf;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 14px;
+  color: #5f5b52;
+  background: white;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+}
+
+.textarea::placeholder {
+  color: #9c978d;
+}
+
+.timeRow {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.timeField {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.visibilityRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.visibilityCard {
+  border: 2px solid #e2ddd2;
+  border-radius: 14px;
+  min-height: 98px;
+  padding: 14px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-align: center;
+}
+
+.radioInput {
+  display: none;
+}
+
+.visibilityCard:has(.radioInput:checked) {
+  background: #f2f1ed;
+  border-color: #737144;
+}
+
+.visibilityTitle {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #737144;
+}
+
+.visibilityText {
+  margin: 0;
+  font-size: 13px;
+  color: #8f8a7d;
+}
+
+.error {
+  margin-top: 7px;
+  font-size: 12px;
+  color: #c43f3f;
+}
+
+.submitButton {
+  width: 100%;
+  height: 58px;
+  border: none;
+  border-radius: 14px;
+  background: #737144;
+  color: white;
+  font-size: 18px;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 14px;
+}
