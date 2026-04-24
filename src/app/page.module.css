@@ -160,6 +160,7 @@
   border-radius: 20971500px;
   background: #737144;
   cursor: pointer;
+  text-decoration: none;
   transition:
     background-color 0.3s,
     transform 0.4s;

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import style from "./page.module.css";
 import ProgramHorizontalList from "@/components/ProgramHorizontalList";
 
@@ -25,7 +26,9 @@ export default async function Home() {
             Empowering wounded, ill, and injured service members, veterans, and youth through the healing powers of the
             ocean.
           </p>
-          <button className={style.exploreButton}>Explore Programs</button>
+          <Link className={style.exploreButton} href="/programs">
+            Explore Programs
+          </Link>
         </div>
       </section>
 
