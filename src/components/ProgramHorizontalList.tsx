@@ -52,6 +52,7 @@ const ProgramHorizontalList = async () => {
             location={program.location}
             date={formatProgramDate(program.date)}
             time={program.duration}
+            detailsHref={`/program-details?programId=${encodeURIComponent(program.programId)}`}
           />
         </div>
       ))}

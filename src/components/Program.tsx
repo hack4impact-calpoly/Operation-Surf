@@ -1,4 +1,5 @@
 import ProgramCardImage from "@/components/ProgramCardImage";
+import Link from "next/link";
 import style from "@/styles/Program.module.css";
 
 export type ProgramProps = {
@@ -7,10 +8,10 @@ export type ProgramProps = {
   location: string;
   date: string;
   time: string;
-  onClick?: () => void;
+  detailsHref?: string;
 };
 
-const Program = ({ image, title, location, date, time, onClick }: ProgramProps) => {
+const Program = ({ image, title, location, date, time, detailsHref = "/program-details" }: ProgramProps) => {
   return (
     <div className={style.cardContainer}>
       <ProgramCardImage className={style.cardImage} src={image} alt={`${title} program`} />
@@ -20,9 +21,9 @@ const Program = ({ image, title, location, date, time, onClick }: ProgramProps) 
         <p className={style.cardDate}>{date}</p>
         <p className={style.cardTime}>{time}</p>
       </div>
-      <button className={style.cardButton} onClick={onClick}>
+      <Link href={detailsHref} className={style.cardButton}>
         View Details
-      </button>
+      </Link>
     </div>
   );
 };
