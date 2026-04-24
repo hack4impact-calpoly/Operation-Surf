@@ -1,3 +1,4 @@
+import ProgramCardImage from "@/components/ProgramCardImage";
 import Link from "next/link";
 import style from "@/styles/Program.module.css";
 
@@ -13,7 +14,7 @@ export type ProgramProps = {
 const Program = ({ image, title, location, date, time, detailsHref = "/program-details" }: ProgramProps) => {
   return (
     <div className={style.cardContainer}>
-      <img className={style.cardImage} src={image} alt="Header Image" />
+      <ProgramCardImage className={style.cardImage} src={image} alt={`${title} program`} />
       <div className={style.cardMeta}>
         <h2 className={style.cardTitle}>{title}</h2>
         <p className={style.cardLocation}>{location}</p>
