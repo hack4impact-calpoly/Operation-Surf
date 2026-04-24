@@ -12,8 +12,12 @@ export default async function Home() {
         <Image src="/operation-surf.png" alt="Operation Surf Logo" width={84} height={67} />
 
         <div className={style.headerButtons}>
-          <button className={style.headerBtnOutline}>Sign In</button>
-          <button className={style.headerBtnFilled}>Sign Up</button>
+          <Link className={style.headerBtnOutline} href="/login">
+            Sign In
+          </Link>
+          <Link className={style.headerBtnFilled} href="/signup">
+            Sign Up
+          </Link>
         </div>
       </header>
 
