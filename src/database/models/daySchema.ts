@@ -12,6 +12,7 @@ type day = {
   endTime: string;
   programId: string;
   dayId: string;
+  private: boolean;
 };
 
 const daySchema = new Schema<day>({
@@ -22,6 +23,7 @@ const daySchema = new Schema<day>({
   endTime: { type: String, required: true },
   programId: { type: String, required: true },
   dayId: { type: String, required: true },
+  private: { type: Boolean, required: false, default: true },
 });
 
 const Day = mongoose.models["day"] || mongoose.model("day", daySchema, "day");
