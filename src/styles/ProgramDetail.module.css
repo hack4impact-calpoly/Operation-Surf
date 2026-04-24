@@ -1,0 +1,236 @@
+.page {
+  min-height: 100vh;
+  background: #f9f9f7;
+  font-family: "Inter", sans-serif;
+}
+
+
+/* navbar */
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: rgba(151, 148, 131, 1);
+  backdrop-filter: blur(2px);
+}
+
+.navLogo {
+  display: flex;
+  align-items: center;
+}
+
+.logoImg {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
+.navLinks {
+  display: flex;
+  gap: 28px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.92;
+  transition: opacity 0.15s;
+  font-family: "Inter", sans-serif;
+}
+
+.navLink:hover {
+  opacity: 1;
+}
+
+
+/* hero */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 380px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(124, 120, 69, 0.7) 0%, rgba(115, 113, 68, 0.8) 100%);
+  z-index: 1;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  /* olive/warm dark tint to match Figma */
+  background: rgba(60, 58, 40, 0.52);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  padding: 0 40px;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+}
+
+.programName {
+  font-size: 2.2rem;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  margin: 0 0 10px;
+}
+
+.heroMeta {
+  display: flex;
+  gap: 20px;
+  font-size: 0.95rem;
+  opacity: 0.9;
+  font-family: "Inter", sans-serif !important;
+}
+
+.heroMetaText {
+  font-family: "Inter", sans-serif;
+  font-size: 0.95rem;
+}
+
+/* shift section */
+.shiftSection {
+  margin: 28px 20px;
+  padding: 28px 32px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  font-family: "Inter", sans-serif;
+}
+
+.shiftTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #6b7c2e;
+  margin: 0 0 20px;
+  font-family: "Inter", sans-serif;
+}
+
+
+/* day card */
+.dayCard {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 14px;
+  background: #fff;
+  font-family: "Inter", sans-serif;
+}
+
+.dayCard:last-child {
+  margin-bottom: 0;
+}
+
+.dayCardHeader {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 8px;
+  font-family: "Inter", sans-serif;
+}
+
+.dayOfWeek {
+  background: #f3f4f6;
+  border-radius: 6px;
+  padding: 3px 12px;
+  font-size: 0.82rem;
+  color: rgba(124, 120, 69, 1);
+}
+
+.date {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(124, 120, 69, 1);
+}
+
+.dayName {
+  font-size: 1.05rem;
+  font-weight: 400;
+  margin: 0 0 10px;
+  color: #111827;
+}
+
+.timeRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 0.88rem;
+  font-family: "Inter", sans-serif;
+}
+
+.calendarIcon {
+  flex-shrink: 0;
+}
+
+.time {
+  color: #6b7280;
+  font-family: "Inter", sans-serif;
+}
+
+
+/* status */
+.statusMsg {
+  color: #6b7280;
+  font-size: 0.95rem;
+  padding: 12px 0;
+}
+
+.errorMsg {
+  color: #dc2626;
+  font-size: 0.95rem;
+  padding: 12px 0;
+}
+
+
+/* mobile */
+@media (max-width: 640px) {
+  .heroContent {
+    padding: 20px;
+  }
+
+  .programName {
+    font-size: 1.6rem;
+  }
+
+  .heroMeta {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .shiftSection {
+    margin: 16px 12px;
+    padding: 20px 16px;
+  }
+
+  .navbar {
+    padding: 12px 16px;
+  }
+}
