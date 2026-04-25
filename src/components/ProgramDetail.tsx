@@ -26,6 +26,7 @@ interface Day {
 interface ProgramDetailProps {
   programId: string;
   program: Program;
+  viewerName?: string | null;
 }
 
 function normalizeImageSrc(imageURI: string): string {
@@ -89,7 +90,7 @@ function DayCard({ day }: { day: Day }) {
   );
 }
 
-export default function ProgramDetail({ programId, program }: ProgramDetailProps) {
+export default function ProgramDetail({ programId, program, viewerName }: ProgramDetailProps) {
   const [days, setDays] = useState<Day[]>([]);
   const [loadingDays, setLoadingDays] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -120,6 +121,7 @@ export default function ProgramDetail({ programId, program }: ProgramDetailProps
           <img src="/operation-surf.png" alt="Operation Surf" className={styles.logoImg} />
         </div>
         <div className={styles.navLinks}>
+          {viewerName && <span className={styles.navGreeting}>Hi, {viewerName}</span>}
           <a href="/" className={styles.navLink}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path

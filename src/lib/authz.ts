@@ -6,6 +6,7 @@ type AuthContext = {
   isAuthenticated: boolean;
   isAdmin: boolean;
   userId: string | null;
+  name: string | null;
   email: string | null;
 };
 
@@ -25,8 +26,9 @@ export const getAuthContext = async (): Promise<AuthContext> => {
     headers: await headers(),
   });
 
-  const user = (session as { user?: { id?: string; email?: string } } | null)?.user;
+  const user = (session as { user?: { id?: string; name?: string; email?: string } } | null)?.user;
   const userId = user?.id ?? null;
+  const name = user?.name ?? null;
   const email = user?.email ?? null;
 
   const isAdmin = (userId !== null && ADMIN_USER_IDS.has(userId)) || (email !== null && ADMIN_EMAILS.has(email));
@@ -36,6 +38,7 @@ export const getAuthContext = async (): Promise<AuthContext> => {
     isAuthenticated: session !== null,
     isAdmin,
     userId,
+    name,
     email,
   };
 };
