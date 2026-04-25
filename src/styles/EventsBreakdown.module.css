@@ -1,0 +1,41 @@
+.container {
+  width: 100%;
+  max-width: 1012px;
+  margin: 24px auto;
+  padding: 24px 32px 32px 32px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+.title {
+  font-family: "Inter", sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+  letter-spacing: 0.4px;
+  color: #7c7845;
+  margin: 0 0 16px 0;
+}
+
+.emptyMsg {
+  color: #6b7280;
+  font-size: 16px;
+  margin: 8px 0 0 0;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+    margin: 16px auto;
+    border-radius: 12px;
+  }
+
+  .title {
+    font-size: 24px;
+    line-height: 30px;
+    margin-bottom: 12px;
+  }
+}
