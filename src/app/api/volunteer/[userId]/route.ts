@@ -61,3 +61,52 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
     );
   }
 }
+
+/**
+ * PATCH /api/volunteer/[userId]
+ * Updates the admin notes field on a volunteer record.
+ * Admin-only. Returns 403 for non-admins, 400 on bad input,
+ * 404 if volunteer not found, and 500 on error.
+ */
+export async function PATCH(request: Request, { params }: IParams): Promise<NextResponse> {
+  try {
+    await connectDB();
+    const authContext = await getAuthContext();
+
+    if (!authContext.isAdmin) {
+      return NextResponse.json({ message: "Forbidden." }, { status: 403 });
+    }
+
+    const { userId } = params;
+    if (!userId) {
+      return NextResponse.json({ message: "UserId is required." }, { status: 400 });
+    }
+
+    let body: Record<string, unknown>;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ message: "Invalid JSON body." }, { status: 400 });
+    }
+
+    if (typeof body.notes !== "string") {
+      return NextResponse.json({ message: "Field 'notes' must be a string." }, { status: 400 });
+    }
+
+    const updated = await Volunteer.findOneAndUpdate({ userId }, { $set: { notes: body.notes } }, { new: true }).lean();
+
+    if (!updated) {
+      return NextResponse.json({ message: "Volunteer not found." }, { status: 404 });
+    }
+
+    return NextResponse.json(updated, { status: 200 });
+  } catch (err) {
+    return NextResponse.json(
+      {
+        message: "Failed to update volunteer.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
+  }
+}
