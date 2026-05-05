@@ -70,16 +70,25 @@ export default function ShiftCard({
 
       <ul className={styles.metaList}>
         <li className={styles.metaItem}>
+          <span className={styles.metaIcon} aria-hidden="true">
+            📅
+          </span>
           <span>{dateRange}</span>
         </li>
         <li className={styles.metaItem}>
+          <span className={styles.metaIcon} aria-hidden="true">
+            ⏱️
+          </span>
           <span>
             {timeRange} {timezone ? `(${timezone})` : ""}
           </span>
         </li>
         {location ? (
           <li className={styles.metaItem}>
-            <span>Location: {location}</span>
+            <span className={styles.metaIcon} aria-hidden="true">
+              📍
+            </span>
+            <span>{location}</span>
           </li>
         ) : null}
 
