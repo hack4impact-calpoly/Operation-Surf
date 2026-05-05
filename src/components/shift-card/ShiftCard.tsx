@@ -77,25 +77,15 @@ export default function ShiftCard({
             {timeRange} {timezone ? `(${timezone})` : ""}
           </span>
         </li>
-        {location || mapLink ? (
+        {location ? (
           <li className={styles.metaItem}>
-            {location ? <span>{location}</span> : null}
-            {mapLink ? (
-              <div style={{ marginTop: "0.75rem", minHeight: "200px" }}>
-                <span>{mapLink}</span>
-                <iframe
-                  src={mapLink}
-                  title={`${name} map`}
-                  loading="lazy"
-                  style={{
-                    width: "100%",
-                    minHeight: "200px",
-                    border: "1px solid #ddd",
-                    borderRadius: "0.5rem",
-                  }}
-                />
-              </div>
-            ) : null}
+            <span>Location: {location}</span>
+          </li>
+        ) : null}
+
+        {mapLink ? (
+          <li className={styles.metaItem}>
+            <iframe src={mapLink} title={`${name} map`} loading="lazy" className={styles.iframeMap} />
           </li>
         ) : null}
       </ul>
