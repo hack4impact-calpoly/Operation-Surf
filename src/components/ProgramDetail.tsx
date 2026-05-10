@@ -26,15 +26,32 @@ interface Day {
 interface ProgramDetailProps {
   programId: string;
   program: Program;
+  viewerName?: string | null;
+}
+
+function normalizeImageSrc(imageURI: string): string {
+  if (imageURI.startsWith("http") || imageURI.startsWith("/")) {
+    return imageURI;
+  }
+
+  return `/${imageURI}`;
 }
 
 function formatMonthYear(dateStr: string): string {
   const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) {
+    return "Date TBD";
+  }
+
   return d.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 }
 
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) {
+    return "Date TBD";
+  }
+
   return d.toLocaleDateString("en-US", { month: "long", day: "numeric" });
 }
 
@@ -65,16 +82,19 @@ function DayCard({ day }: { day: Day }) {
       <p className={styles.dayName}>{day.name}</p>
       <div className={styles.timeRow}>
         <CalendarIcon />
-        <span className={styles.time}>{day.startTime} - {day.endTime}</span>
+        <span className={styles.time}>
+          {day.startTime} - {day.endTime}
+        </span>
       </div>
     </div>
   );
 }
 
-export default function ProgramDetail({ programId, program }: ProgramDetailProps) {
+export default function ProgramDetail({ programId, program, viewerName }: ProgramDetailProps) {
   const [days, setDays] = useState<Day[]>([]);
   const [loadingDays, setLoadingDays] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const heroImageSrc = normalizeImageSrc(program.imageURI);
 
   useEffect(() => {
     async function fetchDays() {
@@ -95,27 +115,31 @@ export default function ProgramDetail({ programId, program }: ProgramDetailProps
 
   return (
     <div className={styles.page}>
-
       {/* navbar */}
       <nav className={styles.navbar}>
         <div className={styles.navLogo}>
-          {/* Replace with your actual <Image> or <img> for the Operation Surf logo */}
           <img src="/operation-surf.png" alt="Operation Surf" className={styles.logoImg} />
         </div>
         <div className={styles.navLinks}>
+          {viewerName && <span className={styles.navGreeting}>Hi, {viewerName}</span>}
           <a href="/" className={styles.navLink}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
-              <path d="M6 15V9h4v6" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+              <path
+                d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinejoin="round"
+              />
+              <path d="M6 15V9h4v6" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
             </svg>
             Home
           </a>
           <a href="/programs" className={styles.navLink}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-              <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-              <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-              <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5"/>
+              <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
+              <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
             </svg>
             Programs
           </a>
@@ -124,11 +148,7 @@ export default function ProgramDetail({ programId, program }: ProgramDetailProps
 
       {/* hero */}
       <header className={styles.hero}>
-        <img
-          src={program.imageURI}
-          alt={`${program.programName} background`}
-          className={styles.heroBg}
-        />
+        <img src={heroImageSrc} alt={`${program.programName} background`} className={styles.heroBg} />
         <div className={styles.heroOverlay} />
         <div className={styles.heroContent}>
           <h1 className={styles.programName}>{program.programName}</h1>
@@ -145,14 +165,9 @@ export default function ProgramDetail({ programId, program }: ProgramDetailProps
 
         {loadingDays && <p className={styles.statusMsg}>Loading...</p>}
         {error && <p className={styles.errorMsg}>{error}</p>}
-        {!loadingDays && !error && days.length === 0 && (
-          <p className={styles.statusMsg}>No days available</p>
-        )}
-        {!loadingDays && !error && days.map((day) => (
-          <DayCard key={day.dayId} day={day} />
-        ))}
+        {!loadingDays && !error && days.length === 0 && <p className={styles.statusMsg}>No days available</p>}
+        {!loadingDays && !error && days.map((day) => <DayCard key={day.dayId} day={day} />)}
       </section>
-
     </div>
   );
 }

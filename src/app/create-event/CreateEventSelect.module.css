@@ -1,0 +1,34 @@
+.page {
+  min-height: 100vh;
+  background: #f6f5f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.title {
+  text-align: center;
+  font-size: 28px;
+  color: #737144;
+  margin-bottom: 10px;
+}
+
+.cardButton {
+  height: 70px;
+  border-radius: 16px; /* same as your cards */
+  border: 1px solid #ddd8cc;
+  background: white;
+  font-size: 18px;
+  color: #5f5b52;
+  cursor: pointer;
+
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+}
