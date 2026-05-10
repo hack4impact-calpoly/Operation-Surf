@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Dashboard from "@/components/Dashboard";
 import { authClient } from "@/lib/auth-client";
+import styles from "@/styles/Dashboard.module.css";
 
 type VolunteerResponse = {
   userId: string;
@@ -251,7 +252,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      {error && <p>{error}</p>}
+      {error && <div className={styles.errorBanner}>{error}</div>}
 
       <Dashboard
         profile={profile}
