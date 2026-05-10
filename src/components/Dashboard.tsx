@@ -49,7 +49,8 @@ interface DashboardProps {
 }
 
 function formatDate(dateStr: string): string {
-  const [year, month, day] = dateStr.split("-").map(Number);
+  const dateOnly = dateStr.split("T")[0];
+  const [year, month, day] = dateOnly.split("-").map(Number);
   const d = new Date(year, month - 1, day);
 
   return d.toLocaleDateString("en-US", {

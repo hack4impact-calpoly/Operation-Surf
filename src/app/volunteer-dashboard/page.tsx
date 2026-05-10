@@ -1,0 +1,269 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import Dashboard from "@/components/Dashboard";
+import { authClient } from "@/lib/auth-client";
+
+type VolunteerResponse = {
+  userId: string;
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  emergencyContact?: {
+    name?: string;
+    phone?: string;
+  };
+};
+
+type ApiShift = {
+  shiftId: string;
+  name: string;
+  dayOfWeek: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+};
+
+type ApiSignup = {
+  signupId: string;
+  shiftId: string;
+  profileId: string;
+  waiver: boolean;
+  timestamp: string;
+};
+
+type Profile = {
+  profileId: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  location: string;
+  emergencyContact: string;
+};
+
+type Shift = {
+  shiftId: string;
+  name: string;
+  dayOfWeek: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+};
+
+type RegisteredEvent = {
+  signupId: string;
+  shiftId: string;
+  name: string;
+  date: string;
+  status: string;
+};
+
+function formatRegisteredDate(dateStr: string): string {
+  const dateOnly = dateStr.split("T")[0];
+  const [year, month, day] = dateOnly.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function buildEmergencyContact(volunteer: VolunteerResponse): string {
+  const contact = volunteer.emergencyContact;
+
+  if (!contact?.name && !contact?.phone) {
+    return "Not provided";
+  }
+
+  if (contact.name && contact.phone) {
+    return `${contact.name} - ${contact.phone}`;
+  }
+
+  return contact.name ?? contact.phone ?? "Not provided";
+}
+
+export default function DashboardPage() {
+  const { data: session, isPending: loadingSession } = authClient.useSession();
+
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [shifts, setShifts] = useState<Shift[]>([]);
+  const [signups, setSignups] = useState<ApiSignup[]>([]);
+
+  const [loadingProfile, setLoadingProfile] = useState(true);
+  const [loadingShifts, setLoadingShifts] = useState(true);
+  const [loadingEvents, setLoadingEvents] = useState(true);
+
+  const [error, setError] = useState<string | null>(null);
+
+  const userId = session?.user?.id;
+
+  // Fetch dashboard data using existing backend routes.
+  useEffect(() => {
+    if (loadingSession) {
+      return;
+    }
+
+    if (!userId) {
+      setLoadingProfile(false);
+      setLoadingShifts(false);
+      setLoadingEvents(false);
+      setError("You must be signed in to view your dashboard.");
+      return;
+    }
+
+    async function loadDashboardData() {
+      try {
+        setError(null);
+        setLoadingProfile(true);
+        setLoadingShifts(true);
+        setLoadingEvents(true);
+
+        const [profileRes, shiftsRes, signupsRes] = await Promise.all([
+          fetch(`/api/volunteer/${userId}`),
+          fetch("/api/shift"),
+          fetch(`/api/signup?profileId=${userId}`),
+        ]);
+
+        if (!profileRes.ok) {
+          throw new Error("Failed to load profile.");
+        }
+
+        if (!shiftsRes.ok) {
+          throw new Error("Failed to load shifts.");
+        }
+
+        if (!signupsRes.ok) {
+          throw new Error("Failed to load registered events.");
+        }
+
+        const volunteer: VolunteerResponse = await profileRes.json();
+        const shiftsJson: { data: ApiShift[] } = await shiftsRes.json();
+        const signupsJson: { signups: ApiSignup[] } = await signupsRes.json();
+
+        setProfile({
+          profileId: volunteer.userId,
+          fullName: volunteer.name,
+          email: volunteer.email,
+          phone: volunteer.phone,
+          location: volunteer.location,
+          emergencyContact: buildEmergencyContact(volunteer),
+        });
+
+        setShifts(
+          shiftsJson.data.map((shift) => ({
+            shiftId: shift.shiftId,
+            name: shift.name,
+            dayOfWeek: shift.dayOfWeek,
+            date: shift.date,
+            startTime: shift.startTime,
+            endTime: shift.endTime,
+          })),
+        );
+
+        setSignups(signupsJson.signups);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Something went wrong loading the dashboard.");
+      } finally {
+        setLoadingProfile(false);
+        setLoadingShifts(false);
+        setLoadingEvents(false);
+      }
+    }
+
+    loadDashboardData();
+  }, [loadingSession, userId]);
+
+  // Build a fast lookup set so each shift card knows whether the user is registered.
+  const registeredShiftIds = useMemo(() => {
+    return new Set(signups.map((signup) => signup.shiftId));
+  }, [signups]);
+
+  // Build the sidebar registered events by joining signups to shifts in the frontend.
+  const registeredEvents = useMemo<RegisteredEvent[]>(() => {
+    return signups.map((signup) => {
+      const matchingShift = shifts.find((shift) => shift.shiftId === signup.shiftId);
+
+      return {
+        signupId: signup.signupId,
+        shiftId: signup.shiftId,
+        name: matchingShift?.name ?? "Registered Event",
+        date: matchingShift?.date ? formatRegisteredDate(matchingShift.date) : "Date unavailable",
+        status: "Confirmed",
+      };
+    });
+  }, [signups, shifts]);
+
+  async function handleSignUp(shiftId: string) {
+    if (!userId) {
+      setError("You must be signed in to sign up for an event.");
+      return;
+    }
+
+    try {
+      setError(null);
+
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          shiftId,
+          profileId: userId,
+          waiver: true,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to sign up for event.");
+      }
+
+      const json: { signup: ApiSignup } = await res.json();
+
+      // Add the new signup locally so the registered badge/list updates immediately.
+      setSignups((current) => [...current, json.signup]);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong signing up.");
+    }
+  }
+
+  async function handleCancel(signupId: string) {
+    try {
+      setError(null);
+
+      const res = await fetch(`/api/signup/${signupId}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to cancel registration.");
+      }
+
+      // Remove the signup locally so both sections stay in sync immediately.
+      setSignups((current) => current.filter((signup) => signup.signupId !== signupId));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong canceling registration.");
+    }
+  }
+
+  return (
+    <>
+      {error && <p>{error}</p>}
+
+      <Dashboard
+        profile={profile}
+        shifts={shifts}
+        registeredEvents={registeredEvents}
+        registeredShiftIds={registeredShiftIds}
+        loadingProfile={loadingProfile || loadingSession}
+        loadingShifts={loadingShifts || loadingSession}
+        loadingEvents={loadingEvents || loadingSession}
+        onSignUp={handleSignUp}
+        onCancel={handleCancel}
+      />
+    </>
+  );
+}

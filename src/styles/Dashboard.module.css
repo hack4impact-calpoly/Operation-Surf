@@ -164,7 +164,7 @@
 }
 
 .registeredEventItem {
-  background: #f9fafb;
+  background: #f5f5f5;
   border-radius: 8px;
   padding: 0.75rem;
   display: flex;
@@ -265,7 +265,7 @@
 }
 
 .shiftDayOfWeek {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #8d8d8d;
   background: #f3f4f6;
   border: 1px solid #e5e7eb;
@@ -274,9 +274,9 @@
 }
 
 .shiftDate {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: rgba(124, 120, 69, 1);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .shiftName {
