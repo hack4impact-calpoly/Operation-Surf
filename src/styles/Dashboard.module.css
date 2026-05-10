@@ -1,44 +1,72 @@
-
 .page {
   min-height: 100vh;
   background-color: #f9f9f9;
 }
 
 /* navbar */
+/* navbar */
 .navbar {
+  height: 80px;
+  background: #979483;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
-  height: 60px;
-  background-color: rgba(90, 95, 60, 0.95);
+  align-items: center;
+  padding: 0 22px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+  position: relative;
+  z-index: 20;
 }
 
 .logoImg {
-  height: 40px;
+  height: 46px;
   width: auto;
+  filter: brightness(0) invert(1);
 }
 
 .navLinks {
   display: flex;
+  align-items: center;
   gap: 1.5rem;
 }
 
 .navLink {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+
   color: white;
   text-decoration: none;
-  font-size: 0.9rem;
+
+  font-size: 16px;
+
+  background: none;
+  border: none;
+
+  cursor: pointer;
+
+  transition: opacity 0.15s ease;
+}
+
+.navLink:visited {
+  color: white;
 }
 
 .navLink:hover {
-  text-decoration: underline;
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+.navIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* hero */
 .hero {
   position: relative;
   width: 100%;
-  height: 260px;
+  height: 450px;
   overflow: hidden;
 }
 
@@ -53,40 +81,58 @@
 .heroOverlay {
   position: absolute;
   inset: 0;
-  background-color: rgba(80, 85, 50, 0.55);
+
+  background: linear-gradient(180deg, rgba(124, 120, 69, 0.9) 0%, rgba(115, 113, 68, 0.8) 100%);
+
+  z-index: 0;
 }
 
 .heroContent {
   position: relative;
   z-index: 1;
+
   height: 100%;
+
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 2rem;
+  justify-content: center;
+
+  padding: 0 32px;
+
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .heroTitle {
   color: white;
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 48px;
+  font-weight: 250;
+  line-height: 1.1;
+  letter-spacing: 0.35px;
   margin: 0;
 }
 
 .heroSubtitle {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 1rem;
-  margin: 0.25rem 0 0 0;
+  color: white;
+  font-size: 20px;
+  font-weight: 250;
+  line-height: 28px;
+  margin: 15px 0 0 0;
 }
 
 /* MAIN LAYOUT */
 .mainContent {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 340px 1fr;
   gap: 1.5rem;
   padding: 2rem;
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
+}
+
+/* non-navbar icons */
+.icon {
+  color: #737144;
 }
 
 /* sidebar */
@@ -100,8 +146,11 @@
 .registeredCard {
   background: white;
   border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -167,13 +216,15 @@
   text-decoration: underline;
 }
 
-
 /* available events */
 .eventsCard {
   background: white;
   border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -245,13 +296,9 @@
 }
 
 .registeredBadge {
-  background-color: #dcfce7;
-  color: #16a34a;
-  font-size: 0.8rem;
-  font-weight: 500;
-  padding: 0.4rem 0.9rem;
-  border-radius: 8px;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .signUpBtn {
@@ -291,8 +338,11 @@
 .profileCard {
   background: white;
   border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .profileCardHeader {
@@ -317,16 +367,16 @@
 }
 
 .avatarCircle {
-  width: 64px;
-  height: 64px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
-  background-color: rgba(90, 95, 60, 0.85);
+  background: linear-gradient(180deg, rgba(124, 120, 69, 0.9) 0%, rgba(115, 113, 68, 0.8) 100%);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: 400;
   margin: 0 auto 1.25rem auto;
 }
 
@@ -344,9 +394,11 @@
 }
 
 .fieldValue {
-  font-size: 0.875rem;
-  color: #374151;
-  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 16px;
+  margin-top: 0;
 }
 
 /* status */
@@ -359,9 +411,6 @@
   color: #ef4444;
   font-size: 0.875rem;
 }
-
-
-
 
 @media (max-width: 768px) {
   .mainContent {

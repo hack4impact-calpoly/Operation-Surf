@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "dotenv": "^17.2.4",
+    "lucide-react": "^1.14.0",
     "mongodb": "^6.21.0",
     "mongoose": "^8.22.1",
     "next": "^14",
