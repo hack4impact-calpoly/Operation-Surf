@@ -147,7 +147,7 @@
   background: white;
   border-radius: 12px;
   border: 2px solid rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
+  padding: 0.8rem 1.5rem;
   box-shadow:
     0px 4px 6px -4px rgba(0, 0, 0, 0.1),
     0px 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -157,10 +157,10 @@
 }
 
 .registeredCardTitle {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.2rem;
+  font-weight: 400;
   color: rgba(124, 120, 69, 1);
-  margin: 0 0 0.5rem 0;
+  margin: 0.1 0 0.5rem 0;
 }
 
 .registeredEventItem {
@@ -231,8 +231,8 @@
 }
 
 .eventsCardTitle {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 300;
   color: rgba(124, 120, 69, 1);
   margin: 0 0 0.5rem 0;
 }
@@ -299,14 +299,23 @@
   display: flex;
   align-items: center;
   gap: 0.3rem;
+
+  background: #dcfce7;
+  color: #16a34a;
+
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .signUpBtn {
-  background-color: rgba(90, 95, 60, 0.9);
+  background-color: #737144;
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 0.5rem 1rem;
+  padding: 0.7rem 1rem;
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
@@ -353,10 +362,11 @@
 }
 
 .profileCardTitle {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 400;
   color: rgba(124, 120, 69, 1);
   margin: 0;
+  margin-bottom: 20px;
 }
 
 .editBtn {
@@ -364,6 +374,7 @@
   border: none;
   cursor: pointer;
   font-size: 1rem;
+  padding-bottom: 20px;
 }
 
 .avatarCircle {
@@ -397,7 +408,8 @@
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 400;
   margin-top: 0;
 }
 

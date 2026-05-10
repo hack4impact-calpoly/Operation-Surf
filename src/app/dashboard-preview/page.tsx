@@ -15,21 +15,73 @@ export default function DashboardPreviewPage() {
 
   const mockShifts = [
     {
-      id: "shift-1",
-      title: "Morning Check-In",
-      startTime: "2026-04-20T09:00:00",
-      endTime: "2026-04-20T12:00:00",
+      shiftId: "shift-1",
+      name: "Event #1",
+      dayOfWeek: "Monday",
+      date: "2026-03-10",
+      startTime: "9:00 AM",
+      endTime: "12:00 PM",
+    },
+    {
+      shiftId: "shift-2",
+      name: "Event #2",
+      dayOfWeek: "Monday",
+      date: "2026-03-10",
+      startTime: "2:00 PM",
+      endTime: "5:00 PM",
+    },
+    {
+      shiftId: "shift-3",
+      name: "Event #3",
+      dayOfWeek: "Wednesday",
+      date: "2026-03-12",
+      startTime: "9:00 AM",
+      endTime: "12:00 PM",
+    },
+    {
+      shiftId: "shift-4",
+      name: "Event #4",
+      dayOfWeek: "Wednesday",
+      date: "2026-03-12",
+      startTime: "2:00 PM",
+      endTime: "5:00 PM",
+    },
+    {
+      shiftId: "shift-5",
+      name: "Event #5",
+      dayOfWeek: "Friday",
+      date: "2026-03-14",
+      startTime: "9:00 AM",
+      endTime: "12:00 PM",
+    },
+    {
+      shiftId: "shift-6",
+      name: "Event #6",
+      dayOfWeek: "Friday",
+      date: "2026-03-14",
+      startTime: "1:00 PM",
+      endTime: "4:00 PM",
     },
   ];
 
   const mockRegisteredEvents = [
     {
-      id: "event-1",
-      name: "Community Food Drive",
+      signupId: "signup-1",
+      shiftId: "shift-1",
+      name: "Event Name",
+      date: "March 10, 2026",
+      status: "Confirmed",
+    },
+    {
+      signupId: "signup-2",
+      shiftId: "shift-3",
+      name: "Event Name",
+      date: "March 12, 2026",
+      status: "Confirmed",
     },
   ];
 
-  const mockRegisteredShiftIds = new Set(["shift-1"]);
+  const mockRegisteredShiftIds = new Set(["shift-1", "shift-3"]);
 
   return (
     <Dashboard
