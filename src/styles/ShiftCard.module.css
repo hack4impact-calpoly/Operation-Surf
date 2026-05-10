@@ -5,6 +5,7 @@
   display: grid;
   gap: 8px;
   padding: 8px 16px;
+  width: fit-content;
 }
 
 .header {
@@ -56,4 +57,11 @@
 .list {
   display: grid;
   gap: 4px;
+}
+
+.iframeMap {
+  width: 100%;
+  min-height: 200px;
+  border: 1px solid;
+  border-radius: 0.5rem;
 }
