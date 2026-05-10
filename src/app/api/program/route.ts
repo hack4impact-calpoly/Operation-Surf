@@ -1,79 +1,161 @@
 import connectDB from "@/database/db";
 import { NextResponse } from "next/server";
 import Program from "@/database/models/programSchema";
+import Day from "@/database/models/daySchema";
+import { getAuthContext } from "@/lib/authz";
 
 /**
- * gets all programs from the database
- * returns all programs in the database as a JSON response
- * if an error occurs, returns a JSON response with an error message and status code 500
+ * GET /api/program
+ * Retrieves programs from the database.
+ * - Filters out ghost programs and programs before today.
+ * - Unauthenticated users also filter out private programs.
+ * - Optional `view=available-programs` returns program summaries with available shift details.
  */
 
-export async function GET(): Promise<NextResponse> {
+export async function GET(request: Request): Promise<NextResponse> {
   // Attempt to connect to the database
   await connectDB();
 
   try {
-    const programs = await Program.find().sort({ date: 1 });
-    return NextResponse.json({
-      programs: programs,
-      status: 200,
-    });
+    const authContext = await getAuthContext();
+    const { searchParams } = new URL(request.url);
+    const view = searchParams.get("view");
+
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    const programFilter: Record<string, unknown> = {
+      ghost_program: false,
+      date: { $gte: now },
+    };
+
+    if (!authContext.isAuthenticated) {
+      // Only public programs are visible to unauthenticated users.
+      programFilter.private = false;
+    }
+
+    const programs = await Program.find(programFilter).sort({ date: 1 });
+
+    if (view === "available-programs") {
+      const dayFilter: Record<string, unknown> = {
+        date: { $gte: now },
+      };
+      if (!authContext.isAuthenticated) {
+        // Only public day schedules are visible to unauthenticated users.
+        dayFilter.private = false;
+      }
+
+      const days = await Day.find(dayFilter).sort({ date: 1 });
+
+      const daysByProgramId = new Map<string, typeof days>();
+      for (const day of days) {
+        const list = daysByProgramId.get(day.programId) ?? [];
+        list.push(day);
+        daysByProgramId.set(day.programId, list);
+      }
+
+      const availablePrograms = programs.map((program) => {
+        const programDays = daysByProgramId.get(program.programId) ?? [];
+
+        return {
+          programId: program.programId,
+          title: program.programName,
+          imageURI: program.imageURI,
+          location: program.location,
+          date: program.date,
+          duration: program.duration,
+          shiftCount: programDays.length,
+          shifts: programDays.map((day) => ({
+            shiftId: day.dayId,
+            name: day.name,
+            dayOfWeek: day.dayOfWeek,
+            date: day.date,
+            startTime: day.startTime,
+            endTime: day.endTime,
+            private: day.private,
+          })),
+        };
+      });
+
+      return NextResponse.json(
+        {
+          availablePrograms,
+        },
+        { status: 200 },
+      );
+    }
+
+    return NextResponse.json(
+      {
+        programs,
+      },
+      { status: 200 },
+    );
   } catch (err) {
     console.error("Error fetching programs:", err);
-    return NextResponse.json({
-      message: "Failed to fetch programs.",
-      error: err instanceof Error ? err.message : "An unknown error occurred.",
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        message: "Failed to fetch programs.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
   }
 }
 
 /**
- * creates a new program in the database
- * request must require the following fields: 
- *  imageURI: string;
-    location: string;
-    date: Date;
-    duration: string;
-    programName: string;
-    programId: string;
+ * POST /api/program
+ * Creates a new program entry in the database.
+ * Required fields: imageURI, location, date, duration, programName, programId.
+ * Optional fields include private and ghost_program flags.
  */
 export async function POST(request: Request): Promise<NextResponse> {
   await connectDB();
 
-  try {
-    const body = await request.json();
+  let body: Record<string, unknown>;
 
-    // ensure required fields are present
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ message: "Invalid JSON body." }, { status: 400 });
+  }
+
+  try {
     const requiredFields = ["imageURI", "location", "date", "duration", "programName", "programId"];
 
     for (const field of requiredFields) {
       if (!body[field]) {
-        return NextResponse.json({ message: `Missing required field: ${field}`, status: 400 });
+        return NextResponse.json({ message: `Missing required field: ${field}` }, { status: 400 });
       }
     }
 
     const newProgram = new Program({
       imageURI: body.imageURI,
       location: body.location,
-      date: new Date(body.date),
+      date: new Date(body.date as string),
       duration: body.duration,
       programName: body.programName,
       programId: body.programId,
+      private: body.private,
+      ghost_program: body.ghost_program,
     });
 
     const saved = await newProgram.save();
 
-    return NextResponse.json({
-      program: saved,
-      status: 201,
-    });
+    return NextResponse.json(
+      {
+        program: saved,
+      },
+      { status: 201 },
+    );
   } catch (err) {
     console.error("Error creating program:", err);
-    return NextResponse.json({
-      message: "Failed to create program.",
-      error: err instanceof Error ? err.message : "An unknown error occurred.",
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        message: "Failed to create program.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
   }
 }

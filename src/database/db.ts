@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
+import { MongoClient } from "mongodb";
 
 const url: string = process.env.MONGO_URI as string;
 let connection: typeof mongoose;
+
+// Create a native MongoDB client instance for better-auth
+export const client = new MongoClient(url);
 
 /**
  * Makes a connection to a MongoDB database. If a connection already exists, does nothing

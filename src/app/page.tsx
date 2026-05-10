@@ -1,18 +1,27 @@
 import Image from "next/image";
+import Link from "next/link";
 import style from "./page.module.css";
 import ProgramHorizontalList from "@/components/ProgramHorizontalList";
+import { getAuthContext } from "@/lib/authz";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
+  const { name } = await getAuthContext();
+
   return (
     <div className={style.pageContainer}>
       <header className={style.pageHeader}>
         <Image src="/operation-surf.png" alt="Operation Surf Logo" width={84} height={67} />
 
         <div className={style.headerButtons}>
-          <button className={style.headerBtnOutline}>Sign In</button>
-          <button className={style.headerBtnFilled}>Sign Up</button>
+          {name && <p className={style.navGreeting}>Hi, {name}</p>}
+          <Link className={style.headerBtnOutline} href="/login">
+            Sign In
+          </Link>
+          <Link className={style.headerBtnFilled} href="/signup">
+            Sign Up
+          </Link>
         </div>
       </header>
 
@@ -25,7 +34,9 @@ export default async function Home() {
             Empowering wounded, ill, and injured service members, veterans, and youth through the healing powers of the
             ocean.
           </p>
-          <button className={style.exploreButton}>Explore Programs</button>
+          <Link className={style.exploreButton} href="/programs">
+            Explore Programs
+          </Link>
         </div>
       </section>
 
