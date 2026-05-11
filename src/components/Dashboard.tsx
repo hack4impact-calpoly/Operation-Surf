@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "@/styles/Dashboard.module.css";
 import { Home, Calendar, Bell, User, Pencil, Mail, Phone, MapPin, Clock, Check } from "lucide-react";
@@ -28,7 +27,7 @@ interface Shift {
   endTime: string;
 }
 
-interface RegisteredEvent {
+interface RegisteredDay {
   signupId: string;
   shiftId: string;
   name: string;
@@ -39,11 +38,11 @@ interface RegisteredEvent {
 interface DashboardProps {
   profile: Profile | null;
   shifts: Shift[];
-  registeredEvents: RegisteredEvent[];
+  registeredDays: RegisteredDay[];
   registeredShiftIds: Set<string>;
   loadingProfile: boolean;
   loadingShifts: boolean;
-  loadingEvents: boolean;
+  loadingDays: boolean;
   onSignUp: (shiftId: string) => void;
   onCancel: (signupId: string) => void;
 }
@@ -62,11 +61,11 @@ function formatDate(dateStr: string): string {
 export default function Dashboard({
   profile,
   shifts,
-  registeredEvents,
+  registeredDays,
   registeredShiftIds,
   loadingProfile,
   loadingShifts,
-  loadingEvents,
+  loadingDays,
   onSignUp,
   onCancel,
 }: DashboardProps) {
@@ -85,28 +84,28 @@ export default function Dashboard({
           <div className={styles.navLinks}>
             <a href="/" className={styles.navLink}>
               <span className={styles.navIcon}>
-                <Home />
+                <Home size={21} />
               </span>
               Home
             </a>
 
             <a href="/programs" className={styles.navLink}>
               <span className={styles.navIcon}>
-                <Calendar />
+                <Calendar size={21} />
               </span>
               Programs
             </a>
 
             <a href="/notifications" className={styles.navLink}>
               <span className={styles.navIcon}>
-                <Bell />
+                <Bell size={21} />
               </span>
               Notifications
             </a>
 
             <a href="/account" className={styles.navLink}>
               <span className={styles.navIcon}>
-                <User />
+                <User size={21} />
               </span>
               My Account
             </a>
@@ -115,11 +114,11 @@ export default function Dashboard({
 
         {/* hero header */}
         <header className={styles.hero}>
-          <img src="/hero-img.png" alt="Dashboard background" className={styles.heroBg} />
+          <Image src="/hero-img.png" alt="Dashboard background" fill className={styles.heroBg} />
           <div className={styles.heroOverlay} />
           <div className={styles.heroContent}>
             <h1 className={styles.heroTitle}>My Dashboard</h1>
-            <p className={styles.heroSubtitle}>Manage your profile, events, and shifts</p>
+            <p className={styles.heroSubtitle}>Manage your profile, days, and shifts</p>
           </div>
         </header>
 
@@ -186,30 +185,30 @@ export default function Dashboard({
               )}
             </div>
 
-            {/* registered events card */}
+            {/* registered days card */}
             <div className={styles.registeredCard}>
-              <h2 className={styles.registeredCardTitle}>My Registered Events</h2>
+              <h2 className={styles.registeredCardTitle}>My Registered Days</h2>
 
-              {loadingEvents && <p className={styles.statusMsg}>Loading events...</p>}
+              {loadingDays && <p className={styles.statusMsg}>Loading days...</p>}
 
-              {!loadingEvents && registeredEvents.length === 0 && (
-                <p className={styles.statusMsg}>No registered events yet.</p>
+              {!loadingDays && registeredDays.length === 0 && (
+                <p className={styles.statusMsg}>No registered days yet.</p>
               )}
 
-              {!loadingEvents &&
-                registeredEvents.map((event) => (
-                  <div key={event.signupId} className={styles.registeredEventItem}>
-                    <div className={styles.registeredEventTop}>
-                      <span className={styles.registeredEventDate}>{event.date}</span>
-                      <span className={styles.confirmedBadge}>{event.status}</span>
+              {!loadingDays &&
+                registeredDays.map((day) => (
+                  <div key={day.signupId} className={styles.registeredDayItem}>
+                    <div className={styles.registeredDayTop}>
+                      <span className={styles.registeredDayDate}>{day.date}</span>
+                      <span className={styles.confirmedBadge}>{day.status}</span>
                     </div>
 
-                    <p className={styles.registeredEventName}>{event.name}</p>
+                    <p className={styles.registeredDayName}>{day.name}</p>
 
                     <button
                       className={styles.cancelBtn}
-                      onClick={() => onCancel(event.signupId)}
-                      aria-label={`Cancel registration for ${event.name}`}
+                      onClick={() => onCancel(day.signupId)}
+                      aria-label={`Cancel registration for ${day.name}`}
                     >
                       Cancel
                     </button>
@@ -219,14 +218,14 @@ export default function Dashboard({
           </aside>
 
           {/* right content */}
-          <main className={styles.eventsSection}>
-            {/* available events */}
-            <div className={styles.eventsCard}>
-              <h2 className={styles.eventsCardTitle}>Available Events</h2>
+          <main className={styles.daysSection}>
+            {/* available days */}
+            <div className={styles.daysCard}>
+              <h2 className={styles.daysCardTitle}>Available Days</h2>
 
-              {loadingShifts && <p className={styles.statusMsg}>Loading events...</p>}
+              {loadingShifts && <p className={styles.statusMsg}>Loading days...</p>}
 
-              {!loadingShifts && shifts.length === 0 && <p className={styles.statusMsg}>No events available.</p>}
+              {!loadingShifts && shifts.length === 0 && <p className={styles.statusMsg}>No days available.</p>}
 
               {!loadingShifts &&
                 shifts.map((shift) => {
@@ -243,7 +242,7 @@ export default function Dashboard({
                         <p className={styles.shiftName}>{shift.name}</p>
 
                         <div className={styles.shiftTimeRow}>
-                          <Calendar className={styles.icon} size={14} strokeWidth={1.8} />
+                          <Clock className={styles.icon} size={14} strokeWidth={1.8} />
                           <span className={styles.shiftTime}>
                             {shift.startTime} - {shift.endTime}
                           </span>
@@ -262,7 +261,7 @@ export default function Dashboard({
                             onClick={() => onSignUp(shift.shiftId)}
                             aria-label={`Sign up for ${shift.name}`}
                           >
-                            Sign Up for Event
+                            Sign Up for Day
                           </button>
                         )}
                       </div>

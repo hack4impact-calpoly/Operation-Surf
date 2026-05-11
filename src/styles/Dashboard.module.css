@@ -38,6 +38,7 @@
   text-decoration: none;
 
   font-size: 16px;
+  font-size: 0.95rem;
 
   background: none;
   border: none;
@@ -142,7 +143,7 @@
   gap: 1.5rem;
 }
 
-/* registered events */
+/* registered days */
 .registeredCard {
   background: white;
   border-radius: 12px;
@@ -163,7 +164,7 @@
   margin: 0.1 0 0.5rem 0;
 }
 
-.registeredEventItem {
+.registeredDayItem {
   background: #f5f5f5;
   border-radius: 8px;
   padding: 0.75rem;
@@ -172,13 +173,13 @@
   gap: 0.7rem;
 }
 
-.registeredEventTop {
+.registeredDayTop {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.registeredEventDate {
+.registeredDayDate {
   font-size: 0.85rem;
   color: rgba(124, 120, 69, 1);
 }
@@ -194,14 +195,14 @@
   border-radius: 999px;
 }
 
-.registeredEventName {
+.registeredDayName {
   font-size: 0.9rem;
   font-weight: 500;
   color: #374151;
   margin: 0;
 }
 
-.eventsSection {
+.daysSection {
   display: flex;
   flex-direction: column;
 }
@@ -221,8 +222,8 @@
   text-decoration: underline;
 }
 
-/* available events */
-.eventsCard {
+/* available days */
+.daysCard {
   background: white;
   border-radius: 12px;
   border: 2px solid rgba(0, 0, 0, 0.1);
@@ -235,7 +236,7 @@
   gap: 1rem;
 }
 
-.eventsCardTitle {
+.daysCardTitle {
   font-size: 1.8rem;
   font-weight: 300;
   color: rgba(124, 120, 69, 1);

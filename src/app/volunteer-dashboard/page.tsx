@@ -52,7 +52,7 @@ type Shift = {
   endTime: string;
 };
 
-type RegisteredEvent = {
+type RegisteredDay = {
   signupId: string;
   shiftId: string;
   name: string;
@@ -95,7 +95,7 @@ export default function DashboardPage() {
 
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingShifts, setLoadingShifts] = useState(true);
-  const [loadingEvents, setLoadingEvents] = useState(true);
+  const [loadingDays, setLoadingDays] = useState(true);
 
   const [error, setError] = useState<string | null>(null);
 
@@ -110,7 +110,7 @@ export default function DashboardPage() {
     if (!userId) {
       setLoadingProfile(false);
       setLoadingShifts(false);
-      setLoadingEvents(false);
+      setLoadingDays(false);
       setError("You must be signed in to view your dashboard.");
       return;
     }
@@ -120,7 +120,7 @@ export default function DashboardPage() {
         setError(null);
         setLoadingProfile(true);
         setLoadingShifts(true);
-        setLoadingEvents(true);
+        setLoadingDays(true);
 
         const [profileRes, shiftsRes, signupsRes] = await Promise.all([
           fetch(`/api/volunteer/${userId}`),
@@ -137,7 +137,7 @@ export default function DashboardPage() {
         }
 
         if (!signupsRes.ok) {
-          throw new Error("Failed to load registered events.");
+          throw new Error("Failed to load registered days.");
         }
 
         const volunteer: VolunteerResponse = await profileRes.json();
@@ -170,7 +170,7 @@ export default function DashboardPage() {
       } finally {
         setLoadingProfile(false);
         setLoadingShifts(false);
-        setLoadingEvents(false);
+        setLoadingDays(false);
       }
     }
 
@@ -182,15 +182,15 @@ export default function DashboardPage() {
     return new Set(signups.map((signup) => signup.shiftId));
   }, [signups]);
 
-  // Build the sidebar registered events by joining signups to shifts in the frontend.
-  const registeredEvents = useMemo<RegisteredEvent[]>(() => {
+  // Build the sidebar registered days by joining signups to shifts in the frontend.
+  const registeredDays = useMemo<RegisteredDay[]>(() => {
     return signups.map((signup) => {
       const matchingShift = shifts.find((shift) => shift.shiftId === signup.shiftId);
 
       return {
         signupId: signup.signupId,
         shiftId: signup.shiftId,
-        name: matchingShift?.name ?? "Registered Event",
+        name: matchingShift?.name ?? "Registered Day",
         date: matchingShift?.date ? formatRegisteredDate(matchingShift.date) : "Date unavailable",
         status: "Confirmed",
       };
@@ -199,7 +199,7 @@ export default function DashboardPage() {
 
   async function handleSignUp(shiftId: string) {
     if (!userId) {
-      setError("You must be signed in to sign up for an event.");
+      setError("You must be signed in to sign up for an day.");
       return;
     }
 
@@ -219,7 +219,7 @@ export default function DashboardPage() {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to sign up for event.");
+        throw new Error("Failed to sign up for day.");
       }
 
       const json: { signup: ApiSignup } = await res.json();
@@ -257,11 +257,11 @@ export default function DashboardPage() {
       <Dashboard
         profile={profile}
         shifts={shifts}
-        registeredEvents={registeredEvents}
+        registeredDays={registeredDays}
         registeredShiftIds={registeredShiftIds}
         loadingProfile={loadingProfile || loadingSession}
         loadingShifts={loadingShifts || loadingSession}
-        loadingEvents={loadingEvents || loadingSession}
+        loadingDays={loadingDays || loadingSession}
         onSignUp={handleSignUp}
         onCancel={handleCancel}
       />

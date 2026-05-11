@@ -16,7 +16,7 @@ export default function DashboardPreviewPage() {
   const mockShifts = [
     {
       shiftId: "shift-1",
-      name: "Event #1",
+      name: "Day #1",
       dayOfWeek: "Monday",
       date: "2026-03-10",
       startTime: "9:00 AM",
@@ -24,7 +24,7 @@ export default function DashboardPreviewPage() {
     },
     {
       shiftId: "shift-2",
-      name: "Event #2",
+      name: "Day #2",
       dayOfWeek: "Monday",
       date: "2026-03-10",
       startTime: "2:00 PM",
@@ -32,7 +32,7 @@ export default function DashboardPreviewPage() {
     },
     {
       shiftId: "shift-3",
-      name: "Event #3",
+      name: "Day #3",
       dayOfWeek: "Wednesday",
       date: "2026-03-12",
       startTime: "9:00 AM",
@@ -40,7 +40,7 @@ export default function DashboardPreviewPage() {
     },
     {
       shiftId: "shift-4",
-      name: "Event #4",
+      name: "Day #4",
       dayOfWeek: "Wednesday",
       date: "2026-03-12",
       startTime: "2:00 PM",
@@ -48,7 +48,7 @@ export default function DashboardPreviewPage() {
     },
     {
       shiftId: "shift-5",
-      name: "Event #5",
+      name: "Day #5",
       dayOfWeek: "Friday",
       date: "2026-03-14",
       startTime: "9:00 AM",
@@ -56,7 +56,7 @@ export default function DashboardPreviewPage() {
     },
     {
       shiftId: "shift-6",
-      name: "Event #6",
+      name: "Day #6",
       dayOfWeek: "Friday",
       date: "2026-03-14",
       startTime: "1:00 PM",
@@ -64,18 +64,18 @@ export default function DashboardPreviewPage() {
     },
   ];
 
-  const mockRegisteredEvents = [
+  const mockRegisteredDays = [
     {
       signupId: "signup-1",
       shiftId: "shift-1",
-      name: "Event Name",
+      name: "Day Name",
       date: "March 10, 2026",
       status: "Confirmed",
     },
     {
       signupId: "signup-2",
       shiftId: "shift-3",
-      name: "Event Name",
+      name: "Day Name",
       date: "March 12, 2026",
       status: "Confirmed",
     },
@@ -87,11 +87,11 @@ export default function DashboardPreviewPage() {
     <Dashboard
       profile={mockProfile}
       shifts={mockShifts}
-      registeredEvents={mockRegisteredEvents}
+      registeredDays={mockRegisteredDays}
       registeredShiftIds={mockRegisteredShiftIds}
       loadingProfile={false}
       loadingShifts={false}
-      loadingEvents={false}
+      loadingDays={false}
       onSignUp={(shiftId) => {
         console.log("sign up", shiftId);
       }}
