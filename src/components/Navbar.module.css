@@ -1,0 +1,129 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 8px 16px;
+  background: #979483;
+  border: 1px solid rgba(114, 110, 96, 0.8);
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logoLink img {
+  width: auto;
+  height: 34px;
+  object-fit: contain;
+}
+
+.navGroup {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.navGreeting {
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.87rem;
+  font-weight: 400;
+  opacity: 0.94;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.navLink:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.navLinkActive {
+  opacity: 1;
+}
+
+.accountMenu {
+  position: relative;
+}
+
+.accountDropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 160px;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid #d8d2c0;
+  background: #ffffff;
+  box-shadow: 0 16px 32px rgba(31, 41, 55, 0.18);
+  z-index: 30;
+}
+
+.dropdownItem {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #3e3a2d;
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.dropdownItem:hover {
+  background: #f5f1e5;
+}
+
+.dropdownItem:disabled {
+  color: #8f8a7d;
+  cursor: wait;
+}
+
+@media (max-width: 760px) {
+  .navbar {
+    padding: 10px 14px;
+  }
+
+  .navGroup {
+    gap: 12px;
+  }
+
+  .navLink,
+  .navGreeting {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navGroup {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

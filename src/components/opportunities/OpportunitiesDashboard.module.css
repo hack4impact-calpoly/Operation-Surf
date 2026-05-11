@@ -1,0 +1,280 @@
+.page {
+  min-height: 100vh;
+  background: #f6f4f1;
+  color: #1f2937;
+}
+
+.hero {
+  position: relative;
+  min-height: 170px;
+  background:
+    linear-gradient(90deg, rgba(122, 119, 74, 0.82) 0%, rgba(122, 119, 74, 0.52) 55%, rgba(122, 119, 74, 0.4) 100%),
+    url("/hero-img.png") center 38% / cover no-repeat;
+  display: flex;
+  align-items: flex-end;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(36, 33, 22, 0.16), rgba(36, 33, 22, 0.34));
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 48px 26px;
+}
+
+.title {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 48px 48px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.tabList {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #ddd7c7;
+  box-shadow: 0 10px 24px rgba(31, 41, 55, 0.08);
+}
+
+.tab {
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #413c2d;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 12px 18px;
+  cursor: pointer;
+}
+
+.tabActive {
+  background: #91884a;
+  color: #ffffff;
+}
+
+.primaryAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #ffffff;
+  background: #91884a;
+  border-radius: 10px;
+  padding: 13px 18px;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.filterChip,
+.clearFilters {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+
+.filterChip {
+  background: #ebe4c9;
+  color: #5c5530;
+  font-weight: 600;
+}
+
+.clearFilters {
+  background: transparent;
+  color: #6b7280;
+  text-decoration: underline;
+}
+
+.list {
+  display: grid;
+  gap: 16px;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) auto;
+  gap: 0;
+  background: #ffffff;
+  border: 1px solid #ece7dd;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(31, 41, 55, 0.08);
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  min-height: 190px;
+  object-fit: cover;
+  display: block;
+}
+
+.cardBody {
+  padding: 20px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cardMeta {
+  color: #7c7845;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.locationRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cardTitle {
+  margin: 0;
+  color: #1f2937;
+  font-size: clamp(1.5rem, 2vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.detailText {
+  margin: 0;
+  color: #5b6472;
+  font-size: 0.96rem;
+  line-height: 1.5;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.datePill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #f1ecdc;
+  color: #756d3d;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.secondaryAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: #91884a;
+  color: #ffffff;
+  padding: 11px 16px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.iconAction {
+  align-self: end;
+  margin: 0 20px 18px 0;
+  color: #5f6470;
+}
+
+.emptyState {
+  margin: 0;
+  padding: 40px 28px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #ece7dd;
+  color: #6b7280;
+}
+
+@media (max-width: 900px) {
+  .content,
+  .heroContent {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryAction {
+    justify-content: center;
+  }
+
+  .card {
+    grid-template-columns: 1fr;
+  }
+
+  .cardImage {
+    min-height: 220px;
+  }
+
+  .iconAction {
+    margin: 0 20px 20px;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 560px) {
+  .tabList {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .tab {
+    flex: 1 1 0;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .cardBody {
+    padding: 18px;
+  }
+
+  .cardTitle {
+    font-size: 1.35rem;
+  }
+}

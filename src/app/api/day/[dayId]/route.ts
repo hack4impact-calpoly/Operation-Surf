@@ -143,3 +143,57 @@ export async function DELETE(request: Request, { params }: IParams): Promise<Nex
     );
   }
 }
+
+/**
+ * PATCH /api/day/[dayId]
+ * Updates a day record by its dayId.
+ */
+export async function PATCH(request: Request, { params }: IParams): Promise<NextResponse> {
+  await connectDB();
+
+  let body: Record<string, unknown>;
+
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ message: "Invalid JSON body." }, { status: 400 });
+  }
+
+  try {
+    const updateData: Record<string, unknown> = {};
+
+    if (body.name !== undefined) updateData.name = body.name;
+    if (body.description !== undefined) updateData.description = body.description;
+    if (body.location !== undefined) updateData.location = body.location;
+    if (body.programId !== undefined) updateData.programId = body.programId;
+    if (body.private !== undefined) updateData.private = body.private;
+    if (body.startTime !== undefined) updateData.startTime = body.startTime;
+    if (body.endTime !== undefined) updateData.endTime = body.endTime;
+
+    if (body.date !== undefined) {
+      const dayDate = new Date(body.date as string);
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      updateData.date = dayDate;
+      updateData.dayOfWeek = days[dayDate.getDay()];
+    }
+
+    const day = await Day.findOneAndUpdate({ dayId: params.dayId }, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!day) {
+      return NextResponse.json({ message: "Day not found." }, { status: 404 });
+    }
+
+    return NextResponse.json({ day }, { status: 200 });
+  } catch (err) {
+    return NextResponse.json(
+      {
+        message: "Failed to update day.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
+  }
+}

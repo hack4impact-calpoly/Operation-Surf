@@ -7,23 +7,25 @@ import { getAuthContext } from "@/lib/authz";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const { name } = await getAuthContext();
+  const { name, isAdmin } = await getAuthContext();
 
   return (
     <div className={style.pageContainer}>
-      <header className={style.pageHeader}>
-        <Image src="/operation-surf.png" alt="Operation Surf Logo" width={84} height={67} />
+      {!isAdmin ? (
+        <header className={style.pageHeader}>
+          <Image src="/operation-surf.png" alt="Operation Surf Logo" width={84} height={67} />
 
-        <div className={style.headerButtons}>
-          {name && <p className={style.navGreeting}>Hi, {name}</p>}
-          <Link className={style.headerBtnOutline} href="/login">
-            Sign In
-          </Link>
-          <Link className={style.headerBtnFilled} href="/signup">
-            Sign Up
-          </Link>
-        </div>
-      </header>
+          <div className={style.headerButtons}>
+            {name && <p className={style.navGreeting}>Hi, {name}</p>}
+            <Link className={style.headerBtnOutline} href="/login">
+              Sign In
+            </Link>
+            <Link className={style.headerBtnFilled} href="/signup">
+              Sign Up
+            </Link>
+          </div>
+        </header>
+      ) : null}
 
       <section className={style.hero}>
         <Image className={style.heroBg} src="/hero-img.png" alt="Operation Surf members by the ocean" fill />
