@@ -97,6 +97,8 @@ export default function DashboardPage() {
   const [loadingShifts, setLoadingShifts] = useState(true);
   const [loadingDays, setLoadingDays] = useState(true);
 
+  const [pendingSignupIds, setPendingSignupIds] = useState<Set<string>>(new Set());
+
   const [error, setError] = useState<string | null>(null);
 
   const userId = session?.user?.id;
@@ -199,9 +201,19 @@ export default function DashboardPage() {
 
   async function handleSignUp(shiftId: string) {
     if (!userId) {
-      setError("You must be signed in to sign up for an day.");
+      setError("You must be signed in to sign up for a day.");
       return;
     }
+
+    if (registeredShiftIds.has(shiftId) || pendingSignupIds.has(shiftId)) {
+      return;
+    }
+
+    setPendingSignupIds((current) => {
+      const next = new Set(current);
+      next.add(shiftId);
+      return next;
+    });
 
     try {
       setError(null);
@@ -224,10 +236,21 @@ export default function DashboardPage() {
 
       const json: { signup: ApiSignup } = await res.json();
 
-      // Add the new signup locally so the registered badge/list updates immediately.
-      setSignups((current) => [...current, json.signup]);
+      setSignups((current) => {
+        if (current.some((signup) => signup.shiftId === shiftId)) {
+          return current;
+        }
+
+        return [...current, json.signup];
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong signing up.");
+    } finally {
+      setPendingSignupIds((current) => {
+        const next = new Set(current);
+        next.delete(shiftId);
+        return next;
+      });
     }
   }
 
