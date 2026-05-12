@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import styles from "@/styles/Dashboard.module.css";
 import { Home, Calendar, Bell, User, Users, Pencil, Mail, Phone, MapPin, Clock, Check, Info } from "lucide-react";
@@ -106,6 +106,11 @@ export default function Dashboard({
   const [savingProfile, setSavingProfile] = useState(false);
   const [saveProfileError, setSaveProfileError] = useState("");
 
+  // for accessibility
+  const editButtonRef = useRef<HTMLButtonElement | null>(null);
+  const firstModalInputRef = useRef<HTMLInputElement | null>(null);
+
+  // for validating profile editing
   const profileError = profileForm ? getProfileError(profileForm) : "";
   const profileChanged = !profilesMatch(profile, profileForm);
   const canSubmitProfile = Boolean(profileForm && profileChanged && !profileError && !savingProfile);
@@ -136,6 +141,24 @@ export default function Dashboard({
     }
   }
 
+  // allow modal exiting with esc key + focus handling
+  useEffect(() => {
+    if (!editingProfile) return;
+
+    firstModalInputRef.current?.focus();
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setEditingProfile(false);
+        editButtonRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [editingProfile]);
+
   function updateEmergencyContactForm(field: keyof EmergencyContact, value: string) {
     if (!profileForm) return;
 
@@ -163,28 +186,28 @@ export default function Dashboard({
           <div className={styles.navLinks}>
             <a href="/" className={styles.navLink}>
               <span className={styles.navIcon}>
-                <Home size={21} />
+                <Home size={21} aria-hidden="true" />
               </span>
               Home
             </a>
 
             <a href="/programs" className={styles.navLink}>
               <span className={styles.navIcon}>
-                <Calendar size={21} />
+                <Calendar size={21} aria-hidden="true" />
               </span>
               Programs
             </a>
 
             <a href="/notifications" className={styles.navLink}>
               <span className={styles.navIcon}>
-                <Bell size={21} />
+                <Bell size={21} aria-hidden="true" />
               </span>
               Notifications
             </a>
 
             <a href="/account" className={styles.navLink}>
               <span className={styles.navIcon}>
-                <User size={21} />
+                <User size={21} aria-hidden="true" />
               </span>
               My Account
             </a>
@@ -212,6 +235,7 @@ export default function Dashboard({
 
                 {/* profile editing */}
                 <button
+                  ref={editButtonRef}
                   className={styles.editBtn}
                   aria-label="Edit profile"
                   onClick={() => {
@@ -221,13 +245,21 @@ export default function Dashboard({
                   }}
                   disabled={!profile}
                 >
-                  <Pencil className={styles.icon} size={16} strokeWidth={2} />
+                  <Pencil className={styles.icon} size={16} strokeWidth={2} aria-hidden="true" />
                 </button>
               </div>
 
-              {loadingProfile && <p className={styles.statusMsg}>Loading profile...</p>}
+              {loadingProfile && (
+                <p className={styles.statusMsg} role="status">
+                  Loading profile...
+                </p>
+              )}
 
-              {!loadingProfile && !profile && <p className={styles.statusMsg}>No profile found.</p>}
+              {!loadingProfile && !profile && (
+                <p className={styles.statusMsg} role="status">
+                  No profile found.
+                </p>
+              )}
 
               {!loadingProfile && profile && (
                 <>
@@ -242,25 +274,25 @@ export default function Dashboard({
                   <div className={styles.profileFields}>
                     <p className={styles.fieldLabel}>Full Name</p>
                     <p className={styles.fieldValue}>
-                      <User className={styles.icon} size={14} strokeWidth={1.8} />
+                      <User className={styles.icon} size={14} strokeWidth={1.8} aria-hidden="true" />
                       {profile.fullName}
                     </p>
 
                     <p className={styles.fieldLabel}>Email</p>
                     <p className={styles.fieldValue}>
-                      <Mail className={styles.icon} size={14} strokeWidth={1.8} />
+                      <Mail className={styles.icon} size={14} strokeWidth={1.8} aria-hidden="true" />
                       {profile.email}
                     </p>
 
                     <p className={styles.fieldLabel}>Phone</p>
                     <p className={styles.fieldValue}>
-                      <Phone className={styles.icon} size={14} strokeWidth={1.8} />
+                      <Phone className={styles.icon} size={14} strokeWidth={1.8} aria-hidden="true" />
                       {profile.phone}
                     </p>
 
                     <p className={styles.fieldLabel}>Location</p>
                     <p className={styles.fieldValue}>
-                      <MapPin className={styles.icon} size={14} strokeWidth={1.8} />
+                      <MapPin className={styles.icon} size={14} strokeWidth={1.8} aria-hidden="true" />
                       {profile.location}
                     </p>
 
@@ -268,24 +300,24 @@ export default function Dashboard({
 
                     <div className={styles.emergencyContactFields}>
                       <div className={styles.fieldValue}>
-                        <User className={styles.icon} size={14} />
+                        <User className={styles.icon} size={14} aria-hidden="true" />
                         <span>{profile.emergencyContact.name}</span>
                       </div>
 
                       <div className={styles.fieldValue}>
-                        <Users className={styles.icon} size={14} />
+                        <Users className={styles.icon} size={14} aria-hidden="true" />
                         <span className={profile.emergencyContact.relationship ? undefined : styles.emptyField}>
                           {profile.emergencyContact.relationship || "(Relationship not specified)"}
                         </span>
                       </div>
 
                       <div className={styles.fieldValue}>
-                        <Phone className={styles.icon} size={14} />
+                        <Phone className={styles.icon} size={14} aria-hidden="true" />
                         <span>{profile.emergencyContact.phone}</span>
                       </div>
 
                       <div className={styles.fieldValue}>
-                        <Mail className={styles.icon} size={14} />
+                        <Mail className={styles.icon} size={14} aria-hidden="true" />
                         <span>{profile.emergencyContact.email}</span>
                       </div>
                     </div>
@@ -298,10 +330,16 @@ export default function Dashboard({
             <div className={styles.registeredCard}>
               <h2 className={styles.registeredCardTitle}>My Registered Days</h2>
 
-              {loadingDays && <p className={styles.statusMsg}>Loading days...</p>}
+              {loadingDays && (
+                <p className={styles.statusMsg} role="status">
+                  Loading days...
+                </p>
+              )}
 
               {!loadingDays && registeredDays.length === 0 && (
-                <p className={styles.statusMsg}>No registered days yet.</p>
+                <p className={styles.statusMsg} role="status">
+                  No registered days yet.
+                </p>
               )}
 
               {!loadingDays &&
@@ -332,9 +370,17 @@ export default function Dashboard({
             <div className={styles.daysCard}>
               <h2 className={styles.daysCardTitle}>Available Days</h2>
 
-              {loadingShifts && <p className={styles.statusMsg}>Loading days...</p>}
+              {loadingShifts && (
+                <p className={styles.statusMsg} role="status">
+                  Loading days...
+                </p>
+              )}
 
-              {!loadingShifts && shifts.length === 0 && <p className={styles.statusMsg}>No days available.</p>}
+              {!loadingShifts && shifts.length === 0 && (
+                <p className={styles.statusMsg} role="status">
+                  No days available.
+                </p>
+              )}
 
               {!loadingShifts &&
                 shifts.map((shift) => {
@@ -351,7 +397,7 @@ export default function Dashboard({
                         <p className={styles.shiftName}>{shift.name}</p>
 
                         <div className={styles.shiftTimeRow}>
-                          <Clock className={styles.icon} size={14} strokeWidth={1.8} />
+                          <Clock className={styles.icon} size={14} strokeWidth={1.8} aria-hidden="true" />
                           <span className={styles.shiftTime}>
                             {shift.startTime} - {shift.endTime}
                           </span>
@@ -361,7 +407,7 @@ export default function Dashboard({
                       <div className={styles.shiftCardRight}>
                         {isRegistered ? (
                           <span className={styles.registeredBadge}>
-                            <Check className={styles.icon} size={14} strokeWidth={2} />
+                            <Check className={styles.icon} size={14} strokeWidth={2} aria-hidden="true" />
                             Registered
                           </span>
                         ) : (
@@ -383,93 +429,114 @@ export default function Dashboard({
 
         {editingProfile && profileForm && (
           <div className={styles.modalOverlay}>
-            <div className={styles.profileModal}>
-              <h2 className={styles.modalTitle}>Edit Profile</h2>
+            <div className={styles.profileModal} role="dialog" aria-modal="true" aria-labelledby="edit-profile-title">
+              <h2 id="edit-profile-title" className={styles.modalTitle}>
+                Edit Profile
+              </h2>
 
               <div className={styles.requiredFieldsNote}>
-                <Info size={14} />
+                <Info size={14} aria-hidden="true" />
                 <span> Required fields are marked with an asterisk.</span>
               </div>
 
-              {profileChanged && profileError && <p className={styles.errorMsg}>{profileError}</p>}
-              {saveProfileError && <p className={styles.errorMsg}>{saveProfileError}</p>}
+              {profileChanged && profileError && (
+                <p className={styles.errorMsg} role="alert">
+                  {profileError}
+                </p>
+              )}
+              {saveProfileError && (
+                <p className={styles.errorMsg} role="alert">
+                  {saveProfileError}
+                </p>
+              )}
 
               <h3 className={styles.modalSectionTitle}>My Profile</h3>
-              <label className={styles.modalLabel}>
+              <label className={styles.modalLabel} htmlFor="profile-full-name">
                 <span className={styles.requiredStar}> * </span>
                 Full Name
               </label>
               <input
+                ref={firstModalInputRef}
+                id="profile-full-name"
                 className={styles.modalInput}
                 value={profileForm.fullName}
                 onChange={(e) => updateProfileForm("fullName", e.target.value)}
               />
 
-              <label className={styles.modalLabel}>
+              <label className={styles.modalLabel} htmlFor="profile-email">
                 <span className={styles.requiredStar}> * </span>
                 Email
               </label>
               <input
+                id="profile-email"
                 className={styles.modalInput}
                 value={profileForm.email}
                 onChange={(e) => updateProfileForm("email", e.target.value)}
               />
 
-              <label className={styles.modalLabel}>
+              <label className={styles.modalLabel} htmlFor="profile-phone">
                 <span className={styles.requiredStar}> * </span>
                 Phone
               </label>
               <input
+                id="profile-phone"
                 className={styles.modalInput}
                 value={profileForm.phone}
                 onChange={(e) => updateProfileForm("phone", e.target.value)}
               />
 
-              <label className={styles.modalLabel}>
+              <label className={styles.modalLabel} htmlFor="profile-location">
                 <span className={styles.requiredStar}> * </span>
                 Location
               </label>
               <input
+                id="profile-location"
                 className={styles.modalInput}
                 value={profileForm.location}
                 onChange={(e) => updateProfileForm("location", e.target.value)}
               />
 
-              <br></br>
+              <br />
               <h3 className={styles.modalSectionTitle}>Emergency Contact</h3>
 
-              <label className={styles.modalLabel}>
+              <label className={styles.modalLabel} htmlFor="emergency-contact-name">
                 <span className={styles.requiredStar}> * </span>
                 Name
               </label>
               <input
+                id="emergency-contact-name"
                 className={styles.modalInput}
                 value={profileForm.emergencyContact.name}
                 onChange={(e) => updateEmergencyContactForm("name", e.target.value)}
               />
 
-              <label className={styles.modalLabel}>Relationship</label>
+              <label className={styles.modalLabel} htmlFor="emergency-relationship">
+                Relationship
+              </label>
               <input
+                id="emergency-relationship"
                 className={styles.modalInput}
                 value={profileForm.emergencyContact.relationship}
                 onChange={(e) => updateEmergencyContactForm("relationship", e.target.value)}
               />
 
-              <label className={styles.modalLabel}>
+              <label className={styles.modalLabel} htmlFor="emergency-contact-phone">
                 <span className={styles.requiredStar}> * </span>
                 Phone
               </label>
               <input
+                id="emergency-contact-phone"
                 className={styles.modalInput}
                 value={profileForm.emergencyContact.phone}
                 onChange={(e) => updateEmergencyContactForm("phone", e.target.value)}
               />
 
-              <label className={styles.modalLabel}>
+              <label className={styles.modalLabel} htmlFor="emergency-email">
                 <span className={styles.requiredStar}> * </span>
                 Email
               </label>
               <input
+                id="emergency-email"
                 className={styles.modalInput}
                 value={profileForm.emergencyContact.email}
                 onChange={(e) => updateEmergencyContactForm("email", e.target.value)}
@@ -478,13 +545,22 @@ export default function Dashboard({
               <div className={styles.modalButtons}>
                 <button
                   className={styles.modalCancelBtn}
-                  onClick={() => setEditingProfile(false)}
+                  onClick={() => {
+                    setEditingProfile(false);
+                    editButtonRef.current?.focus();
+                  }}
                   disabled={savingProfile}
+                  aria-label="Cancel profile editing"
                 >
                   Cancel
                 </button>
 
-                <button className={styles.modalSaveBtn} onClick={handleProfileSave} disabled={!canSubmitProfile}>
+                <button
+                  className={styles.modalSaveBtn}
+                  onClick={handleProfileSave}
+                  disabled={!canSubmitProfile}
+                  aria-label="Submit profile changes"
+                >
                   {savingProfile ? "Saving..." : "Submit Changes"}
                 </button>
               </div>

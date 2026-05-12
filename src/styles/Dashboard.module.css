@@ -4,7 +4,6 @@
 }
 
 /* navbar */
-/* navbar */
 .navbar {
   height: 80px;
   background: #979483;
@@ -160,7 +159,7 @@
   font-size: 1.2rem;
   font-weight: 400;
   color: rgba(124, 120, 69, 1);
-  margin: 0.1 0 0.5rem 0;
+  margin: 0.5rem 0 0.5rem 0;
 }
 
 .registeredDayItem {
@@ -384,7 +383,7 @@
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  padding-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .avatarCircle {
@@ -492,6 +491,7 @@
   justify-content: center;
 
   padding: 1rem;
+  overflow-y: auto;
 }
 
 .requiredFieldsNote {
@@ -508,6 +508,8 @@
 .profileModal {
   width: 100%;
   max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
 
   background: white;
   border-radius: 12px;
@@ -588,4 +590,84 @@
 
 .requiredStar {
   color: red;
+}
+
+/* for mobile */
+@media (max-width: 480px) {
+  .navbar {
+    height: auto;
+    padding: 12px 16px;
+
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .logoImg {
+    height: 36px;
+  }
+
+  .navLinks {
+    width: 100%;
+    gap: 0.85rem;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .navLink {
+    flex: 0 0 auto;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .navIcon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero {
+    height: 360px;
+  }
+
+  .heroContent {
+    padding: 0 20px;
+  }
+
+  .heroTitle {
+    font-size: 34px;
+  }
+
+  .heroSubtitle {
+    font-size: 17px;
+    line-height: 24px;
+  }
+
+  .registeredCard,
+  .profileCard,
+  .daysCard {
+    padding: 1rem;
+  }
+
+  .shiftCard {
+    padding: 1rem;
+  }
+
+  .shiftCardHeader {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .profileModal {
+    max-width: 100%;
+    padding: 1rem;
+  }
+
+  .modalButtons {
+    flex-direction: column-reverse;
+  }
+
+  .modalCancelBtn,
+  .modalSaveBtn {
+    width: 100%;
+  }
 }
