@@ -70,7 +70,7 @@ function getAge(birthday: Date | string): number | "-" {
 }
 
 function getVolunteerRole(person: IVolunteer): string {
-  return person.role || person.shiftRole || person.service || "Dinner Pickup";
+  return person.role || "N/A";
 }
 
 function formatGender(sex: IVolunteer["sex"]): string {
@@ -301,15 +301,10 @@ const CheckIn = ({ params }: Props) => {
               type="search"
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search event, location etc."
+              placeholder="Search name, role, etc."
               aria-label="Search volunteers"
             />
           </label>
-
-          <button type="button" className={styles.filterButton}>
-            <Funnel size={16} strokeWidth={2} aria-hidden="true" />
-            Filter
-          </button>
         </section>
 
         {error && <div className={styles.error}>{error}</div>}
