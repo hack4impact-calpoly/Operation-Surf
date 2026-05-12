@@ -172,6 +172,10 @@
   gap: 0.7rem;
 }
 
+.registeredDayItem:last-child {
+  margin-bottom: 0.6rem;
+}
+
 .registeredDayTop {
   display: flex;
   justify-content: space-between;
