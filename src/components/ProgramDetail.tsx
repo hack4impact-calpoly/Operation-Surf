@@ -161,7 +161,7 @@ export default function ProgramDetail({ programId, program, viewerName }: Progra
 
       {/* the shift list */}
       <section className={styles.shiftSection} aria-label="Program schedule">
-        <h2 className={styles.shiftTitle}>Shift</h2>
+        <h2 className={styles.shiftTitle}>Days</h2>
 
         {loadingDays && <p className={styles.statusMsg}>Loading...</p>}
         {error && <p className={styles.errorMsg}>{error}</p>}

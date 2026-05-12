@@ -5,27 +5,34 @@ import type { SyntheticEvent } from "react";
 
 const fallbackImage = "/operation-surf.png";
 
-const getImageSource = (src: string) => {
+const getImageSource = (src?: string | null) => {
+  if (typeof src !== "string") {
+    return fallbackImage;
+  }
+
   const trimmedSrc = src.trim();
 
   if (!trimmedSrc) {
     return fallbackImage;
   }
 
+  const normalizedSrc = trimmedSrc.replaceAll("\\", "/");
+
   if (
-    trimmedSrc.startsWith("/") ||
-    trimmedSrc.startsWith("http") ||
-    trimmedSrc.startsWith("data:") ||
-    trimmedSrc.startsWith("blob:")
+    normalizedSrc.startsWith("/") ||
+    normalizedSrc.startsWith("http://") ||
+    normalizedSrc.startsWith("https://") ||
+    normalizedSrc.startsWith("data:") ||
+    normalizedSrc.startsWith("blob:")
   ) {
-    return trimmedSrc;
+    return normalizedSrc;
   }
 
-  return `/${trimmedSrc}`;
+  return `/${normalizedSrc}`;
 };
 
 type ProgramCardImageProps = {
-  src: string;
+  src?: string | null;
   alt: string;
   className?: string;
 };
@@ -38,6 +45,7 @@ export default function ProgramCardImage({ src, alt, className }: ProgramCardIma
       return;
     }
 
+    image.onerror = null;
     image.src = fallbackImage;
   };
 
