@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import styles from "@/styles/Dashboard.module.css";
-import { Home, Calendar, Bell, User, Users, Pencil, Mail, Phone, MapPin, Clock, Check } from "lucide-react";
+import { Home, Calendar, Bell, User, Users, Pencil, Mail, Phone, MapPin, Clock, Check, Info } from "lucide-react";
 import { Inter } from "next/font/google";
 
 const inter = Inter({
@@ -82,7 +82,7 @@ function getProfileError(profile: Profile) {
   if (!profile.location.trim()) return "Location is required.";
 
   if (!profile.emergencyContact.name.trim()) return "Emergency contact name is required.";
-  if (!phoneRegex.test(profile.emergencyContact.phone)) return "Please enter a valid emergency contact phone.";
+  if (!phoneRegex.test(profile.emergencyContact.phone)) return "Please enter a valid emergency contact phone number.";
   if (!emailRegex.test(profile.emergencyContact.email)) return "Please enter a valid emergency contact email.";
 
   return "";
@@ -104,6 +104,7 @@ export default function Dashboard({
   const [editingProfile, setEditingProfile] = useState(false);
   const [profileForm, setProfileForm] = useState<Profile | null>(null);
   const [savingProfile, setSavingProfile] = useState(false);
+  const [saveProfileError, setSaveProfileError] = useState("");
 
   const profileError = profileForm ? getProfileError(profileForm) : "";
   const profileChanged = !profilesMatch(profile, profileForm);
@@ -123,8 +124,13 @@ export default function Dashboard({
 
     try {
       setSavingProfile(true);
+      setSaveProfileError("");
+
       await onSaveProfile(profileForm);
+
       setEditingProfile(false);
+    } catch (err) {
+      setSaveProfileError(err instanceof Error ? err.message : "Failed to update profile.");
     } finally {
       setSavingProfile(false);
     }
@@ -210,6 +216,7 @@ export default function Dashboard({
                   aria-label="Edit profile"
                   onClick={() => {
                     setProfileForm(profile);
+                    setSaveProfileError("");
                     setEditingProfile(true);
                   }}
                   disabled={!profile}
@@ -379,7 +386,13 @@ export default function Dashboard({
             <div className={styles.profileModal}>
               <h2 className={styles.modalTitle}>Edit Profile</h2>
 
+              <div className={styles.requiredFieldsNote}>
+                <Info size={14} />
+                <span> Required fields are marked with an asterisk.</span>
+              </div>
+
               {profileChanged && profileError && <p className={styles.errorMsg}>{profileError}</p>}
+              {saveProfileError && <p className={styles.errorMsg}>{saveProfileError}</p>}
 
               <h3 className={styles.modalSectionTitle}>My Profile</h3>
               <label className={styles.modalLabel}>

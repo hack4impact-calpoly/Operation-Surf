@@ -302,7 +302,8 @@ export default function DashboardPage() {
     });
 
     if (!res.ok) {
-      throw new Error("Failed to update profile.");
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message ?? "Failed to update profile.");
     }
 
     setProfile(updatedProfile);

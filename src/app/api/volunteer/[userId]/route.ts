@@ -67,6 +67,7 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
 // Helpers for PATCH /api/volunteer/[userId]:
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^[0-9+\-() ]{7,20}$/;
+const duplicateEmailMessage = "Account with this email already exists. Please enter another email.";
 
 const isValidString = (value: unknown) => typeof value === "string" && value.trim().length > 0;
 
@@ -125,11 +126,12 @@ export async function PATCH(request: Request, { params }: IParams): Promise<Next
     }
 
     const body = (await request.json()) as Record<string, unknown>;
-    const emergencyContact = body.emergencyContact as Record<string, unknown>;
 
     if (!isValidProfileUpdate(body)) {
       return NextResponse.json({ message: "Invalid profile update." }, { status: 400 });
     }
+
+    const emergencyContact = body.emergencyContact as Record<string, unknown>;
 
     // Trim inputs
     const trimmedName = (body.name as string).trim();
@@ -137,13 +139,42 @@ export async function PATCH(request: Request, { params }: IParams): Promise<Next
     const trimmedPhone = (body.phone as string).trim();
     const trimmedLocation = (body.location as string).trim();
 
+    // For validating email updates (prevent collisions)
+    const existingVolunteer = (await Volunteer.findOne({ userId: userId }).lean()) as Record<string, unknown> | null;
+
+    if (!existingVolunteer) {
+      return NextResponse.json({ message: "Volunteer not found." }, { status: 404 });
+    }
+
+    const currentEmail = String(existingVolunteer.email ?? "").toLowerCase();
+    const nextEmail = trimmedEmail.toLowerCase();
+
+    if (nextEmail !== currentEmail) {
+      const duplicateVolunteer = await Volunteer.findOne({
+        email: nextEmail,
+        userId: { $ne: userId },
+      }).lean();
+
+      const duplicateAuthUser = await client
+        .db()
+        .collection("user")
+        .findOne({
+          email: nextEmail,
+          _id: { $ne: new ObjectId(userId) },
+        });
+
+      if (duplicateVolunteer || duplicateAuthUser) {
+        return NextResponse.json({ message: duplicateEmailMessage }, { status: 409 });
+      }
+    }
+
     // Update only editable profile fields from the volunteer dashboard
     const updatedVolunteer = (await Volunteer.findOneAndUpdate(
       { userId: userId },
       {
         $set: {
           name: trimmedName,
-          email: trimmedEmail,
+          email: nextEmail,
           phone: trimmedPhone,
           location: trimmedLocation,
           "emergencyContact.name": String(emergencyContact.name).trim(),
@@ -160,7 +191,7 @@ export async function PATCH(request: Request, { params }: IParams): Promise<Next
     }
 
     // Keep Better Auth user data in sync with volunteer profile data
-    await client
+    const authUpdate = await client
       .db()
       .collection("user")
       .updateOne(
@@ -168,11 +199,15 @@ export async function PATCH(request: Request, { params }: IParams): Promise<Next
         {
           $set: {
             name: trimmedName,
-            email: trimmedEmail,
+            email: nextEmail,
             updatedAt: new Date(),
           },
         },
       );
+
+    if (authUpdate.matchedCount === 0) {
+      return NextResponse.json({ message: "Auth user not found." }, { status: 404 });
+    }
 
     return NextResponse.json(updatedVolunteer, { status: 200 });
   } catch (err) {
