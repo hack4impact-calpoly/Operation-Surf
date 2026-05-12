@@ -13,7 +13,9 @@ type VolunteerResponse = {
   location: string;
   emergencyContact?: {
     name?: string;
+    relationship?: string;
     phone?: string;
+    email?: string;
   };
 };
 
@@ -34,13 +36,20 @@ type ApiSignup = {
   timestamp: string;
 };
 
+type EmergencyContact = {
+  name: string;
+  relationship: string;
+  phone: string;
+  email: string;
+};
+
 type Profile = {
   profileId: string;
   fullName: string;
   email: string;
   phone: string;
   location: string;
-  emergencyContact: string;
+  emergencyContact: EmergencyContact;
 };
 
 type Shift = {
@@ -72,18 +81,13 @@ function formatRegisteredDate(dateStr: string): string {
   });
 }
 
-function buildEmergencyContact(volunteer: VolunteerResponse): string {
-  const contact = volunteer.emergencyContact;
-
-  if (!contact?.name && !contact?.phone) {
-    return "Not provided";
-  }
-
-  if (contact.name && contact.phone) {
-    return `${contact.name} - ${contact.phone}`;
-  }
-
-  return contact.name ?? contact.phone ?? "Not provided";
+function buildEmergencyContact(volunteer: VolunteerResponse): EmergencyContact {
+  return {
+    name: volunteer.emergencyContact?.name ?? "",
+    relationship: volunteer.emergencyContact?.relationship ?? "",
+    phone: volunteer.emergencyContact?.phone ?? "",
+    email: volunteer.emergencyContact?.email ?? "",
+  };
 }
 
 export default function DashboardPage() {
@@ -273,6 +277,37 @@ export default function DashboardPage() {
     }
   }
 
+  async function handleSaveProfile(updatedProfile: Profile) {
+    if (!userId) {
+      throw new Error("You must be signed in to update your profile.");
+    }
+
+    const res = await fetch(`/api/volunteer/${userId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: updatedProfile.fullName,
+        email: updatedProfile.email,
+        phone: updatedProfile.phone,
+        location: updatedProfile.location,
+        emergencyContact: {
+          name: updatedProfile.emergencyContact.name,
+          relationship: updatedProfile.emergencyContact.relationship,
+          phone: updatedProfile.emergencyContact.phone,
+          email: updatedProfile.emergencyContact.email,
+        },
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to update profile.");
+    }
+
+    setProfile(updatedProfile);
+  }
+
   return (
     <>
       {error && <div className={styles.errorBanner}>{error}</div>}
@@ -287,6 +322,7 @@ export default function DashboardPage() {
         loadingDays={loadingDays || loadingSession}
         onSignUp={handleSignUp}
         onCancel={handleCancel}
+        onSaveProfile={handleSaveProfile}
       />
     </>
   );

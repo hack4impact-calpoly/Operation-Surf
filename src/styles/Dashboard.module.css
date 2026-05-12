@@ -403,6 +403,12 @@
   gap: 0.5rem;
 }
 
+.emergencyContactFields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .fieldLabel {
   font-size: 0.7rem;
   color: #9ca3af;
@@ -417,6 +423,18 @@
   font-size: 15px;
   font-weight: 400;
   margin-top: 0;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.fieldValue svg {
+  flex-shrink: 0;
+}
+
+.emptyField {
+  color: #9ca3af;
+  font-style: italic;
 }
 
 /* status */
@@ -453,4 +471,105 @@
   box-shadow:
     0px 4px 6px -4px rgba(0, 0, 0, 0.1),
     0px 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+/* profile editing modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1rem;
+}
+
+.profileModal {
+  width: 100%;
+  max-width: 480px;
+
+  background: white;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modalTitle {
+  color: rgba(124, 120, 69, 1);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 0.5rem 0;
+}
+
+.modalSectionTitle {
+  color: #7c7845;
+  font-weight: 400;
+}
+
+.modalLabel {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.modalInput {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.7rem;
+  font-size: 0.9rem;
+}
+
+.modalInput:focus {
+  outline: 2px solid rgba(124, 120, 69, 0.35);
+  border-color: rgba(124, 120, 69, 1);
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.modalCancelBtn {
+  background: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+}
+
+.modalSaveBtn {
+  background-color: #7c7845;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+}
+
+.modalSaveBtn:hover:not(:disabled) {
+  background-color: rgba(90, 95, 60, 1);
+}
+
+.modalSaveBtn:disabled {
+  background-color: rgba(124, 120, 69, 0.45);
+  cursor: not-allowed;
+}
+
+.requiredStar {
+  color: red;
 }

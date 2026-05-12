@@ -10,7 +10,12 @@ export default function DashboardPreviewPage() {
     email: "john.mustang@gmail.com",
     phone: "(555) 123-4567",
     location: "San Diego, CA",
-    emergencyContact: "Jane Mustang - (555) 987-6543",
+    emergencyContact: {
+      name: "Jane Mustang",
+      relationship: "Sister",
+      phone: "(555) 987-6543",
+      email: "jane.mustang@example.com",
+    },
   };
 
   const mockShifts = [
@@ -98,6 +103,7 @@ export default function DashboardPreviewPage() {
       onCancel={(shiftId) => {
         console.log("cancel", shiftId);
       }}
+      onSaveProfile={async () => {}}
     />
   );
 }
