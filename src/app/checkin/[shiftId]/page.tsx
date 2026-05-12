@@ -1,87 +1,36 @@
 "use client";
+
+import { CalendarDays, Check, ChevronDown, Funnel, Home, Search, User, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./CheckIn.module.css";
-import { useState, useEffect } from "react";
 
 interface LiabilityWaiver {
   shiftId: string;
   accepted: boolean;
-  acceptedAt?: Date;
-  // annual renewal logic uses acceptedAt + expiresAt
-  expiresAt?: Date;
+  acceptedAt?: Date | string;
+  expiresAt?: Date | string;
 }
 
 interface IVolunteer {
-  // Basic bio
-  // userId to join on user/account tables
   userId: string;
   name: string;
   username: string;
   email: string;
   phone: string;
-
-  birthday: Date;
+  sex: "female" | "male" | "intersex" | "prefer_not_to_say" | "other";
+  birthday: Date | string;
   location: string;
-
-  // Liability waiver logic
-  liabilityWaiver: LiabilityWaiver[]; // must be accepted to sign up for any shift
-
+  liabilityWaiver: LiabilityWaiver[];
   backgroundCheck: boolean;
+  role?: string;
+  service?: string;
+  shiftRole?: string;
 }
 
-function PersonRow({ person, onCheckin, onAbsent }) {
-  return (
-    <div className={styles.container19}>
-      <div className={styles.container20}>
-        <div className={styles.container21}>
-          <div className={styles.text}></div>
-
-          <div className={styles.container22}>
-            <div
-              className={styles.imageLoydSmith}
-              style={person.imageUrl ? { backgroundImage: `url(${person.imageUrl})` } : undefined}
-            ></div>
-          </div>
-        </div>
-
-        <div className={styles.container23}>
-          <div className={styles.container24}>
-            <div className={styles.loydSmith}>{person.name}</div>
-          </div>
-
-          <div className={styles.container25}>
-            <div className={styles.loyd123GmailCom}>{person.email}</div>
-          </div>
-        </div>
-
-        <div className={styles.container26}>
-          <div className={styles.two5}>{person.age}</div>
-        </div>
-
-        <div className={styles.container27}>
-          <div className={styles.male}>{person.gender}</div>
-        </div>
-
-        <div className={styles.container28}>
-          <div className={styles.nine16428783}>{person.phone}</div>
-        </div>
-
-        <div className={styles.container29}>
-          <div className={styles.dinnerPickup}>{person.service}</div>
-        </div>
-
-        <div className={styles.container30}>
-          <button type="button" className={styles.button2} onClick={() => onCheckin(person)}>
-            <img className={styles.icon4} src="/icon3.svg" alt="Check-in" />
-          </button>
-
-          <button type="button" className={styles.button3} onClick={() => onAbsent(person)}>
-            <img className={styles.icon5} src="/icon4.svg" alt="Mark Absent" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+type AttendanceStatus = "checkedIn" | "absent";
+type SortOption = "name" | "age" | "gender" | "role";
 
 type Props = {
   params: {
@@ -89,32 +38,122 @@ type Props = {
   };
 };
 
+const genderLabels: Record<IVolunteer["sex"], string> = {
+  female: "Female",
+  male: "Male",
+  intersex: "Intersex",
+  prefer_not_to_say: "Prefer not to say",
+  other: "Other",
+};
+
+function getAge(birthday: Date | string): number | "-" {
+  const birthDate = new Date(birthday);
+
+  if (Number.isNaN(birthDate.getTime())) {
+    return "-";
+  }
+
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const birthdayHasPassed =
+    today.getMonth() > birthDate.getMonth() ||
+    (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
+
+  return birthdayHasPassed ? age : age - 1;
+}
+
+function getVolunteerRole(person: IVolunteer): string {
+  return person.role || person.shiftRole || person.service || "Dinner Pickup";
+}
+
+function formatGender(sex: IVolunteer["sex"]): string {
+  return genderLabels[sex] || sex;
+}
+
+function PersonRow(props: {
+  person: IVolunteer;
+  status?: AttendanceStatus;
+  onStatusChange: (person: IVolunteer, status: AttendanceStatus) => void;
+}) {
+  const { person, status, onStatusChange } = props;
+
+  return (
+    <div className={styles.tableRow}>
+      <div className={styles.avatarCell}>
+        <div className={styles.avatar} aria-hidden="true" />
+      </div>
+
+      <div className={styles.personCell}>
+        <span className={styles.personName}>{person.name}</span>
+        <span className={styles.personEmail}>{person.email}</span>
+      </div>
+
+      <div className={styles.tableCell}>{getAge(person.birthday)}</div>
+      <div className={styles.tableCell}>{formatGender(person.sex)}</div>
+      <div className={styles.tableCell}>{person.phone}</div>
+      <div className={styles.tableCell}>{getVolunteerRole(person)}</div>
+
+      <div className={styles.statusActions}>
+        <button
+          type="button"
+          className={`${styles.statusButton} ${styles.checkButton} ${
+            status === "checkedIn" ? styles.activeCheckButton : ""
+          }`}
+          onClick={() => onStatusChange(person, "checkedIn")}
+          aria-label={`Check in ${person.name}`}
+        >
+          <Check size={13} strokeWidth={2} aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          className={`${styles.statusButton} ${styles.absentButton} ${
+            status === "absent" ? styles.activeAbsentButton : ""
+          }`}
+          onClick={() => onStatusChange(person, "absent")}
+          aria-label={`Mark ${person.name} absent`}
+        >
+          <X size={13} strokeWidth={2} aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const CheckIn = ({ params }: Props) => {
   const { shiftId } = params;
 
   const [volunteers, setVolunteers] = useState<IVolunteer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [checkedIn, setCheckedIn] = useState<IVolunteer[]>([]);
-  const [absent, setAbsent] = useState<IVolunteer[]>([]);
+  const [attendance, setAttendance] = useState<Record<string, AttendanceStatus>>({});
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState<SortOption>("name");
 
   useEffect(() => {
     const fetchVolunteers = async () => {
       try {
         const response = await fetch("/api/volunteer");
+
         if (!response.ok) {
           throw new Error("Failed to fetch volunteers");
         }
+
         const data = await response.json();
-        console.log(data);
-        const allVolunteers = data.volunteers.filter((volunteer: IVolunteer) =>
-          volunteer.liabilityWaiver.some((waiver) => waiver.shiftId === shiftId),
+        const volunteerList: IVolunteer[] = Array.isArray(data.volunteers) ? data.volunteers : [];
+        const shiftVolunteers = volunteerList.filter((volunteer) =>
+          Array.isArray(volunteer.liabilityWaiver)
+            ? volunteer.liabilityWaiver.some((waiver) => waiver.shiftId === shiftId)
+            : false,
         );
-        console.log(allVolunteers);
-        console.log(shiftId);
-        setVolunteers(allVolunteers);
+
+        setVolunteers(shiftVolunteers);
       } catch (err) {
-        setError(err.message);
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Failed to fetch volunteers");
+        }
       } finally {
         setLoading(false);
       }
@@ -123,178 +162,187 @@ const CheckIn = ({ params }: Props) => {
     fetchVolunteers();
   }, [shiftId]);
 
-  const handleCheckin = (person: IVolunteer) => {
-    // Implement check-in functionality here
-    console.log("Check-in person:", person);
-    let newCheckedIn = [...checkedIn, person];
-    setCheckedIn(newCheckedIn);
-  };
+  const displayedVolunteers = useMemo(() => {
+    const normalizedSearch = searchTerm.trim().toLowerCase();
 
-  const handleAbsent = (person: IVolunteer) => {
-    // Implement absent functionality here
-    console.log("Mark as absent person:", person);
-    let newAbsent = [...absent, person];
-    setAbsent(newAbsent);
+    const filteredVolunteers = volunteers.filter((person) => {
+      if (!normalizedSearch) {
+        return true;
+      }
+
+      return [
+        person.name,
+        person.email,
+        person.phone,
+        person.location,
+        formatGender(person.sex),
+        getVolunteerRole(person),
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(normalizedSearch);
+    });
+
+    return [...filteredVolunteers].sort((first, second) => {
+      if (sortBy === "age") {
+        const firstAge = getAge(first.birthday);
+        const secondAge = getAge(second.birthday);
+        return Number(firstAge === "-" ? 0 : firstAge) - Number(secondAge === "-" ? 0 : secondAge);
+      }
+
+      if (sortBy === "gender") {
+        return formatGender(first.sex).localeCompare(formatGender(second.sex));
+      }
+
+      if (sortBy === "role") {
+        return getVolunteerRole(first).localeCompare(getVolunteerRole(second));
+      }
+
+      return first.name.localeCompare(second.name);
+    });
+  }, [volunteers, searchTerm, sortBy]);
+
+  const checkedInCount = Object.values(attendance).filter((status) => status === "checkedIn").length;
+  const absentCount = Object.values(attendance).filter((status) => status === "absent").length;
+
+  const handleStatusChange = (person: IVolunteer, status: AttendanceStatus) => {
+    setAttendance((currentAttendance) => ({
+      ...currentAttendance,
+      [person.userId]: status,
+    }));
   };
 
   return (
-    <div className={styles.volunteerCheckinUpdated}>
-      <div className={styles.volunteerCheckIn}>
-        <div className={styles.container}>
-          <img className={styles.container2} src="container1.png" />
-          <div className={styles.container3}></div>
-          <div className={styles.container4}>
-            <div className={styles.heading1}>
-              <div className={styles.volunteerCheckIn2}>Volunteer Check-In </div>
-            </div>
-            <div className={styles.paragraph}>
-              <div className={styles.trackAndManageVolunteerAttendanceForEvents}>
-                Track and manage volunteer attendance for events{" "}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className={styles.container5}>
-          <div className={styles.container6}>
-            <div className={styles.container7}>
-              <div className={styles.container8}>
-                <div className={styles.label}>
-                  <div className={styles.sortBy}>Sort By </div>
-                  <div className={styles.container9}>
-                    <div className={styles.dropdown}>
-                      <div className={styles.option}></div>
-                      <div className={styles.option}></div>
-                      <div className={styles.option}></div>
-                    </div>
-                    <img className={styles.icon} src="icon0.svg" />
-                  </div>
-                </div>
-              </div>
-              <div className={styles.container10}>
-                <div className={styles.textInput}>
-                  <div className={styles.searchEventLocationEtc}>Search event, location etc. </div>
-                </div>
-                <img className={styles.icon2} src="icon1.svg" />
-              </div>
+    <div className={styles.page}>
+      <nav className={styles.navbar} aria-label="Primary navigation">
+        <div className={styles.navInner}>
+          <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
+            <Image
+              className={styles.logoImage}
+              src="/op_surf_logo_no_bg.png"
+              alt="Operation Surf"
+              width={43}
+              height={34}
+              priority
+            />
+          </Link>
 
-              <div className={styles.button}>
-                <img className={styles.icon3} src="icon2.svg" />
-                <div className={styles.filter}>Filter </div>
-              </div>
-            </div>
-          </div>
-          {error && <div className={styles.error}>{error}</div>}
-          <div className={styles.container11}>
-            <div className={styles.container12}>
-              <div className={styles.container13}>
-                <div className={styles.fullNameEmail}>Full Name / Email </div>
-              </div>
-              <div className={styles.container14}>
-                <div className={styles.age}>Age </div>
-              </div>
-              <div className={styles.container15}>
-                <div className={styles.gender}>Gender </div>
-              </div>
-              <div className={styles.container16}>
-                <div className={styles.contact}>Contact </div>
-              </div>
-              <div className={styles.container17}>
-                <div className={styles.role}>Role </div>
-              </div>
-              <div className={styles.container18}>
-                <div className={styles.status}>Status </div>
-              </div>
-            </div>
-            <div>
-              {volunteers.map((person: IVolunteer) => (
-                <PersonRow key={person.userId} person={person} onCheckin={handleCheckin} onAbsent={handleAbsent} />
-              ))}
-            </div>
-          </div>
-          <div className={styles.container32}>
-            <div className={styles.container33}>
-              <div className={styles.container25}>
-                <div className={styles.totalVolunteers}>Total Volunteers </div>
-              </div>
-              <div className={styles.container34}>
-                <div className={styles.six}>{volunteers.length}</div>
-              </div>
-            </div>
-            <div className={styles.container35}>
-              <div className={styles.container25}>
-                <div className={styles.checkedIn}>Checked In </div>
-              </div>
-              <div className={styles.container34}>
-                <div className={styles.zero}>{checkedIn.length} </div>
-              </div>
-            </div>
-            <div className={styles.container36}>
-              <div className={styles.container25}>
-                <div className={styles.absent}>Absent </div>
-              </div>
-              <div className={styles.container34}>
-                <div className={styles.zero2}>{absent.length} </div>
-              </div>
-            </div>
+          <div className={styles.navLinks}>
+            <Link href="/" className={styles.navLink}>
+              <Home size={11} strokeWidth={2} aria-hidden="true" />
+              <span>Home</span>
+            </Link>
+            <Link href="/programs" className={styles.navLink}>
+              <CalendarDays size={11} strokeWidth={2} aria-hidden="true" />
+              <span>Programs</span>
+            </Link>
+            <Link href="/my-account" className={styles.navLink}>
+              <User size={11} strokeWidth={2} aria-hidden="true" />
+              <span>My Account</span>
+            </Link>
           </div>
         </div>
-      </div>
-      <div className={styles.volunteerCheckIn3}>
-        <div className={styles.container37}>
-          <img className={styles.imageOperationSurfLogo} src="image-operation-surf-logo0.png" />
-          <div className={styles.container38}>
-            <div className={styles.button4}>
-              <img className={styles.icon16} src="icon15.svg" />
-              <div className={styles.text2}>
-                <div className={styles.home}>Home </div>
-              </div>
-            </div>
-            <div className={styles.button5}>
-              <img className={styles.icon17} src="icon16.svg" />
-              <div className={styles.text2}>
-                <div className={styles.programs}>Programs </div>
-              </div>
-            </div>
-            <div className={styles.button6}>
-              <img className={styles.icon18} src="icon17.svg" />
-              <div className={styles.text2}>
-                <div className={styles.notifications}>Notifications </div>
-              </div>
-            </div>
-            <div className={styles.button7}>
-              <img className={styles.icon19} src="icon18.svg" />
-              <div className={styles.text2}>
-                <div className={styles.myAccount}>My Account </div>
-              </div>
-            </div>
-          </div>
+      </nav>
+
+      <header className={styles.hero}>
+        <Image
+          className={styles.heroImage}
+          src="/hero-img.png"
+          alt="Operation Surf volunteers"
+          fill
+          sizes="100vw"
+          priority
+        />
+        <div className={styles.heroOverlay} />
+        <div className={styles.heroContent}>
+          <h1>Volunteer Check-In</h1>
+          <p>Track and manage volunteer attendance for events</p>
         </div>
-      </div>
-      <div className={styles.navigation}>
-        <div className={styles.container39}>
-          <img className={styles.frame} src="frame0.png" />
-          <div className={styles.container40}>
-            <div className={styles.button8}>
-              <img className={styles.icon20} src="icon19.svg" />
-              <div className={styles.text2}>
-                <div className={styles.home2}>Home </div>
-              </div>
-            </div>
-            <div className={styles.button9}>
-              <img className={styles.icon21} src="icon20.svg" />
-              <div className={styles.text2}>
-                <div className={styles.programs2}>Programs </div>
-              </div>
-            </div>
-            <div className={styles.button10}>
-              <img className={styles.icon22} src="icon21.svg" />
-              <div className={styles.text2}>
-                <div className={styles.myAccount2}>My Account </div>
-              </div>
-            </div>
+      </header>
+
+      <main className={styles.main}>
+        <section className={styles.toolbar} aria-label="Volunteer filters">
+          <label className={styles.sortGroup}>
+            <span>Sort By</span>
+            <span className={styles.selectWrapper}>
+              <select
+                className={styles.sortSelect}
+                value={sortBy}
+                onChange={(event) => setSortBy(event.target.value as SortOption)}
+                aria-label="Sort volunteers"
+              >
+                <option value="name">Name</option>
+                <option value="age">Age</option>
+                <option value="gender">Gender</option>
+                <option value="role">Role</option>
+              </select>
+              <ChevronDown size={10} strokeWidth={2.5} aria-hidden="true" />
+            </span>
+          </label>
+
+          <label className={styles.searchGroup}>
+            <Search size={12} strokeWidth={2} aria-hidden="true" />
+            <input
+              type="search"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Search event, location etc."
+              aria-label="Search volunteers"
+            />
+          </label>
+
+          <button type="button" className={styles.filterButton}>
+            <Funnel size={12} strokeWidth={2} aria-hidden="true" />
+            Filter
+          </button>
+        </section>
+
+        {error && <div className={styles.error}>{error}</div>}
+
+        <section className={styles.tableCard} aria-label="Volunteer attendance table">
+          <div className={styles.tableHeader}>
+            <div aria-hidden="true" />
+            <div>Full Name / Email</div>
+            <div>Age</div>
+            <div>Gender</div>
+            <div>Contact</div>
+            <div>Role</div>
+            <div className={styles.statusHeader}>Status</div>
           </div>
-        </div>
-      </div>
+
+          <div className={styles.tableBody}>
+            {loading ? (
+              <div className={styles.tableMessage}>Loading volunteers...</div>
+            ) : displayedVolunteers.length > 0 ? (
+              displayedVolunteers.map((person) => (
+                <PersonRow
+                  key={person.userId}
+                  person={person}
+                  status={attendance[person.userId]}
+                  onStatusChange={handleStatusChange}
+                />
+              ))
+            ) : (
+              <div className={styles.tableMessage}>No volunteers found for this shift.</div>
+            )}
+          </div>
+        </section>
+
+        <section className={styles.statsGrid} aria-label="Attendance summary">
+          <article className={styles.statCard}>
+            <span className={styles.statLabel}>Total Volunteers</span>
+            <strong className={styles.totalNumber}>{volunteers.length}</strong>
+          </article>
+          <article className={styles.statCard}>
+            <span className={styles.statLabel}>Checked In</span>
+            <strong className={styles.checkedNumber}>{checkedInCount}</strong>
+          </article>
+          <article className={styles.statCard}>
+            <span className={styles.statLabel}>Absent</span>
+            <strong className={styles.absentNumber}>{absentCount}</strong>
+          </article>
+        </section>
+      </main>
     </div>
   );
 };
