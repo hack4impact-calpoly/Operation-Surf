@@ -18,6 +18,8 @@ type VolunteerRecord = {
   phone: string;
   location: string;
   notes?: string;
+  hours: number;
+  createdAt: Date;
   emergencyContact?: {
     name?: string;
     relationship?: string;
@@ -100,6 +102,10 @@ export default async function AdminUserPage({ params }: AdminUserPageProps) {
           .join(" · ")
       : "",
     notes: volunteer.notes ?? "",
+    hours: volunteer.hours ?? 0,
+    monthJoined: volunteer.createdAt
+      ? new Date(volunteer.createdAt).toLocaleDateString("en-US", { month: "2-digit", year: "2-digit" })
+      : "N/A",
   };
 
   return <AdminUserDashboard profile={profile} registeredEvents={registeredEvents} />;
