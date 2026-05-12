@@ -14,7 +14,9 @@ interface LiabilityWaiver {
 }
 
 interface IVolunteer {
-  userId: string;
+  userId?: string; // Made optional to account for API differences
+  _id?: string; // Added standard MongoDB id format
+  id?: string; // Added standard SQL id format
   name: string;
   username: string;
   email: string;
@@ -45,6 +47,11 @@ const genderLabels: Record<IVolunteer["sex"], string> = {
   prefer_not_to_say: "Prefer not to say",
   other: "Other",
 };
+
+// Helper function to guarantee we have a unique ID for state tracking
+function getUniqueId(person: IVolunteer): string {
+  return person.userId || person._id || person.id || person.email || "";
+}
 
 function getAge(birthday: Date | string): number | "-" {
   const birthDate = new Date(birthday);
@@ -102,7 +109,7 @@ function PersonRow(props: {
           onClick={() => onStatusChange(person, "checkedIn")}
           aria-label={`Check in ${person.name}`}
         >
-          <Check size={13} strokeWidth={2} aria-hidden="true" />
+          <Check size={20} strokeWidth={2.5} aria-hidden="true" />
         </button>
 
         <button
@@ -113,7 +120,7 @@ function PersonRow(props: {
           onClick={() => onStatusChange(person, "absent")}
           aria-label={`Mark ${person.name} absent`}
         >
-          <X size={13} strokeWidth={2} aria-hidden="true" />
+          <X size={20} strokeWidth={2.5} aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -166,6 +173,13 @@ const CheckIn = ({ params }: Props) => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
     const filteredVolunteers = volunteers.filter((person) => {
+      const uniqueId = getUniqueId(person);
+
+      // Feature: Remove volunteer from frontend if they are successfully checked in
+      if (attendance[uniqueId] === "checkedIn") {
+        return false;
+      }
+
       if (!normalizedSearch) {
         return true;
       }
@@ -200,15 +214,20 @@ const CheckIn = ({ params }: Props) => {
 
       return first.name.localeCompare(second.name);
     });
-  }, [volunteers, searchTerm, sortBy]);
+  }, [volunteers, searchTerm, sortBy, attendance]);
 
   const checkedInCount = Object.values(attendance).filter((status) => status === "checkedIn").length;
   const absentCount = Object.values(attendance).filter((status) => status === "absent").length;
 
   const handleStatusChange = (person: IVolunteer, status: AttendanceStatus) => {
+    const uniqueId = getUniqueId(person);
+
+    // Prevent updating if we somehow can't find a valid ID
+    if (!uniqueId) return;
+
     setAttendance((currentAttendance) => ({
       ...currentAttendance,
-      [person.userId]: status,
+      [uniqueId]: status,
     }));
   };
 
@@ -221,24 +240,20 @@ const CheckIn = ({ params }: Props) => {
               className={styles.logoImage}
               src="/op_surf_logo_no_bg.png"
               alt="Operation Surf"
-              width={43}
-              height={34}
+              width={60}
+              height={48}
               priority
             />
           </Link>
 
           <div className={styles.navLinks}>
             <Link href="/" className={styles.navLink}>
-              <Home size={11} strokeWidth={2} aria-hidden="true" />
+              <Home size={16} strokeWidth={2} aria-hidden="true" />
               <span>Home</span>
             </Link>
             <Link href="/programs" className={styles.navLink}>
-              <CalendarDays size={11} strokeWidth={2} aria-hidden="true" />
+              <CalendarDays size={16} strokeWidth={2} aria-hidden="true" />
               <span>Programs</span>
-            </Link>
-            <Link href="/my-account" className={styles.navLink}>
-              <User size={11} strokeWidth={2} aria-hidden="true" />
-              <span>My Account</span>
             </Link>
           </div>
         </div>
@@ -276,12 +291,12 @@ const CheckIn = ({ params }: Props) => {
                 <option value="gender">Gender</option>
                 <option value="role">Role</option>
               </select>
-              <ChevronDown size={10} strokeWidth={2.5} aria-hidden="true" />
+              <ChevronDown size={14} strokeWidth={2.5} aria-hidden="true" />
             </span>
           </label>
 
           <label className={styles.searchGroup}>
-            <Search size={12} strokeWidth={2} aria-hidden="true" />
+            <Search size={18} strokeWidth={2} aria-hidden="true" />
             <input
               type="search"
               value={searchTerm}
@@ -292,7 +307,7 @@ const CheckIn = ({ params }: Props) => {
           </label>
 
           <button type="button" className={styles.filterButton}>
-            <Funnel size={12} strokeWidth={2} aria-hidden="true" />
+            <Funnel size={16} strokeWidth={2} aria-hidden="true" />
             Filter
           </button>
         </section>
@@ -314,16 +329,19 @@ const CheckIn = ({ params }: Props) => {
             {loading ? (
               <div className={styles.tableMessage}>Loading volunteers...</div>
             ) : displayedVolunteers.length > 0 ? (
-              displayedVolunteers.map((person) => (
-                <PersonRow
-                  key={person.userId}
-                  person={person}
-                  status={attendance[person.userId]}
-                  onStatusChange={handleStatusChange}
-                />
-              ))
+              displayedVolunteers.map((person) => {
+                const uniqueId = getUniqueId(person);
+                return (
+                  <PersonRow
+                    key={uniqueId}
+                    person={person}
+                    status={attendance[uniqueId]}
+                    onStatusChange={handleStatusChange}
+                  />
+                );
+              })
             ) : (
-              <div className={styles.tableMessage}>No volunteers found for this shift.</div>
+              <div className={styles.tableMessage}>No volunteers pending check-in.</div>
             )}
           </div>
         </section>
