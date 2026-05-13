@@ -5,6 +5,7 @@ import Image from "next/image";
 import styles from "@/styles/Dashboard.module.css";
 import { Home, Calendar, Bell, User, Users, Pencil, Mail, Phone, MapPin, Clock, Check, Info } from "lucide-react";
 import { Inter } from "next/font/google";
+import GreyNavbar from "@/components/GreyNavbar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -175,44 +176,7 @@ export default function Dashboard({
     <div className={inter.className}>
       <div className={styles.page}>
         {/* navbar */}
-        <nav className={styles.navbar}>
-          <Image
-            src="/op_surf_logo_no_bg.png"
-            alt="Operation Surf Logo"
-            width={58}
-            height={46}
-            className={styles.logoImg}
-          />
-          <div className={styles.navLinks}>
-            <a href="/" className={styles.navLink}>
-              <span className={styles.navIcon}>
-                <Home size={21} aria-hidden="true" />
-              </span>
-              Home
-            </a>
-
-            <a href="/programs" className={styles.navLink}>
-              <span className={styles.navIcon}>
-                <Calendar size={21} aria-hidden="true" />
-              </span>
-              Programs
-            </a>
-
-            <a href="/notifications" className={styles.navLink}>
-              <span className={styles.navIcon}>
-                <Bell size={21} aria-hidden="true" />
-              </span>
-              Notifications
-            </a>
-
-            <a href="/account" className={styles.navLink}>
-              <span className={styles.navIcon}>
-                <User size={21} aria-hidden="true" />
-              </span>
-              My Account
-            </a>
-          </div>
-        </nav>
+        <GreyNavbar />
 
         {/* hero header */}
         <header className={styles.hero}>
