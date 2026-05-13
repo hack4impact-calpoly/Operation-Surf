@@ -12,14 +12,6 @@ type AuthContext = {
   email: string | null;
 };
 
-const parseCsvEnv = (value: string | undefined): string[] => {
-  if (!value) return [];
-  return value
-    .split(",")
-    .map((entry) => entry.trim())
-    .filter((entry) => entry.length > 0);
-};
-
 export const getAuthContext = async (): Promise<AuthContext> => {
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -30,8 +22,8 @@ export const getAuthContext = async (): Promise<AuthContext> => {
   const name = user?.name ?? null;
   const email = user?.email ?? null;
 
+  // if user is not in admin DB, isAdmin = false, else true
   const admin = await fetch(`${baseURL}/api/admin/${userId}`);
-  console.log("Admin API response:", admin.ok);
 
   return {
     session,
