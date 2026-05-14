@@ -20,7 +20,7 @@
     "lucide-react": "^1.7.0",
     "mongodb": "^6.21.0",
     "mongoose": "^8.22.1",
-    "next": "^14",
+    "next": "^16.2.6",
     "react": "^18",
     "react-dom": "^18"
   },
