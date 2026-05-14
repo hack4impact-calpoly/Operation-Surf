@@ -130,6 +130,20 @@ export async function POST(request: Request): Promise<NextResponse> {
       }
     }
 
+    const existingSignup = await Signup.findOne({
+      shiftId: body.shiftId,
+      profileId: body.profileId,
+    });
+
+    if (existingSignup) {
+      return NextResponse.json(
+        {
+          message: "You are already signed up for this shift.",
+        },
+        { status: 409 },
+      );
+    }
+
     const newSignup = new Signup({
       signupId: crypto.randomUUID(),
       shiftId: body.shiftId,
