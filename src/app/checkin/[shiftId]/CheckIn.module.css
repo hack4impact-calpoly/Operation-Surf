@@ -167,8 +167,8 @@
 }
 
 .sortSelect {
-  width: 90px; /* Increased */
-  height: 40px; /* Increased */
+  width: 90px;
+  height: 40px;
   padding: 0 24px 0 12px;
   appearance: none;
   color: var(--olive-dark);
@@ -179,9 +179,27 @@
   cursor: pointer;
 }
 
+.resetStatus {
+  width: 150px;
+  height: 40px;
+  appearance: none;
+  color: rgb(255, 118, 118);
+  background: var(--olive-dark);
+  border: 1px solid #aaa68f;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  font: inherit;
+  justify-self: center;
+}
+
+.resetStatus:hover {
+  background: rgb(255, 0, 0);
+  color: #ffffff;
+}
+
 .sortSelect:focus-visible,
 .searchGroup input:focus-visible,
-.filterButton:focus-visible,
 .statusButton:focus-visible {
   outline: 2px solid rgba(124, 120, 69, 0.35);
   outline-offset: 2px;
@@ -455,11 +473,11 @@
   }
 
   .searchGroup,
-  .filterButton {
+  .resetStatus {
     width: 100%;
   }
 
-  .filterButton {
+  .resetStatus {
     justify-self: stretch;
   }
 
