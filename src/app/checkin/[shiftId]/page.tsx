@@ -149,13 +149,13 @@ const CheckIn = ({ params }: Props) => {
         );
 
         // if there is no checkin data in localStorage for this shift, initialize it as an empty array
-        if (!localStorage.getItem(`checkin`)) {
-          localStorage.setItem(`checkin`, JSON.stringify([]));
+        if (!localStorage.getItem(`checkin-${shiftId}`)) {
+          localStorage.setItem(`checkin-${shiftId}`, JSON.stringify([]));
         }
 
         const nonCheckedInVolunteers = shiftVolunteers.filter((volunteer) => {
           const uniqueId = getUniqueId(volunteer);
-          const checkedInVolunteers: string[] = JSON.parse(localStorage.getItem(`checkin`) || "[]");
+          const checkedInVolunteers: string[] = JSON.parse(localStorage.getItem(`checkin-${shiftId}`) || "[]");
           return !checkedInVolunteers.includes(uniqueId);
         });
 
@@ -183,9 +183,9 @@ const CheckIn = ({ params }: Props) => {
       // remove volunteer from frontend if they are successfully checked in
       if (attendance[uniqueId] === "checkedIn") {
         // Update localStorage to persist check-in status across page reloads
-        const checkedInVolunteers: string[] = JSON.parse(localStorage.getItem(`checkin`) || "[]");
+        const checkedInVolunteers: string[] = JSON.parse(localStorage.getItem(`checkin-${shiftId}`) || "[]");
         if (!checkedInVolunteers.includes(uniqueId)) {
-          localStorage.setItem(`checkin`, JSON.stringify([...checkedInVolunteers, uniqueId]));
+          localStorage.setItem(`checkin-${shiftId}`, JSON.stringify([...checkedInVolunteers, uniqueId]));
         }
         return false;
       }
@@ -216,8 +216,8 @@ const CheckIn = ({ params }: Props) => {
   }, [volunteers, searchTerm, sortBy, attendance]);
 
   //const checkedInCount = Object.values(attendance).filter((status) => status === "checkedIn").length;
-  const checkedInCount = localStorage.getItem(`checkin`)
-    ? JSON.parse(localStorage.getItem(`checkin`) || "[]").length
+  const checkedInCount = localStorage.getItem(`checkin-${shiftId}`)
+    ? JSON.parse(localStorage.getItem(`checkin-${shiftId}`) || "[]").length
     : 0;
   const absentCount = Object.values(attendance).filter((status) => status === "absent").length;
 
@@ -235,7 +235,7 @@ const CheckIn = ({ params }: Props) => {
 
   const handleResetStatus = () => {
     setAttendance({});
-    localStorage.removeItem(`checkin`);
+    localStorage.removeItem(`checkin-${shiftId}`);
   };
 
   return (
