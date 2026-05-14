@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarDays, Check, ChevronDown, Funnel, Home, Search, User, X } from "lucide-react";
+import { CalendarDays, Check, ChevronDown, Home, Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -26,13 +26,11 @@ interface IVolunteer {
   location: string;
   liabilityWaiver: LiabilityWaiver[];
   backgroundCheck: boolean;
-  role?: string;
   service?: string;
-  shiftRole?: string;
 }
 
 type AttendanceStatus = "checkedIn" | "absent";
-type SortOption = "name" | "age" | "gender" | "role";
+type SortOption = "name" | "age" | "gender";
 
 type Props = {
   params: {
@@ -69,14 +67,13 @@ function getAge(birthday: Date | string): number | "-" {
   return birthdayHasPassed ? age : age - 1;
 }
 
-function getVolunteerRole(person: IVolunteer): string {
-  return person.role || "N/A";
-}
-
 function formatGender(sex: IVolunteer["sex"]): string {
   return genderLabels[sex] || sex;
 }
 
+/* 
+  Sub component for rendering each volunteer row in the attendance table, including status buttons
+*/
 function PersonRow(props: {
   person: IVolunteer;
   status?: AttendanceStatus;
@@ -86,9 +83,7 @@ function PersonRow(props: {
 
   return (
     <div className={styles.tableRow}>
-      <div className={styles.avatarCell}>
-        <div className={styles.avatar} aria-hidden="true" />
-      </div>
+      <div aria-hidden="true" />
 
       <div className={styles.personCell}>
         <span className={styles.personName}>{person.name}</span>
@@ -98,7 +93,6 @@ function PersonRow(props: {
       <div className={styles.tableCell}>{getAge(person.birthday)}</div>
       <div className={styles.tableCell}>{formatGender(person.sex)}</div>
       <div className={styles.tableCell}>{person.phone}</div>
-      <div className={styles.tableCell}>{getVolunteerRole(person)}</div>
 
       <div className={styles.statusActions}>
         <button
@@ -154,7 +148,18 @@ const CheckIn = ({ params }: Props) => {
             : false,
         );
 
-        setVolunteers(shiftVolunteers);
+        // if there is no checkin data in localStorage for this shift, initialize it as an empty array
+        if (!localStorage.getItem(`checkin`)) {
+          localStorage.setItem(`checkin`, JSON.stringify([]));
+        }
+
+        const nonCheckedInVolunteers = shiftVolunteers.filter((volunteer) => {
+          const uniqueId = getUniqueId(volunteer);
+          const checkedInVolunteers: string[] = JSON.parse(localStorage.getItem(`checkin`) || "[]");
+          return !checkedInVolunteers.includes(uniqueId);
+        });
+
+        setVolunteers(nonCheckedInVolunteers);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
@@ -175,8 +180,13 @@ const CheckIn = ({ params }: Props) => {
     const filteredVolunteers = volunteers.filter((person) => {
       const uniqueId = getUniqueId(person);
 
-      // Feature: Remove volunteer from frontend if they are successfully checked in
+      // remove volunteer from frontend if they are successfully checked in
       if (attendance[uniqueId] === "checkedIn") {
+        // Update localStorage to persist check-in status across page reloads
+        const checkedInVolunteers: string[] = JSON.parse(localStorage.getItem(`checkin`) || "[]");
+        if (!checkedInVolunteers.includes(uniqueId)) {
+          localStorage.setItem(`checkin`, JSON.stringify([...checkedInVolunteers, uniqueId]));
+        }
         return false;
       }
 
@@ -184,14 +194,7 @@ const CheckIn = ({ params }: Props) => {
         return true;
       }
 
-      return [
-        person.name,
-        person.email,
-        person.phone,
-        person.location,
-        formatGender(person.sex),
-        getVolunteerRole(person),
-      ]
+      return [person.name, person.email, person.phone, person.location, formatGender(person.sex)]
         .join(" ")
         .toLowerCase()
         .includes(normalizedSearch);
@@ -208,15 +211,14 @@ const CheckIn = ({ params }: Props) => {
         return formatGender(first.sex).localeCompare(formatGender(second.sex));
       }
 
-      if (sortBy === "role") {
-        return getVolunteerRole(first).localeCompare(getVolunteerRole(second));
-      }
-
       return first.name.localeCompare(second.name);
     });
   }, [volunteers, searchTerm, sortBy, attendance]);
 
-  const checkedInCount = Object.values(attendance).filter((status) => status === "checkedIn").length;
+  //const checkedInCount = Object.values(attendance).filter((status) => status === "checkedIn").length;
+  const checkedInCount = localStorage.getItem(`checkin`)
+    ? JSON.parse(localStorage.getItem(`checkin`) || "[]").length
+    : 0;
   const absentCount = Object.values(attendance).filter((status) => status === "absent").length;
 
   const handleStatusChange = (person: IVolunteer, status: AttendanceStatus) => {
@@ -229,6 +231,11 @@ const CheckIn = ({ params }: Props) => {
       ...currentAttendance,
       [uniqueId]: status,
     }));
+  };
+
+  const handleResetStatus = () => {
+    setAttendance({});
+    localStorage.removeItem(`checkin`);
   };
 
   return (
@@ -289,7 +296,6 @@ const CheckIn = ({ params }: Props) => {
                 <option value="name">Name</option>
                 <option value="age">Age</option>
                 <option value="gender">Gender</option>
-                <option value="role">Role</option>
               </select>
               <ChevronDown size={14} strokeWidth={2.5} aria-hidden="true" />
             </span>
@@ -301,7 +307,7 @@ const CheckIn = ({ params }: Props) => {
               type="search"
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Search name, role, etc."
+              placeholder="Search name, etc."
               aria-label="Search volunteers"
             />
           </label>
@@ -316,8 +322,10 @@ const CheckIn = ({ params }: Props) => {
             <div>Age</div>
             <div>Gender</div>
             <div>Contact</div>
-            <div>Role</div>
             <div className={styles.statusHeader}>Status</div>
+            <button className={styles.resetStatus} onClick={handleResetStatus}>
+              Reset Status
+            </button>
           </div>
 
           <div className={styles.tableBody}>
