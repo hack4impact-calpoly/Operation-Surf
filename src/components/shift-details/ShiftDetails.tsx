@@ -6,9 +6,11 @@ import { Calendar, ChevronDown, ChevronUp, Clock, Mail, MapPin, Phone, UserRound
 import GreyNavbar from "@/components/GreyNavbar";
 import styles from "@/styles/ShiftDetails.module.css";
 import { authClient } from "@/lib/auth-client";
+
 import { toGoogleMapsEmbed } from "@/components/shift-card/ShiftCard";
-import { Inter } from "next/font/google";
+
 import { Roboto_Slab } from "next/font/google";
+import { Inter } from "next/font/google";
 
 // allow interchangeability between the two fonts
 const roboto = Roboto_Slab({

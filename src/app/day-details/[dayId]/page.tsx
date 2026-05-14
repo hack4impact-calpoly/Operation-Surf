@@ -8,6 +8,18 @@ import ShiftDetails from "@/components/shift-details/ShiftDetails";
 import { authClient } from "@/lib/auth-client";
 import styles from "@/styles/ShiftDetails.module.css";
 
+import { Roboto_Slab } from "next/font/google";
+import { Inter } from "next/font/google";
+
+// allow interchangeability between the two fonts
+const roboto = Roboto_Slab({
+  subsets: ["latin"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+});
+
 type Day = {
   name: string;
   dayOfWeek: string;
@@ -243,7 +255,7 @@ export default function DayDetailsPage() {
   }
 
   return (
-    <>
+    <div className={inter.className}>
       {error && (
         <div className={styles.errorBanner} role="alert">
           {error}
@@ -279,6 +291,6 @@ export default function DayDetailsPage() {
           </div>
         </main>
       )}
-    </>
+    </div>
   );
 }
