@@ -46,6 +46,34 @@
   padding: 34px 18px 48px 18px;
 }
 
+.statusMsg {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.errorBanner {
+  padding: 14px 18px;
+
+  border: 1px solid #fecaca;
+
+  background: #e69898;
+  color: #b91c1c;
+
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+.infoBlock p.placeholderText,
+.dayDescription.placeholderText {
+  color: #9ca3af;
+  font-style: italic;
+}
+
 .dayHeader {
   margin-bottom: 32px;
 }
@@ -55,6 +83,12 @@
   font-size: 30px;
   font-weight: 700;
   margin: 0 0 0.65rem 0;
+}
+
+.devNote {
+  color: #9ca3af;
+  font-size: 0.8rem;
+  margin: 0 0 0.5rem 0;
 }
 
 .dayMeta {
@@ -81,6 +115,12 @@
   color: #111827;
   font-size: 0.95rem;
   line-height: 1.55;
+  margin: 0;
+}
+
+.emptyMsg {
+  color: #6b7280;
+  font-size: 0.95rem;
   margin: 0;
 }
 
@@ -337,6 +377,23 @@
 .shiftCheckbox:focus {
   outline: 2px solid rgba(124, 120, 69, 0.45);
   outline-offset: 3px;
+}
+
+.signUpBtn:disabled {
+  background-color: rgba(124, 120, 69, 0.45);
+  cursor: not-allowed;
+}
+
+.signUpError {
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+  width: fit-content;
 }
 
 .contactSection {
