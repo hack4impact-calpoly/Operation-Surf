@@ -4,6 +4,11 @@ import { Calendar, ChevronDown, ChevronUp, Clock, Mail, MapPin, Phone, UserRound
 import GreyNavbar from "@/components/GreyNavbar";
 import styles from "@/styles/ShiftDetails.module.css";
 import { Inter } from "next/font/google";
+import { Roboto_Slab } from "next/font/google";
+
+const roboto = Roboto_Slab({
+  subsets: ["latin"],
+});
 
 const inter = Inter({
   subsets: ["latin"],
