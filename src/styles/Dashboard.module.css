@@ -405,8 +405,10 @@
 .errorBanner {
   padding: 14px 18px;
 
-  background: #f1b4b4;
-  color: #b91c1c;
+  border: 1px solid #fecaca;
+
+  background: #facbcb;
+  color: #d61212;
 
   font-family: "Inter", sans-serif;
   font-size: 15px;
