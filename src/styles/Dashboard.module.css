@@ -405,9 +405,7 @@
 .errorBanner {
   padding: 14px 18px;
 
-  border: 1px solid #fecaca;
-
-  background: #e69898;
+  background: #f1b4b4;
   color: #b91c1c;
 
   font-family: "Inter", sans-serif;
