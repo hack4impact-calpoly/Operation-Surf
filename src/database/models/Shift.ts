@@ -9,6 +9,7 @@ const ShiftSchema = new Schema(
     endTime: { type: String, required: true, trim: true },
     totalSlots: { type: Number, required: true, min: 0 },
     location: { type: String, required: true, trim: true },
+    locationInfo: { type: String, required: false, trim: true },
     address: { type: String, required: false, trim: true },
     directions: { type: String, required: false, trim: true },
     mapLink: { type: String, required: false, trim: true },
@@ -17,6 +18,7 @@ const ShiftSchema = new Schema(
     visibility: { type: String, required: true, enum: ["public", "invited"], default: "public" },
     invited: { type: [String], required: true, default: [] }, // array of volunteerIds to check if someone is invited to the shift
     description: { type: String, required: true, trim: true },
+    byoDescription: { type: String, required: false, trim: true },
   },
   {
     timestamps: true,
