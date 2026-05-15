@@ -60,6 +60,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         return {
           programId: program.programId,
           title: program.programName,
+          description: program.description,
           imageURI: program.imageURI,
           location: program.location,
           date: program.date,

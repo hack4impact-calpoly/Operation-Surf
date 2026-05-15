@@ -18,7 +18,7 @@ type day = {
 
 const daySchema = new Schema<day>({
   name: { type: String, required: true },
-  description: { type: String, required: false },
+  description: { type: String, required: false, trim: true },
   dayOfWeek: { type: String, required: true },
   date: { type: Date, required: true },
   startTime: { type: String, required: true },
