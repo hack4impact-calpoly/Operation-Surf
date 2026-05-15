@@ -136,6 +136,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       duration: body.duration,
       programName: body.programName,
       programId: body.programId,
+      description: body.description,
       private: body.private,
       ghost_program: body.ghost_program,
     });

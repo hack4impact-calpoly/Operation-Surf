@@ -6,6 +6,7 @@ Use the "date" for the "dayOfWeek" field to determine the day of the week.
 
 type day = {
   name: string;
+  description?: string;
   dayOfWeek: string;
   date: Date;
   startTime: string;
@@ -17,6 +18,7 @@ type day = {
 
 const daySchema = new Schema<day>({
   name: { type: String, required: true },
+  description: { type: String, required: false },
   dayOfWeek: { type: String, required: true },
   date: { type: Date, required: true },
   startTime: { type: String, required: true },
