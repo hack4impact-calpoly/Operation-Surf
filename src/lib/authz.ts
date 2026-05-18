@@ -1,6 +1,8 @@
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 
+const baseURL: string = process.env.BETTER_AUTH_URL as string;
+
 type AuthContext = {
   session: unknown;
   isAuthenticated: boolean;
@@ -9,17 +11,6 @@ type AuthContext = {
   name: string | null;
   email: string | null;
 };
-
-const parseCsvEnv = (value: string | undefined): string[] => {
-  if (!value) return [];
-  return value
-    .split(",")
-    .map((entry) => entry.trim())
-    .filter((entry) => entry.length > 0);
-};
-
-const ADMIN_USER_IDS = new Set(parseCsvEnv(process.env.ADMIN_USER_IDS));
-const ADMIN_EMAILS = new Set(parseCsvEnv(process.env.ADMIN_EMAILS));
 
 export const getAuthContext = async (): Promise<AuthContext> => {
   const session = await auth.api.getSession({
@@ -31,12 +22,13 @@ export const getAuthContext = async (): Promise<AuthContext> => {
   const name = user?.name ?? null;
   const email = user?.email ?? null;
 
-  const isAdmin = (userId !== null && ADMIN_USER_IDS.has(userId)) || (email !== null && ADMIN_EMAILS.has(email));
+  // if user is not in admin DB, isAdmin = false, else true
+  const admin = await fetch(`${baseURL}/api/admin/${userId}`);
 
   return {
     session,
     isAuthenticated: session !== null,
-    isAdmin,
+    isAdmin: admin.ok ? true : false,
     userId,
     name,
     email,
