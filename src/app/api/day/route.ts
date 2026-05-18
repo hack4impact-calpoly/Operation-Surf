@@ -93,6 +93,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     const newDay = new Day({
       name: body.name,
+      description: body.description,
       dayOfWeek: dayName,
       date: dayDate,
       startTime: body.startTime,

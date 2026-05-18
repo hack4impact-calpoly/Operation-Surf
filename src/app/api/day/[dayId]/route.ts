@@ -67,7 +67,7 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
           expandedShiftDetails: {
             shiftId: day.dayId,
             title: day.name,
-            description: dayRecord.description ?? null,
+            description: day.description ?? null,
             dayOfWeek: day.dayOfWeek,
             date: day.date,
             startTime: day.startTime,
