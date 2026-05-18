@@ -93,28 +93,30 @@ function ProgramCard({ program }: { program: ProgramRecord }) {
 export default async function ProgramList() {
   const programs = await getPrograms();
   const featuredProgram = programs[0];
-  const { name } = await getAuthContext();
+  const { name, isAdmin } = await getAuthContext();
 
   return (
     <main className={styles.page}>
       <div className={styles.pageShell}>
-        <nav className={styles.navbar} aria-label="Primary navigation">
-          <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
-            <Image src="/operation-surf.png" alt="Operation Surf" width={78} height={62} />
-          </Link>
+        {!isAdmin ? (
+          <nav className={styles.navbar} aria-label="Primary navigation">
+            <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
+              <Image src="/operation-surf.png" alt="Operation Surf" width={78} height={62} />
+            </Link>
 
-          <div className={styles.navLinks}>
-            {name && <span className={styles.navGreeting}>Hi, {name}</span>}
-            <Link href="/" className={styles.navLink}>
-              <Home size={17} aria-hidden="true" />
-              Home
-            </Link>
-            <Link href="/programs" className={styles.navLink}>
-              <CalendarDays size={17} aria-hidden="true" />
-              Programs
-            </Link>
-          </div>
-        </nav>
+            <div className={styles.navLinks}>
+              {name && <span className={styles.navGreeting}>Hi, {name}</span>}
+              <Link href="/" className={styles.navLink}>
+                <Home size={17} aria-hidden="true" />
+                Home
+              </Link>
+              <Link href="/programs" className={styles.navLink}>
+                <CalendarDays size={17} aria-hidden="true" />
+                Programs
+              </Link>
+            </div>
+          </nav>
+        ) : null}
 
         <header className={styles.hero}>
           <Image

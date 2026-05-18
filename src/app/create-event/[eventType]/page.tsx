@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { Suspense } from "react";
 import CreateProgram from "@/components/event-creation/CreateProgram";
 import CreateDay from "@/components/event-creation/CreateDay";
 import CreateShift from "@/components/event-creation/CreateShift";

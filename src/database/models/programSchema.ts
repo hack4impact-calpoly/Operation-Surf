@@ -19,7 +19,7 @@ const programSchema = new Schema<program>({
   duration: { type: String, required: true },
   programName: { type: String, required: true },
   programId: { type: String, required: true },
-  description: { type: String, required: false, trim: true },
+  description: { type: String, required: false },
   private: { type: Boolean, required: false, default: true },
   ghost_program: { type: Boolean, required: false, default: false },
 });
