@@ -34,6 +34,7 @@ interface IVolunteer {
   username: string;
   email: string;
   phone: string;
+  notes?: string;
 
   // ht/wt in cm
   height: number;
@@ -111,6 +112,8 @@ const VolunteerSchema = new Schema<IVolunteer>(
     },
 
     interests: { type: String, required: true },
+
+    notes: { type: String, required: false, trim: true, default: "" },
 
     // Waivers
     liabilityWaiver: { type: [LiabilityWaiverSchema], required: true },
