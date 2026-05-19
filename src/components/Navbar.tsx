@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   BriefcaseBusiness,
   CalendarDays,
-  // ClipboardCheck,
+  ClipboardCheck,
   Home,
   type LucideIcon,
   LogIn,
@@ -38,7 +38,7 @@ const adminNavItems: NavItem[] = [
     activePaths: ["/opportunities", "/create-event"],
   },
   // { href: "/signup", label: "Memberships", icon: UserRound },
-  // { href: "/shift", label: "Check In", icon: ClipboardCheck, activePaths: ["/shift", "/checkin"] },
+  { href: "/shift", label: "Check In", icon: ClipboardCheck, activePaths: ["/shift", "/checkin"] },
 ];
 
 const publicNavItems: NavItem[] = [

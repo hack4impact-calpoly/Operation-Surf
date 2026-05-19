@@ -12,7 +12,7 @@ const ShiftCardList: React.FC<ShiftCardListProps> = ({ shifts }) => {
     <div className={styles.container}>
       {/*<p className={styles.title}>SHIFTS</p>*/}
       {shifts.map((shift, index) => (
-        <div className={styles.card} key={index}>
+        <div className={styles.card} key={shift.id ?? index}>
           <ShiftCard {...shift} />
         </div>
       ))}

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import ShiftCardList from "@/components/shift-card/ShiftCardList";
 import type { ShiftCardProps } from "@/components/shift-card/ShiftCard";
+import styles from "@/styles/ShiftPage.module.css";
 
 type ShiftApiResponse = {
   data: Array<{
@@ -73,17 +74,42 @@ export default function ShiftPageClient() {
   }, []);
 
   return (
-    <main>
-      <h1>Available Shifts</h1>
-      {isLoading ? (
-        <p>Loading shifts...</p>
-      ) : error ? (
-        <p style={{ color: "red" }}>{error}</p>
-      ) : shifts.length === 0 ? (
-        <p>No shifts available.</p>
-      ) : (
-        <ShiftCardList shifts={shifts} />
-      )}
+    <main className={styles.page}>
+      <section className={styles.hero}>
+        <div className={styles.heroOverlay} />
+        <div className={styles.heroContent}>
+          <p className={styles.eyebrow}>Admin Check-In</p>
+          <h1 className={styles.title}>Available Shifts</h1>
+          <p className={styles.subtitle}>Volunteer rosters by scheduled shift.</p>
+        </div>
+      </section>
+
+      <section className={styles.content} aria-label="Available shifts">
+        <div className={styles.sectionHeader}>
+          <div>
+            <h2 className={styles.sectionTitle}>Upcoming Shifts</h2>
+            <p className={styles.sectionMeta}>
+              {isLoading ? "Loading current schedule" : `${shifts.length} ${shifts.length === 1 ? "shift" : "shifts"}`}
+            </p>
+          </div>
+        </div>
+
+        {isLoading ? (
+          <div className={styles.loadingGrid} aria-label="Loading shifts">
+            <div className={styles.skeletonCard} />
+            <div className={styles.skeletonCard} />
+            <div className={styles.skeletonCard} />
+          </div>
+        ) : error ? (
+          <div className={`${styles.statePanel} ${styles.errorPanel}`} role="alert">
+            {error}
+          </div>
+        ) : shifts.length === 0 ? (
+          <div className={styles.statePanel}>No shifts available.</div>
+        ) : (
+          <ShiftCardList shifts={shifts} />
+        )}
+      </section>
     </main>
   );
 }

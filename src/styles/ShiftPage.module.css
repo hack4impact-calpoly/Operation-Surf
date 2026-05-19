@@ -1,0 +1,140 @@
+.page {
+  background: #f6f4f1;
+  color: #1f2937;
+  min-height: 100vh;
+}
+
+.hero {
+  align-items: flex-end;
+  background:
+    linear-gradient(90deg, rgba(90, 86, 45, 0.84) 0%, rgba(90, 86, 45, 0.58) 58%, rgba(90, 86, 45, 0.28) 100%),
+    url("/hero-img.png") center 42% / cover no-repeat;
+  display: flex;
+  min-height: 240px;
+  position: relative;
+}
+
+.heroOverlay {
+  background: linear-gradient(180deg, rgba(36, 33, 22, 0.08), rgba(36, 33, 22, 0.34));
+  inset: 0;
+  position: absolute;
+}
+
+.heroContent {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 48px 32px 34px;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.eyebrow {
+  color: #f1ecdc;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.title {
+  color: #ffffff;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 700;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.subtitle {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin: 12px 0 0;
+  max-width: 560px;
+}
+
+.content {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 28px 32px 56px;
+}
+
+.sectionHeader {
+  align-items: end;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.sectionTitle {
+  color: #7c7845;
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.sectionMeta {
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin: 6px 0 0;
+}
+
+.loadingGrid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.skeletonCard {
+  animation: pulse 1.4s ease-in-out infinite;
+  background: linear-gradient(90deg, #ffffff 0%, #f0ede5 48%, #ffffff 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(31, 41, 55, 0.06);
+  min-height: 320px;
+}
+
+.statePanel {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(31, 41, 55, 0.06);
+  color: #6b7280;
+  padding: 28px;
+}
+
+.errorPanel {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero {
+    min-height: 210px;
+  }
+
+  .heroContent,
+  .content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .sectionHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
