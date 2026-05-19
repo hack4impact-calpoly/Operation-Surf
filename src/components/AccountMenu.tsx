@@ -77,6 +77,15 @@ export default function AccountMenu({ variant = "dark" }: AccountMenuProps) {
       {isAccountOpen ? (
         <div className={styles.accountDropdown} role="menu" aria-label="My account menu">
           <Link
+            href="/volunteer-application"
+            className={styles.dropdownLink}
+            role="menuitem"
+            onClick={() => setIsAccountOpen(false)}
+          >
+            Volunteer Application
+          </Link>
+
+          <Link
             href="/volunteer-dashboard"
             className={styles.dropdownLink}
             role="menuitem"

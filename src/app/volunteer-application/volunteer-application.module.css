@@ -1,0 +1,212 @@
+.page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f7f6f2 0%, #efede6 100%);
+  color: #27231b;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.navbar {
+  height: 78px;
+  background: #9a9581;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.16);
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo {
+  width: auto;
+  height: 50px;
+  object-fit: contain;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.navLink {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.main {
+  padding: 26px 18px 54px;
+}
+
+.panel {
+  max-width: 760px;
+  margin: 0 auto;
+  background: #fcfcfb;
+  border: 1px solid rgba(110, 101, 80, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 12px 26px rgba(77, 69, 52, 0.18);
+  padding: 18px 16px 10px;
+}
+
+.title {
+  margin: 0 0 14px;
+  color: #867b43;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px 18px;
+}
+
+.spanTwo {
+  grid-column: span 2;
+}
+
+.input {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid #6f6755;
+  border-radius: 6px;
+  background: #ffffff;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 0.95rem;
+  color: #3f3a2f;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: #9a968e;
+}
+
+.input:focus {
+  outline: 2px solid rgba(134, 123, 67, 0.2);
+  border-color: #867b43;
+}
+
+.sectionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.08rem;
+  font-style: italic;
+  font-weight: 600;
+  color: #312c22;
+}
+
+.footerRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.waiverBlock,
+.waiverSelectBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.waiverLabel {
+  font-size: 0.98rem;
+  color: #55504a;
+}
+
+.waiverLink {
+  color: #41507f;
+  text-decoration: underline;
+  width: fit-content;
+}
+
+.waiverSelect {
+  min-width: 96px;
+  min-height: 30px;
+  border: 0;
+  border-radius: 999px;
+  background: #d7f6dc;
+  color: #2f5d32;
+  padding: 4px 12px;
+  font: inherit;
+}
+
+.submitButton {
+  border: 0;
+  border-radius: 7px;
+  background: #7e7a47;
+  color: #ffffff;
+  min-height: 30px;
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.infoMessage,
+.successMessage,
+.errorMessage {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+.successMessage {
+  color: #2a6a31;
+}
+
+.errorMessage {
+  color: #aa2f2f;
+}
+
+@media (max-width: 760px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .navbar {
+    height: auto;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+
+  .navLinks {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .spanTwo {
+    grid-column: auto;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+}
