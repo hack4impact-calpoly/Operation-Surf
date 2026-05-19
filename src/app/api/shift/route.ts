@@ -140,6 +140,8 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     const newShift = await Shift.create({
       ...body,
+      locationInfo: body.locationInfo ?? "",
+      byoDescription: body.byoDescription ?? "",
       dayOfWeek: dayName,
       date: dayDate,
       totalSlots: Number(body.totalSlots),

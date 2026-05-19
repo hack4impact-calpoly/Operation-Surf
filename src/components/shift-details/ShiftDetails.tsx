@@ -290,7 +290,7 @@ export default function ShiftDetails({
                               </div>
 
                               <div className={styles.infoBlock}>
-                                <h4>What will volunteers need to bring or wear?</h4>
+                                <h4>What should volunteers bring/wear?</h4>
                                 <p className={!shift.byoDescription ? styles.placeholderText : ""}>
                                   {shift.byoDescription || "No extra information provided."}
                                 </p>
