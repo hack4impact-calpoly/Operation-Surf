@@ -1,7 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import style from "./page.module.css";
 import ProgramHorizontalList from "@/components/ProgramHorizontalList";
+import ExploreProgramsLink from "@/components/ExploreProgramsLink";
 
 export const dynamic = "force-dynamic";
 
@@ -17,9 +17,7 @@ export default function Home() {
             Empowering wounded, ill, and injured service members, veterans, and youth through the healing powers of the
             ocean.
           </p>
-          <Link className={style.exploreButton} href="/programs">
-            Explore Programs
-          </Link>
+          <ExploreProgramsLink />
         </div>
       </section>
 
