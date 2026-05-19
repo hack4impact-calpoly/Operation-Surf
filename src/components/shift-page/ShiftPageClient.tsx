@@ -19,6 +19,14 @@ type ShiftApiResponse = {
   }>;
 };
 
+type SignupApiResponse = {
+  signups: Array<{
+    signupId: string;
+    shiftId: string;
+    profileId: string;
+  }>;
+};
+
 function formatShiftDate(dateString: string) {
   const date = new Date(dateString);
   if (Number.isNaN(date.getTime())) return dateString;
@@ -39,14 +47,30 @@ export default function ShiftPageClient() {
   useEffect(() => {
     async function fetchShifts() {
       try {
-        const response = await fetch("/api/shift");
-        if (!response.ok) {
-          throw new Error(`Failed to load shifts: ${response.status}`);
+        const [shiftResponse, signupResponse] = await Promise.all([
+          fetch("/api/shift", { cache: "no-store" }),
+          fetch("/api/signup", { cache: "no-store" }),
+        ]);
+
+        if (!shiftResponse.ok) {
+          throw new Error(`Failed to load shifts: ${shiftResponse.status}`);
         }
 
-        const json = (await response.json()) as ShiftApiResponse;
+        if (!signupResponse.ok) {
+          throw new Error(`Failed to load signups: ${signupResponse.status}`);
+        }
 
-        const cardData: ShiftCardProps[] = json.data.map((shift) => ({
+        const [shiftJson, signupJson] = (await Promise.all([shiftResponse.json(), signupResponse.json()])) as [
+          ShiftApiResponse,
+          SignupApiResponse,
+        ];
+
+        const signupCountsByShift = new Map<string, number>();
+        signupJson.signups.forEach((signup) => {
+          signupCountsByShift.set(signup.shiftId, (signupCountsByShift.get(signup.shiftId) ?? 0) + 1);
+        });
+
+        const cardData: ShiftCardProps[] = shiftJson.data.map((shift) => ({
           id: shift.shiftId,
           name: shift.name,
           description: shift.description ?? "",
@@ -54,7 +78,7 @@ export default function ShiftPageClient() {
           timeRange: `${shift.startTime} - ${shift.endTime}`,
           location: shift.location,
           mapLink: shift.mapLink,
-          spotsTaken: 0,
+          spotsTaken: signupCountsByShift.get(shift.shiftId) ?? 0,
           spotsTotal: shift.totalSlots ?? 0,
         }));
 
