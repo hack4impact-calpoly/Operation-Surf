@@ -130,12 +130,43 @@
   font-family: "Inter", sans-serif;
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
 .sectionTitle {
   font-size: 1.25rem;
   font-weight: 600;
   color: #6b7c2e;
-  margin: 0 0 20px;
+  margin: 0;
   font-family: "Inter", sans-serif;
+}
+
+.adminAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #6b7c2e;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.adminAction:hover {
+  background: #5a6927;
+  box-shadow: 0 10px 20px rgba(107, 124, 46, 0.22);
+  transform: translateY(-1px);
 }
 
 .cardList {
@@ -237,6 +268,11 @@
   .listShell {
     margin: 16px 12px;
     padding: 20px 16px;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .navbar {

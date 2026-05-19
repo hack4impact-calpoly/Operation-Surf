@@ -35,6 +35,10 @@ interface IVolunteer {
   email: string;
   phone: string;
   notes?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipcode?: string;
 
   // ht/wt in cm
   height: number;
@@ -86,6 +90,10 @@ const VolunteerSchema = new Schema<IVolunteer>(
       unique: true,
     },
     phone: { type: String, required: true, trim: true },
+    address: { type: String, required: false, trim: true, default: "" },
+    city: { type: String, required: false, trim: true, default: "" },
+    state: { type: String, required: false, trim: true, default: "" },
+    zipcode: { type: String, required: false, trim: true, default: "" },
 
     height: { type: Number, required: true, min: 1 },
     weight: { type: Number, required: true, min: 1 },

@@ -3,6 +3,13 @@ import { auth } from "@/lib/auth";
 import connectDB from "@/database/db";
 import Admin from "@/database/models/adminSchema";
 
+const adminEmails = new Set(
+  (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean),
+);
+
 type AuthContext = {
   session: unknown;
   isAuthenticated: boolean;
@@ -23,7 +30,9 @@ export const getAuthContext = async (): Promise<AuthContext> => {
   const email = user?.email ?? null;
 
   let isAdmin = false;
-  if (userId) {
+  if (email && adminEmails.has(email.toLowerCase())) {
+    isAdmin = true;
+  } else if (userId) {
     await connectDB();
     isAdmin = Boolean(await Admin.exists({ adminId: userId }));
   }

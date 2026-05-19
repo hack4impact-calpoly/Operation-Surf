@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import style from "./page.module.css";
+import AccountMenu from "@/components/AccountMenu";
 import ProgramHorizontalList from "@/components/ProgramHorizontalList";
 import { getAuthContext } from "@/lib/authz";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const { name, isAdmin } = await getAuthContext();
+  const { name, isAdmin, isAuthenticated } = await getAuthContext();
 
   return (
     <div className={style.pageContainer}>
@@ -17,12 +18,18 @@ export default async function Home() {
 
           <div className={style.headerButtons}>
             {name && <p className={style.navGreeting}>Hi, {name}</p>}
-            <Link className={style.headerBtnOutline} href="/login">
-              Sign In
-            </Link>
-            <Link className={style.headerBtnFilled} href="/signup">
-              Sign Up
-            </Link>
+            {isAuthenticated ? (
+              <AccountMenu variant="light" />
+            ) : (
+              <>
+                <Link className={style.headerBtnOutline} href="/login">
+                  Sign In
+                </Link>
+                <Link className={style.headerBtnFilled} href="/signup">
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </header>
       ) : null}
