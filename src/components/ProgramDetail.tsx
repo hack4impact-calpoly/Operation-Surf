@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "@/styles/ProgramDetail.module.css";
 
@@ -75,7 +76,11 @@ function CalendarIcon() {
 
 function DayCard({ day }: { day: Day }) {
   return (
-    <div className={styles.dayCard}>
+    <Link
+      href={`/day-details/${encodeURIComponent(day.dayId)}`}
+      className={styles.dayCard}
+      aria-label={`View details for ${day.name}`}
+    >
       <div className={styles.dayCardHeader}>
         <span className={styles.dayOfWeek}>{day.dayOfWeek}</span>
         <span className={styles.date}>{formatDate(day.date)}</span>
@@ -87,7 +92,7 @@ function DayCard({ day }: { day: Day }) {
           {day.startTime} - {day.endTime}
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
 

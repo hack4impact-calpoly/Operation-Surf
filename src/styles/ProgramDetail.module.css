@@ -141,12 +141,16 @@
 
 /* day card */
 .dayCard {
+  display: block;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   padding: 18px 22px;
   margin-bottom: 14px;
   background: #fff;
+  color: inherit;
+  text-decoration: none;
   font-family: "Inter", sans-serif;
+  cursor: pointer;
   transition:
     border-color 0.15s,
     box-shadow 0.15s;
@@ -159,6 +163,11 @@
 .dayCard:hover {
   border-color: rgba(124, 120, 69, 0.45);
   box-shadow: 0 8px 18px rgba(17, 24, 39, 0.08);
+}
+
+.dayCard:focus-visible {
+  outline: 3px solid rgba(124, 120, 69, 0.35);
+  outline-offset: 3px;
 }
 
 .dayCardHeader {
