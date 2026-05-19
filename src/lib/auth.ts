@@ -1,10 +1,11 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { client } from "@/database/db";
+import connectDB, { client } from "@/database/db";
 import bcrypt from "bcrypt";
 import { username } from "better-auth/plugins";
 
 const baseURL: string = process.env.BETTER_AUTH_URL as string;
+void connectDB();
 const db = client.db();
 
 // must change BETTER_AUTH_URL before production deployment to match the actual URL of the deployed app, and ensure it's included in trustedOrigins and baseURL
