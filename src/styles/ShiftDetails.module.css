@@ -153,6 +153,13 @@
     0px 10px 15px -3px rgba(0, 0, 0, 0.08);
 }
 
+.shiftCardLoading {
+  border-color: rgba(124, 120, 69, 0.55);
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.12),
+    0px 10px 15px -3px rgba(115, 113, 68, 0.18);
+}
+
 .shiftTop {
   display: flex;
   align-items: flex-start;
@@ -244,6 +251,14 @@
   font-size: 0.75rem;
   font-weight: 600;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.cardSpinner,
+.buttonSpinner {
+  animation: spin 0.8s linear infinite;
 }
 
 .expandedContent {
@@ -381,6 +396,10 @@ a.locationLine:hover {
 
   cursor: pointer;
   margin: 0 0 1.5rem 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .signUpBtn:hover {
@@ -409,6 +428,12 @@ a.locationLine:hover {
   font-weight: 500;
   margin: 0 0 0.75rem 0;
   width: fit-content;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .contactSection {

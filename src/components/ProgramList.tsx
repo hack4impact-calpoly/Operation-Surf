@@ -4,6 +4,7 @@ import Link from "next/link";
 import connectDB from "@/database/db";
 import ProgramModel from "@/database/models/programSchema";
 import { getAuthContext } from "@/lib/authz";
+import ProgramListCard from "@/components/ProgramListCard";
 import styles from "@/styles/ProgramList.module.css";
 
 type ProgramRecord = {
@@ -68,25 +69,14 @@ const getPrograms = async (): Promise<ProgramRecord[]> => {
 
 function ProgramCard({ program }: { program: ProgramRecord }) {
   return (
-    <Link className={styles.card} href={`/program-details?programId=${encodeURIComponent(program.programId)}`}>
-      <div className={styles.cardHeader}>
-        <span className={styles.dayPill}>{formatProgramWeekday(program.date)}</span>
-        <span className={styles.date}>{formatProgramShortDate(program.date)}</span>
-      </div>
-
-      <h2 className={styles.programName}>{program.programName}</h2>
-
-      <div className={styles.cardMeta}>
-        <span className={styles.metaItem}>
-          <CalendarDays size={16} aria-hidden="true" />
-          {program.duration}
-        </span>
-        <span className={styles.metaItem}>
-          <MapPin size={16} aria-hidden="true" />
-          {program.location}
-        </span>
-      </div>
-    </Link>
+    <ProgramListCard
+      href={`/program-details?programId=${encodeURIComponent(program.programId)}`}
+      programName={program.programName}
+      weekday={formatProgramWeekday(program.date)}
+      date={formatProgramShortDate(program.date)}
+      duration={program.duration}
+      location={program.location}
+    />
   );
 }
 

@@ -1,36 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Loader2 } from "lucide-react";
-import { MouseEvent, useEffect, useState } from "react";
+import { useLinkLoading } from "@/hooks/useLinkLoading";
 import style from "@/app/page.module.css";
 
 const PROGRAMS_HREF = "/programs";
 
 export default function ExploreProgramsLink() {
-  const pathname = usePathname();
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, [pathname]);
-
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (
-      event.defaultPrevented ||
-      event.button !== 0 ||
-      event.metaKey ||
-      event.altKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      pathname === PROGRAMS_HREF
-    ) {
-      return;
-    }
-
-    setIsLoading(true);
-  };
+  const { isLoading, handleClick } = useLinkLoading(PROGRAMS_HREF);
 
   return (
     <Link

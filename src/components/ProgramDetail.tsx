@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLinkLoading } from "@/hooks/useLinkLoading";
 import styles from "@/styles/ProgramDetail.module.css";
 
 interface Program {
@@ -73,15 +75,30 @@ function CalendarIcon() {
 }
 
 function DayCard({ day }: { day: Day }) {
+  const href = `/day-details/${encodeURIComponent(day.dayId)}`;
+  const { isLoading, handleClick } = useLinkLoading(href);
+
   return (
     <Link
-      href={`/day-details/${encodeURIComponent(day.dayId)}`}
-      className={styles.dayCard}
+      href={href}
+      className={`${styles.dayCard} ${isLoading ? styles.dayCardLoading : ""}`}
+      onClick={handleClick}
+      aria-busy={isLoading}
       aria-label={`View details for ${day.name}`}
     >
       <div className={styles.dayCardHeader}>
-        <span className={styles.dayOfWeek}>{day.dayOfWeek}</span>
-        <span className={styles.date}>{formatDate(day.date)}</span>
+        <span className={styles.dayDateGroup}>
+          <span className={styles.dayOfWeek}>{day.dayOfWeek}</span>
+          <span className={styles.date}>{formatDate(day.date)}</span>
+        </span>
+
+        <span
+          className={`${styles.dayCardLoadingStatus} ${isLoading ? styles.dayCardLoadingStatusVisible : ""}`}
+          aria-hidden={!isLoading}
+        >
+          <Loader2 size={15} aria-hidden="true" />
+          Loading
+        </span>
       </div>
       <p className={styles.dayName}>{day.name}</p>
       <div className={styles.timeRow}>

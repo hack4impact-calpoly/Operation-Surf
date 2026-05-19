@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Calendar, ChevronDown, ChevronUp, Clock, Mail, MapPin, Phone, UserRound } from "lucide-react";
+import { Calendar, ChevronDown, ChevronUp, Clock, Loader2, Mail, MapPin, Phone, UserRound } from "lucide-react";
 import styles from "@/styles/ShiftDetails.module.css";
 import { authClient } from "@/lib/auth-client";
 
@@ -171,146 +171,159 @@ export default function ShiftDetails({
               {shifts.length === 0 ? (
                 <p className={styles.emptyMsg}>No shifts available for this day.</p>
               ) : (
-                shifts.map((shift, index) => (
-                  <article className={styles.shiftCard} key={shift.name}>
-                    <div className={styles.shiftTop}>
-                      <input
-                        type="checkbox"
-                        className={styles.shiftCheckbox}
-                        aria-label={`Select ${shift.name}`}
-                        checked={selectedShiftIds.has(shift.shiftId)}
-                        disabled={pendingSignupIds.has(shift.shiftId)}
-                        onChange={() => {
-                          setSelectedShiftIds((current) => {
-                            const next = new Set(current);
+                shifts.map((shift) => {
+                  const isShiftPending = pendingSignupIds.has(shift.shiftId);
 
-                            if (next.has(shift.shiftId)) {
-                              next.delete(shift.shiftId);
-                            } else {
-                              next.add(shift.shiftId);
-                            }
+                  return (
+                    <article
+                      className={`${styles.shiftCard} ${isShiftPending ? styles.shiftCardLoading : ""}`}
+                      key={shift.shiftId}
+                      aria-busy={isShiftPending}
+                    >
+                      <div className={styles.shiftTop}>
+                        <input
+                          type="checkbox"
+                          className={styles.shiftCheckbox}
+                          aria-label={`Select ${shift.name}`}
+                          checked={selectedShiftIds.has(shift.shiftId)}
+                          disabled={isShiftPending}
+                          onChange={() => {
+                            setSelectedShiftIds((current) => {
+                              const next = new Set(current);
 
-                            return next;
-                          });
-                        }}
-                      />
+                              if (next.has(shift.shiftId)) {
+                                next.delete(shift.shiftId);
+                              } else {
+                                next.add(shift.shiftId);
+                              }
 
-                      <div className={styles.shiftMain}>
-                        <div className={styles.shiftTitleRow}>
-                          <h3 className={styles.shiftTitle}>{shift.name}</h3>
+                              return next;
+                            });
+                          }}
+                        />
 
-                          <button
-                            type="button"
-                            className={styles.expandBtn}
-                            aria-label={
-                              openShiftId === shift.shiftId ? `Collapse ${shift.name}` : `Expand ${shift.name}`
-                            }
-                            aria-expanded={openShiftId === shift.shiftId}
-                            onClick={() => {
-                              setOpenShiftId(openShiftId === shift.shiftId ? null : shift.shiftId);
-                            }}
-                          >
-                            {openShiftId === shift.shiftId ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
-                          </button>
-                        </div>
+                        <div className={styles.shiftMain}>
+                          <div className={styles.shiftTitleRow}>
+                            <h3 className={styles.shiftTitle}>{shift.name}</h3>
 
-                        <p className={styles.shiftDescription}>{shift.description}</p>
+                            <button
+                              type="button"
+                              className={styles.expandBtn}
+                              aria-label={
+                                openShiftId === shift.shiftId ? `Collapse ${shift.name}` : `Expand ${shift.name}`
+                              }
+                              aria-expanded={openShiftId === shift.shiftId}
+                              onClick={() => {
+                                setOpenShiftId(openShiftId === shift.shiftId ? null : shift.shiftId);
+                              }}
+                            >
+                              {openShiftId === shift.shiftId ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                            </button>
+                          </div>
 
-                        <div className={styles.shiftDivider} />
+                          <p className={styles.shiftDescription}>{shift.description}</p>
 
-                        <div className={styles.shiftMetaRow}>
-                          <span className={styles.shiftMetaItem}>
-                            <Calendar size={15} aria-hidden="true" />
-                            {formatShiftDate(shift.date)}
-                          </span>
+                          <div className={styles.shiftDivider} />
 
-                          <span className={styles.shiftMetaItem}>
-                            <Clock size={15} aria-hidden="true" />
-                            {shift.startTime} – {shift.endTime} (PST)
-                          </span>
+                          <div className={styles.shiftMetaRow}>
+                            <span className={styles.shiftMetaItem}>
+                              <Calendar size={15} aria-hidden="true" />
+                              {formatShiftDate(shift.date)}
+                            </span>
 
-                          <span className={styles.spotsBadge}>
-                            {registeredShiftIds.has(shift.shiftId)
-                              ? "Registered"
-                              : pendingSignupIds.has(shift.shiftId)
-                                ? "Signing up..."
-                                : `${shiftSignupCounts.get(shift.shiftId) ?? 0}/${shift.totalSlots} Spots`}
-                          </span>
-                        </div>
+                            <span className={styles.shiftMetaItem}>
+                              <Clock size={15} aria-hidden="true" />
+                              {shift.startTime} – {shift.endTime} (PST)
+                            </span>
 
-                        {openShiftId === shift.shiftId ? (
-                          <div className={styles.expandedContent}>
-                            {shift.mapLink ? (
-                              <a
-                                href={shift.mapLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.locationLine}
-                              >
-                                <MapPin size={15} aria-hidden="true" />
-                                <span>{shift.address || shift.location}</span>
-                              </a>
-                            ) : (
-                              <p className={styles.locationLine}>
-                                <MapPin size={15} aria-hidden="true" />
-                                <span>{shift.address || shift.location}</span>
-                              </p>
-                            )}
+                            <span className={styles.spotsBadge}>
+                              {registeredShiftIds.has(shift.shiftId) ? (
+                                "Registered"
+                              ) : isShiftPending ? (
+                                <>
+                                  <Loader2 className={styles.cardSpinner} size={13} aria-hidden="true" />
+                                  Signing up...
+                                </>
+                              ) : (
+                                `${shiftSignupCounts.get(shift.shiftId) ?? 0}/${shift.totalSlots} Spots`
+                              )}
+                            </span>
+                          </div>
 
-                            {/* map preview */}
-                            {shift.mapLink ? (
-                              <iframe
-                                src={toGoogleMapsEmbed(shift.mapLink)}
-                                title={`${shift.name} map`}
-                                loading="lazy"
-                                className={styles.mapPreview}
-                              />
-                            ) : (
-                              <div className={styles.mapPlaceholder}>Map preview unavailable</div>
-                            )}
+                          {openShiftId === shift.shiftId ? (
+                            <div className={styles.expandedContent}>
+                              {shift.mapLink ? (
+                                <a
+                                  href={shift.mapLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className={styles.locationLine}
+                                >
+                                  <MapPin size={15} aria-hidden="true" />
+                                  <span>{shift.address || shift.location}</span>
+                                </a>
+                              ) : (
+                                <p className={styles.locationLine}>
+                                  <MapPin size={15} aria-hidden="true" />
+                                  <span>{shift.address || shift.location}</span>
+                                </p>
+                              )}
 
-                            {/* extra info section */}
-                            <div className={styles.infoBlock}>
-                              <h4>What should volunteers know about the location?</h4>
-                              <p className={!shift.locationInfo ? styles.placeholderText : ""}>
-                                {shift.locationInfo || "No extra information provided."}
-                              </p>
-                            </div>
+                              {/* map preview */}
+                              {shift.mapLink ? (
+                                <iframe
+                                  src={toGoogleMapsEmbed(shift.mapLink)}
+                                  title={`${shift.name} map`}
+                                  loading="lazy"
+                                  className={styles.mapPreview}
+                                />
+                              ) : (
+                                <div className={styles.mapPlaceholder}>Map preview unavailable</div>
+                              )}
 
-                            <div className={styles.infoBlock}>
-                              <h4>What will volunteers need to bring or wear?</h4>
-                              <p className={!shift.byoDescription ? styles.placeholderText : ""}>
-                                {shift.byoDescription || "No extra information provided."}
-                              </p>
-                            </div>
+                              {/* extra info section */}
+                              <div className={styles.infoBlock}>
+                                <h4>What should volunteers know about the location?</h4>
+                                <p className={!shift.locationInfo ? styles.placeholderText : ""}>
+                                  {shift.locationInfo || "No extra information provided."}
+                                </p>
+                              </div>
 
-                            <div className={styles.coordinatorBlock}>
-                              <h4>VOLUNTEER COORDINATOR</h4>
+                              <div className={styles.infoBlock}>
+                                <h4>What will volunteers need to bring or wear?</h4>
+                                <p className={!shift.byoDescription ? styles.placeholderText : ""}>
+                                  {shift.byoDescription || "No extra information provided."}
+                                </p>
+                              </div>
 
-                              <div className={styles.coordinatorRow}>
-                                <div className={styles.avatar} aria-hidden="true">
-                                  <UserRound size={26} />
-                                </div>
+                              <div className={styles.coordinatorBlock}>
+                                <h4>VOLUNTEER COORDINATOR</h4>
 
-                                <div>
-                                  <p className={styles.coordinatorName}>John Mustang</p>
-                                  <p className={styles.coordinatorInfo}>
-                                    <Mail size={13} aria-hidden="true" />
-                                    john.mustang@email.com
-                                  </p>
-                                  <p className={styles.coordinatorInfo}>
-                                    <Phone size={13} aria-hidden="true" />
-                                    (555) 123-4567
-                                  </p>
+                                <div className={styles.coordinatorRow}>
+                                  <div className={styles.avatar} aria-hidden="true">
+                                    <UserRound size={26} />
+                                  </div>
+
+                                  <div>
+                                    <p className={styles.coordinatorName}>John Mustang</p>
+                                    <p className={styles.coordinatorInfo}>
+                                      <Mail size={13} aria-hidden="true" />
+                                      john.mustang@email.com
+                                    </p>
+                                    <p className={styles.coordinatorInfo}>
+                                      <Phone size={13} aria-hidden="true" />
+                                      (555) 123-4567
+                                    </p>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ) : null}
+                          ) : null}
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))
+                    </article>
+                  );
+                })
               )}
             </div>
           </section>
@@ -324,7 +337,14 @@ export default function ShiftDetails({
               setSelectedShiftIds(new Set());
             }}
           >
-            {selectedShiftIsPending ? "Signing Up..." : "Sign Up for Shift"}
+            {selectedShiftIsPending ? (
+              <>
+                <Loader2 className={styles.buttonSpinner} size={16} aria-hidden="true" />
+                Signing Up...
+              </>
+            ) : (
+              "Sign Up for Shift"
+            )}
           </button>
 
           <section className={styles.contactSection} aria-labelledby="contact-title">
