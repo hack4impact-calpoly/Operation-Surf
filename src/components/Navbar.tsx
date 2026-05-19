@@ -6,12 +6,12 @@ import { usePathname } from "next/navigation";
 import {
   BriefcaseBusiness,
   CalendarDays,
-  ClipboardCheck,
+  // ClipboardCheck,
   Home,
   type LucideIcon,
   LogIn,
   UserPlus,
-  UserRound,
+  // UserRound,
 } from "lucide-react";
 import AccountMenu from "@/components/AccountMenu";
 import styles from "@/components/Navbar.module.css";
@@ -37,8 +37,8 @@ const adminNavItems: NavItem[] = [
     icon: BriefcaseBusiness,
     activePaths: ["/opportunities", "/create-event"],
   },
-  { href: "/signup", label: "Memberships", icon: UserRound },
-  { href: "/shift", label: "Check In", icon: ClipboardCheck, activePaths: ["/shift", "/checkin"] },
+  // { href: "/signup", label: "Memberships", icon: UserRound },
+  // { href: "/shift", label: "Check In", icon: ClipboardCheck, activePaths: ["/shift", "/checkin"] },
 ];
 
 const publicNavItems: NavItem[] = [
