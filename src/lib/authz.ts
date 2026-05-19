@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
-
-const baseURL: string = process.env.BETTER_AUTH_URL as string;
+import connectDB from "@/database/db";
+import Admin from "@/database/models/adminSchema";
 
 type AuthContext = {
   session: unknown;
@@ -22,13 +22,16 @@ export const getAuthContext = async (): Promise<AuthContext> => {
   const name = user?.name ?? null;
   const email = user?.email ?? null;
 
-  // if user is not in admin DB, isAdmin = false, else true
-  const admin = await fetch(`${baseURL}/api/admin/${userId}`);
+  let isAdmin = false;
+  if (userId) {
+    await connectDB();
+    isAdmin = Boolean(await Admin.exists({ adminId: userId }));
+  }
 
   return {
     session,
     isAuthenticated: session !== null,
-    isAdmin: admin.ok ? true : false,
+    isAdmin,
     userId,
     name,
     email,
