@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Calendar, ChevronDown, ChevronUp, Clock, Mail, MapPin, Phone, UserRound } from "lucide-react";
-import GreyNavbar from "@/components/GreyNavbar";
 import styles from "@/styles/ShiftDetails.module.css";
 import { authClient } from "@/lib/auth-client";
 
@@ -127,8 +126,6 @@ export default function ShiftDetails({
   return (
     <main className={styles.page}>
       <div className={inter.className}>
-        <GreyNavbar />
-
         <section className={styles.hero} aria-label="Shift details banner">
           <Image src="/hero-img.png" alt="" fill priority className={styles.heroBg} />
           <div className={styles.heroOverlay} />

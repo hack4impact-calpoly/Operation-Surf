@@ -15,7 +15,7 @@ import {
   MapPlus,
 } from "lucide-react";
 import { Roboto_Slab } from "next/font/google";
-import CreateEventNavbar from "./CreateEventNavbar";
+import CreateEventToolbar from "./CreateEventToolbar";
 
 const roboto = Roboto_Slab({
   subsets: ["latin"],
@@ -252,7 +252,7 @@ export default function CreateShift() {
   return (
     <div className={roboto.className}>
       <div className={styles.page}>
-        <CreateEventNavbar />
+        <CreateEventToolbar />
 
         <div className={styles.content}>
           <div className={styles.pageIntro}>

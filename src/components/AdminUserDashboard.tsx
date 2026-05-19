@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { House, Calendar, Users, CircleCheck, User, Mail, Phone, MapPin, Pencil } from "lucide-react";
+import { User, Mail, Phone, MapPin, Pencil } from "lucide-react";
 import styles from "@/styles/AdminUserDashboard.module.css";
 
 type Profile = {
@@ -90,34 +90,6 @@ export default function AdminUserDashboard({ profile, registeredEvents }: AdminU
 
   return (
     <div className={styles.page}>
-      {/* NAVBAR */}
-      <nav className={styles.navbar}>
-        <img
-          src="/op_surf_logo_no_bg.png"
-          alt="Operation Surf Logo"
-          width={58}
-          height={46}
-          className={styles.logoImg}
-        />
-        <div className={styles.navLinks}>
-          <a href="/" className={styles.navLink}>
-            <House size={16} strokeWidth={1.8} /> Home
-          </a>
-          <a href="/programs" className={styles.navLink}>
-            <Calendar size={16} strokeWidth={1.8} /> Opportunities
-          </a>
-          <a href="/memberships" className={styles.navLink}>
-            <Users size={16} strokeWidth={1.8} /> Memberships
-          </a>
-          <a href="/check-in" className={styles.navLink}>
-            <CircleCheck size={16} strokeWidth={1.8} /> Check In
-          </a>
-          <a href="/account" className={styles.navLink}>
-            <User size={16} strokeWidth={1.8} /> My Account
-          </a>
-        </div>
-      </nav>
-
       {/* HERO */}
       <header className={styles.hero}>
         <img src="/hero-img.png" alt="Dashboard background" className={styles.heroBg} />

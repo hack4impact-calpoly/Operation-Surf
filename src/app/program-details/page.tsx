@@ -1,7 +1,6 @@
 import ProgramDetail from "@/components/ProgramDetail";
 import connectDB from "@/database/db";
 import ProgramModel from "@/database/models/programSchema";
-import { getAuthContext } from "@/lib/authz";
 import { notFound } from "next/navigation";
 
 type ProgramRecord = {
@@ -55,11 +54,10 @@ export default async function ProgramDetailsPage({ searchParams }: ProgramDetail
   }
 
   const program = await getProgram(programId);
-  const { name, isAdmin } = await getAuthContext();
 
   if (!program) {
     notFound();
   }
 
-  return <ProgramDetail programId={program.programId} program={program} viewerName={name} isAdmin={isAdmin} />;
+  return <ProgramDetail programId={program.programId} program={program} />;
 }

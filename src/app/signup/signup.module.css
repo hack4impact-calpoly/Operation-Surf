@@ -25,44 +25,6 @@
   z-index: 1;
 }
 
-.navbar {
-  position: relative;
-  z-index: 2;
-  height: 58px;
-  padding: 0 18px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(142, 140, 122, 0.88);
-  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.24);
-}
-
-.logoLink {
-  display: inline-flex;
-  align-items: center;
-}
-
-.navLinks {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.navLink,
-.navButton {
-  min-height: 34px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: 0;
-  background: transparent;
-  color: #ffffff;
-  font: inherit;
-  font-size: 13px;
-  text-decoration: none;
-  cursor: pointer;
-}
-
 .signupPanel {
   position: relative;
   z-index: 2;
@@ -192,24 +154,6 @@
 }
 
 @media (max-width: 640px) {
-  .navbar {
-    height: auto;
-    min-height: 58px;
-    gap: 10px;
-    padding: 8px 14px;
-  }
-
-  .navLinks {
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  .navLink,
-  .navButton {
-    font-size: 12px;
-  }
-
   .signupPanel {
     margin-top: 54px;
     padding: 28px 24px 30px;

@@ -1,8 +1,7 @@
 "use client";
 
-import { CalendarDays, Check, ChevronDown, Home, Search, X } from "lucide-react";
+import { Check, ChevronDown, Search, X } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./CheckIn.module.css";
 
@@ -240,32 +239,6 @@ const CheckIn = ({ params }: Props) => {
 
   return (
     <div className={styles.page}>
-      <nav className={styles.navbar} aria-label="Primary navigation">
-        <div className={styles.navInner}>
-          <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
-            <Image
-              className={styles.logoImage}
-              src="/op_surf_logo_no_bg.png"
-              alt="Operation Surf"
-              width={60}
-              height={48}
-              priority
-            />
-          </Link>
-
-          <div className={styles.navLinks}>
-            <Link href="/" className={styles.navLink}>
-              <Home size={16} strokeWidth={2} aria-hidden="true" />
-              <span>Home</span>
-            </Link>
-            <Link href="/programs" className={styles.navLink}>
-              <CalendarDays size={16} strokeWidth={2} aria-hidden="true" />
-              <span>Programs</span>
-            </Link>
-          </div>
-        </div>
-      </nav>
-
       <header className={styles.hero}>
         <Image
           className={styles.heroImage}

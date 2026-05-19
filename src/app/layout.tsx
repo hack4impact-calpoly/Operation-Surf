@@ -13,12 +13,12 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { isAdmin, name } = await getAuthContext();
+  const { isAdmin, isAuthenticated, name } = await getAuthContext();
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        {isAdmin ? <Navbar name={name} /> : null}
+        <Navbar name={name} isAuthenticated={isAuthenticated} isAdmin={isAdmin} />
         {children}
       </body>
     </html>

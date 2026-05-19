@@ -4,62 +4,6 @@
   font-family: "Inter", sans-serif;
 }
 
-/* navbar */
-.navbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 24px;
-  background: rgba(151, 148, 131, 1);
-  backdrop-filter: blur(2px);
-}
-
-.navLogo {
-  display: flex;
-  align-items: center;
-}
-
-.logoImg {
-  height: 36px;
-  width: auto;
-  object-fit: contain;
-}
-
-.navLinks {
-  display: flex;
-  gap: 28px;
-}
-
-.navLink {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #fff;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  opacity: 0.92;
-  transition: opacity 0.15s;
-  font-family: "Inter", sans-serif;
-}
-
-.navGreeting {
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: 500;
-  opacity: 0.92;
-  font-family: "Inter", sans-serif;
-}
-
-.navLink:hover {
-  opacity: 1;
-}
-
 /* hero */
 .hero {
   position: relative;
@@ -248,9 +192,5 @@
   .shiftSection {
     margin: 16px 12px;
     padding: 20px 16px;
-  }
-
-  .navbar {
-    padding: 12px 16px;
   }
 }

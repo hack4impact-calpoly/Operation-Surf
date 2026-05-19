@@ -3,7 +3,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useParams } from "next/navigation";
 
-import GreyNavbar from "@/components/GreyNavbar";
 import ShiftDetails from "@/components/shift-details/ShiftDetails";
 import { authClient } from "@/lib/auth-client";
 import styles from "@/styles/ShiftDetails.module.css";
@@ -264,8 +263,6 @@ export default function DayDetailsPage() {
 
       {loadingDetails || loadingSession ? (
         <main className={styles.page}>
-          <GreyNavbar />
-
           <div className={styles.content}>
             <p className={styles.statusMsg} role="status">
               Loading shift details...
@@ -284,8 +281,6 @@ export default function DayDetailsPage() {
         />
       ) : (
         <main className={styles.page}>
-          <GreyNavbar />
-
           <div className={styles.content}>
             <p className={styles.statusMsg}>No day details available.</p>
           </div>

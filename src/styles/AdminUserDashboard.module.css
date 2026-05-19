@@ -7,46 +7,6 @@
   font-weight: 400;
 }
 
-/* navbar */
-.navbar {
-  background-color: rgba(151, 148, 131, 1);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2rem;
-  height: 62px;
-  position: relative;
-  z-index: 10;
-  font-family: "Inter", sans-serif;
-}
-
-.logoImg {
-  object-fit: contain;
-}
-
-.navLinks {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-}
-
-.navLink {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 0.88rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  opacity: 0.92;
-  transition: opacity 0.15s;
-  font-family: "Inter", sans-serif;
-}
-
-.navLink:hover {
-  opacity: 1;
-}
-
 /* hero */
 .hero {
   position: relative;

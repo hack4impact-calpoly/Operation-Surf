@@ -1,39 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import style from "./page.module.css";
-import AccountMenu from "@/components/AccountMenu";
 import ProgramHorizontalList from "@/components/ProgramHorizontalList";
-import { getAuthContext } from "@/lib/authz";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  const { name, isAdmin, isAuthenticated } = await getAuthContext();
-
+export default function Home() {
   return (
     <div className={style.pageContainer}>
-      {!isAdmin ? (
-        <header className={style.pageHeader}>
-          <Image src="/operation-surf.png" alt="Operation Surf Logo" width={84} height={67} />
-
-          <div className={style.headerButtons}>
-            {name && <p className={style.navGreeting}>Hi, {name}</p>}
-            {isAuthenticated ? (
-              <AccountMenu variant="light" />
-            ) : (
-              <>
-                <Link className={style.headerBtnOutline} href="/login">
-                  Sign In
-                </Link>
-                <Link className={style.headerBtnFilled} href="/signup">
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-        </header>
-      ) : null}
-
       <section className={style.hero}>
         <Image className={style.heroBg} src="/hero-img.png" alt="Operation Surf members by the ocean" fill />
 

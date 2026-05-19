@@ -1,9 +1,6 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import AccountMenu from "@/components/AccountMenu";
 import styles from "./volunteer-application.module.css";
 
 type FormState = {
@@ -126,29 +123,6 @@ export default function VolunteerApplicationForm() {
 
   return (
     <div className={styles.page}>
-      <header className={styles.navbar}>
-        <Link href="/" className={styles.logoLink} aria-label="Operation Surf home">
-          <Image
-            src="/operation-surf.png"
-            alt="Operation Surf"
-            width={76}
-            height={58}
-            className={styles.logo}
-            priority
-          />
-        </Link>
-
-        <nav className={styles.navLinks} aria-label="Primary navigation">
-          <Link href="/" className={styles.navLink}>
-            Home
-          </Link>
-          <Link href="/programs" className={styles.navLink}>
-            Programs
-          </Link>
-          <AccountMenu />
-        </nav>
-      </header>
-
       <main className={styles.main}>
         <section className={styles.panel}>
           <h1 className={styles.title}>Volunteer Application</h1>

@@ -1,7 +1,6 @@
 import Image from "next/image";
-import { BriefcaseBusiness, CalendarDays, Home, MapPin } from "lucide-react";
+import { BriefcaseBusiness, CalendarDays, MapPin } from "lucide-react";
 import Link from "next/link";
-import AccountMenu from "@/components/AccountMenu";
 import connectDB from "@/database/db";
 import ProgramModel from "@/database/models/programSchema";
 import { getAuthContext } from "@/lib/authz";
@@ -94,32 +93,11 @@ function ProgramCard({ program }: { program: ProgramRecord }) {
 export default async function ProgramList() {
   const programs = await getPrograms();
   const featuredProgram = programs[0];
-  const { name, isAdmin, isAuthenticated } = await getAuthContext();
+  const { isAdmin } = await getAuthContext();
 
   return (
     <main className={styles.page}>
       <div className={styles.pageShell}>
-        {!isAdmin ? (
-          <nav className={styles.navbar} aria-label="Primary navigation">
-            <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
-              <Image src="/operation-surf.png" alt="Operation Surf" width={78} height={62} />
-            </Link>
-
-            <div className={styles.navLinks}>
-              {name && <span className={styles.navGreeting}>Hi, {name}</span>}
-              <Link href="/" className={styles.navLink}>
-                <Home size={17} aria-hidden="true" />
-                Home
-              </Link>
-              <Link href="/programs" className={styles.navLink}>
-                <CalendarDays size={17} aria-hidden="true" />
-                Programs
-              </Link>
-              {isAuthenticated ? <AccountMenu /> : null}
-            </div>
-          </nav>
-        ) : null}
-
         <header className={styles.hero}>
           <Image
             className={styles.heroImage}
