@@ -111,7 +111,7 @@ export async function PATCH(request: Request, { params }: IParams): Promise<Next
     await connectDB();
     const authContext = await getAuthContext();
 
-    const { userId } = params;
+    const { userId } = await params;
 
     if (!userId) {
       return NextResponse.json({ message: "UserId is required." }, { status: 400 });

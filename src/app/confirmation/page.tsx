@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 import GreyNavbar from "@/components/GreyNavbar";
 
-import styles from "@/styles/Confirmation.module.css";
+import styles from "@/components/confirmation-page/ConfirmationCard.module.css";
 
 type Day = {
   name: string;
@@ -53,10 +53,24 @@ export default function ConfirmationPage() {
   return (
     <main className={styles.page}>
       <GreyNavbar />
+      <section className={styles.hero}>
+        <div className={styles.heroOverlay} />
+
+        <div
+          className={styles.heroImage}
+          style={{
+            backgroundImage: "url('/images/surf-banner.jpg')",
+          }}
+        />
+
+        <div className={styles.heroContent}>
+          <h1 className={styles.heroTitle}>Thank You For Signing Up!</h1>
+        </div>
+      </section>
 
       <div className={styles.container}>
         <div className={styles.card}>
-          <h1 className={styles.title}>Thank You For Signing Up!</h1>
+          <h1 className={styles.title}>Registration Confirmed!</h1>
 
           <p className={styles.subtitle}>Your volunteer shift registration has been confirmed.</p>
 
@@ -67,9 +81,7 @@ export default function ConfirmationPage() {
               <p>
                 <strong>{day.name}</strong>
               </p>
-
               <p>{new Date(day.date).toLocaleDateString()}</p>
-
               <p>{day.location}</p>
             </section>
           )}
@@ -80,11 +92,9 @@ export default function ConfirmationPage() {
             {shifts.map((shift) => (
               <div className={styles.shiftCard} key={shift.shiftId}>
                 <h3>{shift.name}</h3>
-
                 <p>
                   {shift.startTime} - {shift.endTime}
                 </p>
-
                 <p>{shift.location}</p>
               </div>
             ))}

@@ -118,7 +118,7 @@ export async function DELETE(request: Request, { params }: IParams): Promise<Nex
   // Attempt to connect to the database
   await connectDB();
 
-  const { dayId } = params;
+  const { dayId } = await params;
 
   try {
     const day = await Day.findOneAndDelete({ dayId: dayId });
