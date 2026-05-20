@@ -14,16 +14,16 @@ import Program from "@/database/models/programSchema";
  */
 
 type IParams = {
-  params: {
-    signupId: String;
-  };
+  params: Promise<{
+    signupId: string;
+  }>;
 };
 
 export async function GET(request: Request, { params }: IParams): Promise<NextResponse> {
   // Attempt to connect to the database
   await connectDB();
 
-  const { signupId } = params;
+  const { signupId } = await params;
 
   try {
     const { searchParams } = new URL(request.url);
@@ -120,7 +120,7 @@ export async function DELETE(request: Request, { params }: IParams): Promise<Nex
   // Attempt to connect to the database
   await connectDB();
 
-  const { signupId } = params;
+  const { signupId } = await params;
 
   try {
     const signup = await Signup.findOneAndDelete({ signupId: signupId });

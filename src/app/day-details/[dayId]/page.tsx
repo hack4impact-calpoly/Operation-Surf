@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import GreyNavbar from "@/components/GreyNavbar";
 import ShiftDetails from "@/components/shift-details/ShiftDetails";
@@ -63,6 +64,7 @@ type ApiSignup = {
 export default function DayDetailsPage() {
   const params = useParams<{ dayId: string }>();
   const dayId = params.dayId;
+  const router = useRouter();
 
   const { data: session, isPending: loadingSession } = authClient.useSession();
   const userId = session?.user?.id;
@@ -252,6 +254,7 @@ export default function DayDetailsPage() {
         return next;
       });
     }
+    router.push(`/confirmation?dayId=${dayId}&shiftIds=${newShiftIds.join(",")}`);
   }
 
   return (

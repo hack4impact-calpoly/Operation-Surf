@@ -6,9 +6,9 @@ import { client } from "@/database/db";
 import { ObjectId } from "mongodb";
 
 type IParams = {
-  params: {
+  params: Promise<{
     userId: string;
-  };
+  }>;
 };
 
 /**
@@ -23,7 +23,7 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
     await connectDB();
     const authContext = await getAuthContext();
 
-    const { userId } = params;
+    const { userId } = await params;
 
     if (!userId) {
       return NextResponse.json({ message: "UserId is required." }, { status: 400 });
