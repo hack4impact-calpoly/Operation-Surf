@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { CalendarDays, Home, MapPin } from "lucide-react";
+import { BriefcaseBusiness, CalendarDays, Home, MapPin } from "lucide-react";
 import Link from "next/link";
+import AccountMenu from "@/components/AccountMenu";
 import connectDB from "@/database/db";
 import ProgramModel from "@/database/models/programSchema";
 import { getAuthContext } from "@/lib/authz";
@@ -93,28 +94,31 @@ function ProgramCard({ program }: { program: ProgramRecord }) {
 export default async function ProgramList() {
   const programs = await getPrograms();
   const featuredProgram = programs[0];
-  const { name } = await getAuthContext();
+  const { name, isAdmin, isAuthenticated } = await getAuthContext();
 
   return (
     <main className={styles.page}>
       <div className={styles.pageShell}>
-        <nav className={styles.navbar} aria-label="Primary navigation">
-          <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
-            <Image src="/operation-surf.png" alt="Operation Surf" width={78} height={62} />
-          </Link>
+        {!isAdmin ? (
+          <nav className={styles.navbar} aria-label="Primary navigation">
+            <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
+              <Image src="/operation-surf.png" alt="Operation Surf" width={78} height={62} />
+            </Link>
 
-          <div className={styles.navLinks}>
-            {name && <span className={styles.navGreeting}>Hi, {name}</span>}
-            <Link href="/" className={styles.navLink}>
-              <Home size={17} aria-hidden="true" />
-              Home
-            </Link>
-            <Link href="/programs" className={styles.navLink}>
-              <CalendarDays size={17} aria-hidden="true" />
-              Programs
-            </Link>
-          </div>
-        </nav>
+            <div className={styles.navLinks}>
+              {name && <span className={styles.navGreeting}>Hi, {name}</span>}
+              <Link href="/" className={styles.navLink}>
+                <Home size={17} aria-hidden="true" />
+                Home
+              </Link>
+              <Link href="/programs" className={styles.navLink}>
+                <CalendarDays size={17} aria-hidden="true" />
+                Programs
+              </Link>
+              {isAuthenticated ? <AccountMenu /> : null}
+            </div>
+          </nav>
+        ) : null}
 
         <header className={styles.hero}>
           <Image
@@ -141,9 +145,18 @@ export default async function ProgramList() {
         </header>
 
         <section className={styles.listShell} aria-labelledby="program-list-title">
-          <h2 id="program-list-title" className={styles.sectionTitle}>
-            Programs
-          </h2>
+          <div className={styles.sectionHeader}>
+            <h2 id="program-list-title" className={styles.sectionTitle}>
+              Programs
+            </h2>
+
+            {isAdmin ? (
+              <Link href="/opportunities" className={styles.adminAction}>
+                <BriefcaseBusiness size={16} aria-hidden="true" />
+                Opportunities
+              </Link>
+            ) : null}
+          </div>
 
           {programs.length === 0 ? (
             <p className={styles.emptyState}>No programs available right now.</p>

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import styles from "@/styles/CreateEvent/CreateProgram.module.css";
 import { ClipboardList, MapPin, CalendarDays, Eye, Upload, FileText } from "lucide-react";
 import { Roboto_Slab } from "next/font/google";
@@ -11,7 +11,6 @@ const roboto = Roboto_Slab({
   subsets: ["latin"],
 });
 
-// array used later to display visibility options
 const visibilityOptions = [
   {
     value: "listed",
@@ -30,36 +29,113 @@ const visibilityOptions = [
   },
 ];
 
+const initialFormState = {
+  programName: "",
+  description: "",
+  location: "",
+  month: "",
+  visibility: "",
+};
+
+const formatMonthInput = (dateValue: string) => {
+  const date = new Date(dateValue);
+  if (Number.isNaN(date.getTime())) return "";
+  return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
+};
+
+const getDurationFromMonth = (monthValue: string) => {
+  const date = new Date(`${monthValue}-01T00:00:00Z`);
+  if (Number.isNaN(date.getTime())) return monthValue;
+
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+};
+
+const getProgramVisibility = (program: { private?: boolean; ghost_program?: boolean }) => {
+  if (program.private) return "private";
+  if (program.ghost_program) return "unlisted";
+  return "listed";
+};
+
+const getProgramPrivacyFlags = (visibility: string) => ({
+  private: visibility === "private",
+  ghost_program: visibility === "unlisted",
+});
+
 export default function CreateProgram() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const programId = searchParams.get("programId");
+  const isEditMode = programId !== null;
 
-  const [formData, setFormData] = useState({
-    programName: "",
-    description: "",
-    location: "",
-    month: "",
-    visibility: "",
-  });
-
+  const [formData, setFormData] = useState(initialFormState);
   const [photoName, setPhotoName] = useState("");
-
-  // state for error checking & input validation
   const [errors, setErrors] = useState({
     programName: "",
     month: "",
     visibility: "",
     photo: "",
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(isEditMode);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // unused for now:
-  // const isFormValid =
-  //   formData.programName.trim() !== "" &&
-  //   formData.month !== "" &&
-  //   formData.visibility !== "" &&
-  //   !errors.programName &&
-  //   !errors.month &&
-  //   !errors.visibility &&
-  //   !errors.photo;
+  useEffect(() => {
+    if (!isEditMode || !programId) return;
+
+    let isMounted = true;
+
+    async function loadProgram() {
+      try {
+        const response = await fetch(`/api/program/${encodeURIComponent(programId)}`, {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to load program: ${response.status}`);
+        }
+
+        const json = (await response.json()) as {
+          program: {
+            programName?: string;
+            description?: string;
+            location?: string;
+            date?: string;
+            private?: boolean;
+            ghost_program?: boolean;
+            imageURI?: string;
+          };
+        };
+
+        if (!isMounted) return;
+
+        setFormData({
+          programName: json.program.programName ?? "",
+          description: json.program.description ?? "",
+          location: json.program.location ?? "",
+          month: json.program.date ? formatMonthInput(json.program.date) : "",
+          visibility: getProgramVisibility(json.program),
+        });
+        setPhotoName(json.program.imageURI ?? "");
+      } catch (error) {
+        if (!isMounted) return;
+        setErrorMessage(error instanceof Error ? error.message : "Unable to load program.");
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadProgram();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isEditMode, programId]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
@@ -69,7 +145,6 @@ export default function CreateProgram() {
       [name]: value,
     }));
 
-    // clear errors & input validation once required fields are filled
     if (name === "programName" && value.trim() !== "") {
       setErrors((prev) => ({ ...prev, programName: "" }));
     }
@@ -107,7 +182,7 @@ export default function CreateProgram() {
     setErrors((prev) => ({ ...prev, photo: "" }));
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const newErrors = {
@@ -118,14 +193,56 @@ export default function CreateProgram() {
     };
 
     setErrors(newErrors);
+    setErrorMessage(null);
 
     const hasError = Object.values(newErrors).some((value) => value !== "");
-
     if (hasError) return;
 
-    console.log("submitted program form");
-    alert("Form successfully submitted!");
+    setIsSubmitting(true);
+
+    try {
+      const visibilityFlags = getProgramPrivacyFlags(formData.visibility);
+      const payload = {
+        imageURI: "/hero-img.png",
+        location: formData.location,
+        date: `${formData.month}-01T00:00:00.000Z`,
+        duration: getDurationFromMonth(formData.month),
+        programName: formData.programName,
+        description: formData.description,
+        ...visibilityFlags,
+        ...(isEditMode ? {} : { programId: crypto.randomUUID() }),
+      };
+
+      const endpoint = isEditMode ? `/api/program/${encodeURIComponent(programId as string)}` : "/api/program";
+      const method = isEditMode ? "PATCH" : "POST";
+
+      const response = await fetch(endpoint, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const json = (await response.json()) as { message?: string; error?: string };
+        throw new Error(json.error ?? json.message ?? "Unable to save program.");
+      }
+
+      router.push("/opportunities");
+      router.refresh();
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Unable to save program.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
+
+  const pageTitle = isEditMode ? "Edit Program" : "Add Program";
+  const submitLabel = isEditMode ? "Save Program" : "Add Program";
+  const subtitle = isEditMode
+    ? "Update your program details and visibility settings"
+    : "Set up a new program to organize events and opportunities";
 
   return (
     <div className={roboto.className}>
@@ -141,14 +258,16 @@ export default function CreateProgram() {
                 </div>
 
                 <div>
-                  <h1 className={styles.title}>Create Program</h1>
-                  <p className={styles.subtitle}>Set up a new program to organize events and opportunities</p>
+                  <h1 className={styles.title}>{pageTitle}</h1>
+                  <p className={styles.subtitle}>{subtitle}</p>
                 </div>
               </div>
             </div>
 
-            {/* field: program Name */}
             <div className={styles.cardBody}>
+              {isLoading ? <p>Loading program...</p> : null}
+              {errorMessage ? <p className={styles.error}>{errorMessage}</p> : null}
+
               <div className={styles.field}>
                 <label className={styles.label}>
                   <FileText size={18} className={styles.labelIcon} />
@@ -163,11 +282,11 @@ export default function CreateProgram() {
                   placeholder="e.g. Adaptive Surf Therapy"
                   value={formData.programName}
                   onChange={handleChange}
+                  disabled={isLoading || isSubmitting}
                 />
                 {errors.programName && <p className={styles.error}>{errors.programName}</p>}
               </div>
 
-              {/* field: description */}
               <div className={styles.field}>
                 <label className={styles.label}>
                   <FileText size={18} className={styles.labelIcon} />
@@ -179,10 +298,10 @@ export default function CreateProgram() {
                   placeholder="Describe the program, its goals, and what participants can expect..."
                   value={formData.description}
                   onChange={handleChange}
+                  disabled={isLoading || isSubmitting}
                 />
               </div>
 
-              {/* field: general location */}
               <div className={styles.row}>
                 <div className={styles.halfField}>
                   <label className={styles.label}>
@@ -196,10 +315,10 @@ export default function CreateProgram() {
                     placeholder="e.g. San Diego, CA"
                     value={formData.location}
                     onChange={handleChange}
+                    disabled={isLoading || isSubmitting}
                   />
                 </div>
 
-                {/* field: month */}
                 <div className={styles.halfField}>
                   <label className={styles.label}>
                     <CalendarDays size={18} className={styles.labelIcon} />
@@ -212,12 +331,12 @@ export default function CreateProgram() {
                     name="month"
                     value={formData.month}
                     onChange={handleChange}
+                    disabled={isLoading || isSubmitting}
                   />
                   {errors.month && <p className={styles.error}>{errors.month}</p>}
                 </div>
               </div>
 
-              {/* field: visibility */}
               <div className={styles.field}>
                 <label className={styles.label}>
                   <Eye size={18} className={styles.labelIcon} />
@@ -233,6 +352,7 @@ export default function CreateProgram() {
                       checked={formData.visibility === option.value}
                       onChange={handleChange}
                       className={styles.radioInput}
+                      disabled={isLoading || isSubmitting}
                     />
                     <div>
                       <p className={styles.visibilityTitle}>{option.title}</p>
@@ -244,7 +364,6 @@ export default function CreateProgram() {
                 {errors.visibility && <p className={styles.error}>{errors.visibility}</p>}
               </div>
 
-              {/* field: upload photo */}
               <div className={styles.field}>
                 <label className={styles.label}>
                   <Upload size={18} className={styles.labelIcon} />
@@ -266,13 +385,14 @@ export default function CreateProgram() {
                   type="file"
                   accept=".jpg,.jpeg,.png,.webp,"
                   onChange={handlePhotoChange}
+                  disabled={isLoading || isSubmitting}
                 />
 
                 {errors.photo && <p className={styles.error}>{errors.photo}</p>}
               </div>
 
-              <button className={styles.submitButton} type="submit">
-                Create Program
+              <button className={styles.submitButton} type="submit" disabled={isLoading || isSubmitting}>
+                {submitLabel}
               </button>
             </div>
           </form>

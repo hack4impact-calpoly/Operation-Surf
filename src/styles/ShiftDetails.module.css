@@ -1,0 +1,478 @@
+.page {
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 205px;
+  overflow: hidden;
+}
+
+.heroBg {
+  object-fit: cover;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(124, 120, 69, 0.9) 0%, rgba(115, 113, 68, 0.8) 100%);
+  z-index: 0;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 18px;
+
+  display: flex;
+  align-items: center;
+}
+
+.heroTitle {
+  color: white;
+  font-size: 38px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.content {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 34px 18px 48px 18px;
+}
+
+.statusMsg {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.errorBanner {
+  padding: 14px 18px;
+
+  border: 1px solid #fecaca;
+
+  background: #facbcb;
+  color: #d61212;
+
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+.infoBlock p.placeholderText,
+.dayDescription.placeholderText {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.dayHeader {
+  margin-bottom: 32px;
+}
+
+.dayTitle {
+  color: #111827;
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 0.65rem 0;
+}
+
+.devNote {
+  color: #9ca3af;
+  font-size: 0.8rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.dayMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+
+  color: #737144;
+  font-size: 1rem;
+  font-weight: 500;
+
+  margin-bottom: 1rem;
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.dayDescription {
+  max-width: 1050px;
+  color: #111827;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.emptyMsg {
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.sectionTitle {
+  color: #737144;
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.shiftsSection {
+  margin-bottom: 1.5rem;
+}
+
+.shiftList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.shiftCard {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+
+  padding: 1.1rem 1.25rem;
+
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.12),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+.shiftTop {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.shiftCheckbox {
+  width: 18px;
+  height: 18px;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.shiftMain {
+  width: 100%;
+}
+
+.shiftTitleRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.shiftTitle {
+  color: #737144;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.expandBtn {
+  background: none;
+  border: none;
+  color: #737144;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.shiftDescription {
+  color: #374151;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  margin: 0.3rem 0 0 0;
+}
+
+.shiftDivider {
+  height: 1px;
+  background: #d1d5db;
+  margin: 1rem 0 0.75rem 0;
+}
+
+.shiftMetaRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+
+  position: relative;
+  padding-right: 5.75rem;
+}
+
+.shiftMetaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  color: #111827;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.shiftMetaItem svg {
+  color: #737144;
+}
+
+.spotsBadge {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background: #737144;
+  color: white;
+
+  border-radius: 999px;
+  padding: 0.35rem 0.6rem;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.expandedContent {
+  margin-top: 0.75rem;
+}
+
+.locationLine {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  color: #737144;
+  font-size: 0.9rem;
+  text-decoration: none;
+
+  margin: 0 0 0.75rem 0;
+  width: fit-content;
+}
+
+a.locationLine:hover {
+  color: rgba(90, 95, 60, 1);
+}
+
+.mapPreview {
+  width: 100%;
+  height: 205px;
+
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+
+  margin-bottom: 1rem;
+}
+
+.mapPlaceholder {
+  width: 100%;
+  height: 205px;
+
+  border-radius: 6px;
+  border: 1px dashed #9ca3af;
+
+  background: #e5e7eb;
+  color: #6b7280;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.infoBlock {
+  margin-bottom: 1rem;
+}
+
+.infoBlock h4 {
+  color: #737144;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.infoBlock p {
+  color: #111827;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.coordinatorBlock {
+  margin-top: 1.1rem;
+}
+
+.coordinatorBlock h4 {
+  color: #737144;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.6rem 0;
+}
+
+.coordinatorRow {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+
+  background: #e5e5e5;
+  color: #b7b7b7;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.coordinatorName {
+  color: #111827;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin: 0 0 0.1rem 0;
+}
+
+.coordinatorInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+
+  color: #111827;
+  font-size: 0.78rem;
+
+  margin: 0.05rem 0;
+}
+
+.coordinatorInfo svg {
+  color: #737144;
+}
+
+.signUpBtn {
+  background-color: #737144;
+  color: white;
+
+  border: none;
+  border-radius: 6px;
+
+  padding: 0.9rem 1.15rem;
+
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  cursor: pointer;
+  margin: 0 0 1.5rem 0;
+}
+
+.signUpBtn:hover {
+  background-color: rgba(90, 95, 60, 1);
+}
+
+.signUpBtn:focus,
+.expandBtn:focus,
+.shiftCheckbox:focus {
+  outline: 2px solid rgba(124, 120, 69, 0.45);
+  outline-offset: 3px;
+}
+
+.signUpBtn:disabled {
+  background-color: rgba(124, 120, 69, 0.45);
+  cursor: not-allowed;
+}
+
+.signUpError {
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+  width: fit-content;
+}
+
+.contactSection {
+  margin-top: 0.5rem;
+}
+
+.contactName {
+  color: #111827;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.contactInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  color: #111827;
+  font-size: 0.95rem;
+
+  margin: 0.2rem 0;
+}
+
+.contactInfo svg {
+  color: #737144;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 180px;
+  }
+
+  .heroTitle {
+    font-size: 32px;
+  }
+
+  .content {
+    padding: 24px 14px 40px 14px;
+  }
+
+  .dayTitle {
+    font-size: 25px;
+  }
+
+  .mapPreview {
+    height: 165px;
+  }
+
+  .shiftMetaRow {
+    gap: 0.75rem;
+    padding-right: 0;
+    padding-bottom: 2rem;
+  }
+
+  .spotsBadge {
+    left: 0;
+    right: auto;
+    top: auto;
+    bottom: 0;
+    transform: none;
+  }
+
+  .mapPlaceholder {
+    height: 165px;
+  }
+}

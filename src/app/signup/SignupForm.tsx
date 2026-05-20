@@ -14,6 +14,10 @@ type FormState = {
   password: string;
 };
 
+type SignupFormProps = {
+  isAdmin?: boolean;
+};
+
 const initialFormState: FormState = {
   name: "",
   username: "",
@@ -21,7 +25,7 @@ const initialFormState: FormState = {
   password: "",
 };
 
-export default function SignupForm() {
+export default function SignupForm({ isAdmin = false }: SignupFormProps) {
   const [form, setForm] = useState<FormState>(initialFormState);
   const [ipAddress, setIpAddress] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
@@ -73,22 +77,24 @@ export default function SignupForm() {
       <Image className={styles.backgroundImage} src="/hero-img.png" alt="" fill priority />
       <div className={styles.tint} />
 
-      <header className={styles.navbar}>
-        <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
-          <Image src="/operation-surf.png" alt="Operation Surf" width={78} height={62} />
-        </Link>
+      {!isAdmin ? (
+        <header className={styles.navbar}>
+          <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
+            <Image src="/operation-surf.png" alt="Operation Surf" width={78} height={62} />
+          </Link>
 
-        <nav className={styles.navLinks} aria-label="Primary navigation">
-          <Link href="/" className={styles.navLink}>
-            <Home size={15} />
-            Home
-          </Link>
-          <Link href="/#programs" className={styles.navLink}>
-            <CalendarDays size={15} />
-            Programs
-          </Link>
-        </nav>
-      </header>
+          <nav className={styles.navLinks} aria-label="Primary navigation">
+            <Link href="/" className={styles.navLink}>
+              <Home size={15} />
+              Home
+            </Link>
+            <Link href="/#programs" className={styles.navLink}>
+              <CalendarDays size={15} />
+              Programs
+            </Link>
+          </nav>
+        </header>
+      ) : null}
 
       <section className={styles.signupPanel} aria-labelledby="signup-title">
         <h1 id="signup-title" className={styles.title}>

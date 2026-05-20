@@ -1,0 +1,584 @@
+.page {
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
+
+/* hero */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(180deg, rgba(124, 120, 69, 0.9) 0%, rgba(115, 113, 68, 0.8) 100%);
+
+  z-index: 0;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 0 32px;
+
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  color: white;
+  font-size: 48px;
+  font-weight: 250;
+  line-height: 1.1;
+  letter-spacing: 0.35px;
+  margin: 0;
+}
+
+.heroSubtitle {
+  color: white;
+  font-size: 20px;
+  font-weight: 250;
+  line-height: 28px;
+  margin: 15px 0 0 0;
+}
+
+/* MAIN LAYOUT */
+.mainContent {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* non-navbar icons */
+.icon {
+  color: #737144;
+}
+
+/* sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* registered days */
+.registeredCard {
+  background: white;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 0.8rem 1.5rem;
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.registeredCardTitle {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: rgba(124, 120, 69, 1);
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+.registeredDayItem {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.registeredDayItem:last-child {
+  margin-bottom: 0.6rem;
+}
+
+.registeredDayTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.registeredDayDate {
+  font-size: 0.85rem;
+  color: rgba(124, 120, 69, 1);
+}
+
+.confirmedBadge {
+  font-size: 0.7rem;
+  font-weight: 500;
+
+  color: #16a34a;
+  background: #dcfce7;
+
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.registeredDayName {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  margin: 0;
+}
+
+.daysSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.cancelBtn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  width: fit-content;
+}
+
+.cancelBtn:hover {
+  text-decoration: underline;
+}
+
+/* available days */
+.daysCard {
+  background: white;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.daysCardTitle {
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: rgba(124, 120, 69, 1);
+  margin: 0 0 0.5rem 0;
+}
+
+.shiftCard {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.shiftCardLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.shiftCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.shiftDayOfWeek {
+  font-size: 0.9rem;
+  color: #8d8d8d;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  padding: 0.1rem 0.6rem;
+}
+
+.shiftDate {
+  font-size: 1.1rem;
+  color: rgba(124, 120, 69, 1);
+  font-weight: 400;
+}
+
+.shiftName {
+  font-size: 1.25rem;
+  font-weight: 450;
+  color: #111827;
+  margin: 0.25rem 0;
+}
+
+.shiftTimeRow {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.shiftTime {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.shiftCardRight {
+  flex-shrink: 0;
+}
+
+.registeredBadge {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+
+  background: #dcfce7;
+  color: #16a34a;
+
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.signUpBtn {
+  background-color: #737144;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.signUpBtn:hover {
+  background-color: rgba(90, 95, 60, 1);
+}
+
+/* responsive shift card */
+@media (max-width: 768px) {
+  .shiftCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .shiftCardRight {
+    width: 100%;
+  }
+
+  .signUpBtn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* profile */
+.profileCard {
+  background: white;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.profileCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.profileCardTitle {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: rgba(124, 120, 69, 1);
+  margin: 0;
+  margin-bottom: 20px;
+}
+
+.editBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.avatarCircle {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(124, 120, 69, 0.9) 0%, rgba(115, 113, 68, 0.8) 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 400;
+  margin: 0 auto 1.25rem auto;
+}
+
+.profileFields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.emergencyContactFields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.fieldLabel {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  margin: 0;
+  margin-top: 0.4rem;
+}
+
+.fieldValue {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 15px;
+  font-weight: 400;
+  margin-top: 0;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.fieldValue svg {
+  flex-shrink: 0;
+}
+
+.emptyField {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* status */
+.statusMsg {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.errorMsg {
+  color: #ef4444;
+  font-size: 0.875rem;
+  gap: 0.2rem;
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+}
+
+/* error banner */
+.errorBanner {
+  padding: 14px 18px;
+
+  border: 1px solid #fecaca;
+
+  background: #facbcb;
+  color: #d61212;
+
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+/* profile editing modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.requiredFieldsNote {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  color: #6b7280;
+  font-size: 0.8rem;
+
+  margin-bottom: 0.5rem;
+}
+
+.profileModal {
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  background: white;
+  border-radius: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+
+  box-shadow:
+    0px 4px 6px -4px rgba(0, 0, 0, 0.1),
+    0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.modalTitle {
+  color: rgba(124, 120, 69, 1);
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin: 0 0 0.5rem 0;
+}
+
+.modalSectionTitle {
+  color: #7c7845;
+  font-weight: 400;
+}
+
+.modalLabel {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.modalInput {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.7rem;
+  font-size: 0.9rem;
+}
+
+.modalInput:focus {
+  outline: 2px solid rgba(124, 120, 69, 0.35);
+  border-color: rgba(124, 120, 69, 1);
+}
+
+.modalButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.modalCancelBtn {
+  background: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+}
+
+.modalSaveBtn {
+  background-color: #7c7845;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+}
+
+.modalSaveBtn:hover:not(:disabled) {
+  background-color: rgba(90, 95, 60, 1);
+}
+
+.modalSaveBtn:disabled {
+  background-color: rgba(124, 120, 69, 0.45);
+  cursor: not-allowed;
+}
+
+.requiredStar {
+  color: red;
+}
+
+/* for mobile */
+@media (max-width: 480px) {
+  .hero {
+    height: 360px;
+  }
+
+  .heroContent {
+    padding: 0 20px;
+  }
+
+  .heroTitle {
+    font-size: 34px;
+  }
+
+  .heroSubtitle {
+    font-size: 17px;
+    line-height: 24px;
+  }
+
+  .registeredCard,
+  .profileCard,
+  .daysCard {
+    padding: 1rem;
+  }
+
+  .shiftCard {
+    padding: 1rem;
+  }
+
+  .shiftCardHeader {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .profileModal {
+    max-width: 100%;
+    padding: 1rem;
+  }
+
+  .modalButtons {
+    flex-direction: column-reverse;
+  }
+
+  .modalCancelBtn,
+  .modalSaveBtn {
+    width: 100%;
+  }
+}

@@ -12,9 +12,9 @@ import { getAuthContext } from "@/lib/authz";
  * - Supports `view=expanded-shift-details` for richer shift metadata.
  */
 type IParams = {
-  params: {
+  params: Promise<{
     dayId: string;
-  };
+  }>;
 };
 
 export async function GET(request: Request, { params }: IParams): Promise<NextResponse> {
@@ -22,7 +22,7 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
   await connectDB();
   const authContext = await getAuthContext();
 
-  const { dayId } = params;
+  const { dayId } = await params;
 
   try {
     const { searchParams } = new URL(request.url);
@@ -67,7 +67,7 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
           expandedShiftDetails: {
             shiftId: day.dayId,
             title: day.name,
-            description: dayRecord.description ?? null,
+            description: day.description ?? null,
             dayOfWeek: day.dayOfWeek,
             date: day.date,
             startTime: day.startTime,
@@ -137,6 +137,60 @@ export async function DELETE(request: Request, { params }: IParams): Promise<Nex
     return NextResponse.json(
       {
         message: "Failed to delete day.",
+        error: err instanceof Error ? err.message : "An unknown error occurred.",
+      },
+      { status: 500 },
+    );
+  }
+}
+
+/**
+ * PATCH /api/day/[dayId]
+ * Updates a day record by its dayId.
+ */
+export async function PATCH(request: Request, { params }: IParams): Promise<NextResponse> {
+  await connectDB();
+
+  let body: Record<string, unknown>;
+
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ message: "Invalid JSON body." }, { status: 400 });
+  }
+
+  try {
+    const updateData: Record<string, unknown> = {};
+
+    if (body.name !== undefined) updateData.name = body.name;
+    if (body.description !== undefined) updateData.description = body.description;
+    if (body.location !== undefined) updateData.location = body.location;
+    if (body.programId !== undefined) updateData.programId = body.programId;
+    if (body.private !== undefined) updateData.private = body.private;
+    if (body.startTime !== undefined) updateData.startTime = body.startTime;
+    if (body.endTime !== undefined) updateData.endTime = body.endTime;
+
+    if (body.date !== undefined) {
+      const dayDate = new Date(body.date as string);
+      const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      updateData.date = dayDate;
+      updateData.dayOfWeek = days[dayDate.getDay()];
+    }
+
+    const day = await Day.findOneAndUpdate({ dayId: params.dayId }, updateData, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!day) {
+      return NextResponse.json({ message: "Day not found." }, { status: 404 });
+    }
+
+    return NextResponse.json({ day }, { status: 200 });
+  } catch (err) {
+    return NextResponse.json(
+      {
+        message: "Failed to update day.",
         error: err instanceof Error ? err.message : "An unknown error occurred.",
       },
       { status: 500 },

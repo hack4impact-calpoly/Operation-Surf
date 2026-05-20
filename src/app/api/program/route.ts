@@ -60,6 +60,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         return {
           programId: program.programId,
           title: program.programName,
+          description: program.description,
           imageURI: program.imageURI,
           location: program.location,
           date: program.date,
@@ -136,6 +137,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       duration: body.duration,
       programName: body.programName,
       programId: body.programId,
+      description: body.description,
       private: body.private,
       ghost_program: body.ghost_program,
     });

@@ -55,11 +55,11 @@ export default async function ProgramDetailsPage({ searchParams }: ProgramDetail
   }
 
   const program = await getProgram(programId);
-  const { name } = await getAuthContext();
+  const { name, isAdmin } = await getAuthContext();
 
   if (!program) {
     notFound();
   }
 
-  return <ProgramDetail programId={program.programId} program={program} viewerName={name} />;
+  return <ProgramDetail programId={program.programId} program={program} viewerName={name} isAdmin={isAdmin} />;
 }

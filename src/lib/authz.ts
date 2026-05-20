@@ -1,5 +1,14 @@
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import connectDB from "@/database/db";
+import Admin from "@/database/models/adminSchema";
+
+const adminEmails = new Set(
+  (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean),
+);
 
 type AuthContext = {
   session: unknown;
@@ -9,17 +18,6 @@ type AuthContext = {
   name: string | null;
   email: string | null;
 };
-
-const parseCsvEnv = (value: string | undefined): string[] => {
-  if (!value) return [];
-  return value
-    .split(",")
-    .map((entry) => entry.trim())
-    .filter((entry) => entry.length > 0);
-};
-
-const ADMIN_USER_IDS = new Set(parseCsvEnv(process.env.ADMIN_USER_IDS));
-const ADMIN_EMAILS = new Set(parseCsvEnv(process.env.ADMIN_EMAILS));
 
 export const getAuthContext = async (): Promise<AuthContext> => {
   const session = await auth.api.getSession({
@@ -31,7 +29,13 @@ export const getAuthContext = async (): Promise<AuthContext> => {
   const name = user?.name ?? null;
   const email = user?.email ?? null;
 
-  const isAdmin = (userId !== null && ADMIN_USER_IDS.has(userId)) || (email !== null && ADMIN_EMAILS.has(email));
+  let isAdmin = false;
+  if (email && adminEmails.has(email.toLowerCase())) {
+    isAdmin = true;
+  } else if (userId) {
+    await connectDB();
+    isAdmin = Boolean(await Admin.exists({ adminId: userId }));
+  }
 
   return {
     session,
