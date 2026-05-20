@@ -22,6 +22,7 @@ type FormState = {
   shirtSize: string;
   emergencyFirstName: string;
   emergencyLastName: string;
+  emergencyRelationship: string;
   emergencyEmail: string;
   emergencyPhone: string;
   liabilityWaiverAccepted: string;
@@ -43,6 +44,7 @@ const emptyForm: FormState = {
   shirtSize: "",
   emergencyFirstName: "",
   emergencyLastName: "",
+  emergencyRelationship: "",
   emergencyEmail: "",
   emergencyPhone: "",
   liabilityWaiverAccepted: "yes",
@@ -295,7 +297,13 @@ export default function VolunteerApplicationForm() {
                   required
                 />
                 <input
-                  className={`${styles.input} ${styles.spanTwo}`}
+                  className={styles.input}
+                  placeholder="Relationship"
+                  value={form.emergencyRelationship}
+                  onChange={(e) => updateField("emergencyRelationship", e.target.value)}
+                />
+                <input
+                  className={styles.input}
                   placeholder="Email"
                   type="email"
                   value={form.emergencyEmail}

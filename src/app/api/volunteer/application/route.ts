@@ -24,6 +24,7 @@ type ApplicationBody = {
   shirtSize: "XS" | "S" | "M" | "L" | "XL" | "2XL" | "3XL";
   emergencyFirstName: string;
   emergencyLastName: string;
+  emergencyRelationship: string;
   emergencyEmail: string;
   emergencyPhone: string;
   liabilityWaiverAccepted: boolean;
@@ -159,6 +160,9 @@ export async function GET() {
           shirtSize: String(volunteer?.shirtSize ?? ""),
           emergencyFirstName: emergencyNameParts.firstName,
           emergencyLastName: emergencyNameParts.lastName,
+          emergencyRelationship: String(
+            (volunteer?.emergencyContact as Record<string, unknown> | undefined)?.relationship ?? "",
+          ),
           emergencyEmail: String((volunteer?.emergencyContact as Record<string, unknown> | undefined)?.email ?? ""),
           emergencyPhone: String((volunteer?.emergencyContact as Record<string, unknown> | undefined)?.phone ?? ""),
           liabilityWaiverAccepted: Boolean(applicationWaiver?.accepted),
@@ -212,6 +216,7 @@ export async function POST(request: Request) {
     const sex = String(normalizedBody.sex).trim();
     const emergencyFirstName = String(normalizedBody.emergencyFirstName).trim();
     const emergencyLastName = String(normalizedBody.emergencyLastName).trim();
+    const emergencyRelationship = String(normalizedBody.emergencyRelationship ?? "").trim();
     const emergencyEmail = String(normalizedBody.emergencyEmail).trim().toLowerCase();
     const emergencyPhone = String(normalizedBody.emergencyPhone).trim();
     const liabilityWaiverAccepted = Boolean(normalizedBody.liabilityWaiverAccepted);
@@ -278,9 +283,7 @@ export async function POST(request: Request) {
       shirtSize,
       emergencyContact: {
         name: emergencyName,
-        relationship: String(
-          (existingVolunteer?.emergencyContact as Record<string, unknown> | undefined)?.relationship ?? "",
-        ).trim(),
+        relationship: emergencyRelationship,
         phone: emergencyPhone,
         email: emergencyEmail,
       },
