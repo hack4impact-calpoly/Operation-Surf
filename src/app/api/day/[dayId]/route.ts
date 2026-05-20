@@ -12,9 +12,9 @@ import { getAuthContext } from "@/lib/authz";
  * - Supports `view=expanded-shift-details` for richer shift metadata.
  */
 type IParams = {
-  params: {
+  params: Promise<{
     dayId: string;
-  };
+  }>;
 };
 
 export async function GET(request: Request, { params }: IParams): Promise<NextResponse> {
@@ -22,7 +22,7 @@ export async function GET(request: Request, { params }: IParams): Promise<NextRe
   await connectDB();
   const authContext = await getAuthContext();
 
-  const { dayId } = params;
+  const { dayId } = await params;
 
   try {
     const { searchParams } = new URL(request.url);
