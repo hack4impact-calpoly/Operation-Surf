@@ -1,10 +1,10 @@
 .navbar {
-  min-height: 64px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  padding: 10px 24px;
+  gap: 18px;
+  padding: 6px 18px;
   background: #979483;
   border-bottom: 1px solid rgba(114, 110, 96, 0.75);
   box-shadow: 0 4px 14px rgba(31, 41, 55, 0.14);
@@ -20,7 +20,7 @@
 
 .logoLink img {
   width: auto;
-  height: 34px;
+  height: 25px;
   object-fit: contain;
 }
 
@@ -28,13 +28,13 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 16px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .navGreeting {
   color: #ffffff;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -47,7 +47,7 @@
   background: transparent;
   color: #ffffff;
   text-decoration: none;
-  font-size: 0.87rem;
+  font-size: 0.8rem;
   font-weight: 500;
   opacity: 0.94;
   transition:
@@ -55,7 +55,7 @@
     transform 0.15s ease,
     background-color 0.15s ease;
   border-radius: 999px;
-  padding: 8px 10px;
+  padding: 5px 7px;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -82,12 +82,12 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  min-height: 34px;
+  min-height: 28px;
   border-radius: 999px;
-  padding: 8px 14px;
+  padding: 5px 11px;
   color: #ffffff;
   text-decoration: none;
-  font-size: 0.87rem;
+  font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;
   transition:
@@ -114,11 +114,11 @@
 
 @media (max-width: 760px) {
   .navbar {
-    padding: 10px 16px;
+    padding: 6px 12px;
   }
 
   .navGroup {
-    gap: 10px;
+    gap: 8px;
   }
 
   .navLink,
