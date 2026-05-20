@@ -6,85 +6,6 @@
     sans-serif;
 }
 
-/* ================= HEADER ================= */
-.pageHeader {
-  height: 72px;
-  padding: 6px 35px 1vh 70px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #ffffff;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  position: relative;
-}
-
-.headerButtons {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.navGreeting {
-  margin: 0;
-  color: #737144;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 24px;
-}
-
-.headerBtnOutline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #7c7845;
-  background: transparent;
-  color: #7c7845;
-  padding: 10px 20px;
-  border-radius: 999px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  line-height: 24px;
-  text-decoration: none;
-  transition: background-color 0.5s;
-}
-
-.headerBtnOutline:hover {
-  background-color: #fbf8f8;
-}
-
-.headerBtnOutline:active {
-  background-color: #efefef;
-}
-
-.headerBtnFilled {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #737144;
-  background: #737144;
-  color: #ffffff;
-  padding: 10px 20px;
-  border-radius: 999px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  line-height: 150%;
-  text-decoration: none;
-  transition: background-color 0.5s;
-}
-
-.headerBtnFilled:hover {
-  background-color: #7e7c4a;
-}
-
-.headerBtnFilled:active {
-  background-color: #888750;
-}
-
 /* ================= HERO ================= */
 .hero {
   display: flex;
@@ -163,9 +84,11 @@
 
 .exploreButton {
   display: flex;
+  min-width: 175px;
   padding: 11.492px 31.127px 12.486px 31.992px;
   justify-content: center;
   align-items: center;
+  gap: 8px;
   color: #fff;
   text-align: center;
   font-size: 16px;
@@ -183,6 +106,16 @@
     transform 0.4s;
 }
 
+.exploreButtonLoading {
+  cursor: wait;
+  background: #737144b9;
+}
+
+.exploreSpinner {
+  flex: 0 0 auto;
+  animation: spin 0.8s linear infinite;
+}
+
 .exploreButton:hover {
   background: #737144b9;
 }
@@ -190,6 +123,12 @@
 .exploreButton:active {
   background: #73714474;
   transform: translateY(2px);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ================= SECTION BASICS ================= */

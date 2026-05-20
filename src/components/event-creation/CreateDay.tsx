@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import styles from "@/styles/CreateEvent/CreateDay.module.css";
 import { ClipboardList, MapPin, CalendarDays, Eye, FileText, Camera } from "lucide-react";
 import { Roboto_Slab } from "next/font/google";
-import CreateEventNavbar from "./CreateEventNavbar";
+import CreateEventToolbar from "./CreateEventToolbar";
 
 const roboto = Roboto_Slab({
   subsets: ["latin"],
@@ -277,7 +277,7 @@ export default function CreateDay() {
   return (
     <div className={roboto.className}>
       <div className={styles.page}>
-        <CreateEventNavbar />
+        <CreateEventToolbar />
 
         <div className={styles.content}>
           <div className={styles.leftColumn}>

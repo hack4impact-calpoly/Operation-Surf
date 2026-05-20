@@ -122,6 +122,8 @@ export async function PATCH(request: Request, { params }: IParams): Promise<Next
     if (body.name !== undefined) updateData.name = body.name;
     if (body.description !== undefined) updateData.description = body.description;
     if (body.location !== undefined) updateData.location = body.location;
+    if (body.locationInfo !== undefined) updateData.locationInfo = body.locationInfo;
+    if (body.byoDescription !== undefined) updateData.byoDescription = body.byoDescription;
     if (body.dayId !== undefined) updateData.dayId = body.dayId;
     if (body.totalSlots !== undefined) updateData.totalSlots = Number(body.totalSlots);
     if (body.visibility !== undefined) updateData.visibility = body.visibility;

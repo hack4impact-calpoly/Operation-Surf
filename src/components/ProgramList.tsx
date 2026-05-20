@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { BriefcaseBusiness, CalendarDays, Home, MapPin } from "lucide-react";
+import { BriefcaseBusiness, CalendarDays, MapPin } from "lucide-react";
 import Link from "next/link";
-import AccountMenu from "@/components/AccountMenu";
 import connectDB from "@/database/db";
 import ProgramModel from "@/database/models/programSchema";
 import { getAuthContext } from "@/lib/authz";
+import ProgramListCard from "@/components/ProgramListCard";
 import styles from "@/styles/ProgramList.module.css";
 
 type ProgramRecord = {
@@ -69,57 +69,25 @@ const getPrograms = async (): Promise<ProgramRecord[]> => {
 
 function ProgramCard({ program }: { program: ProgramRecord }) {
   return (
-    <Link className={styles.card} href={`/program-details?programId=${encodeURIComponent(program.programId)}`}>
-      <div className={styles.cardHeader}>
-        <span className={styles.dayPill}>{formatProgramWeekday(program.date)}</span>
-        <span className={styles.date}>{formatProgramShortDate(program.date)}</span>
-      </div>
-
-      <h2 className={styles.programName}>{program.programName}</h2>
-
-      <div className={styles.cardMeta}>
-        <span className={styles.metaItem}>
-          <CalendarDays size={16} aria-hidden="true" />
-          {program.duration}
-        </span>
-        <span className={styles.metaItem}>
-          <MapPin size={16} aria-hidden="true" />
-          {program.location}
-        </span>
-      </div>
-    </Link>
+    <ProgramListCard
+      href={`/program-details?programId=${encodeURIComponent(program.programId)}`}
+      programName={program.programName}
+      weekday={formatProgramWeekday(program.date)}
+      date={formatProgramShortDate(program.date)}
+      duration={program.duration}
+      location={program.location}
+    />
   );
 }
 
 export default async function ProgramList() {
   const programs = await getPrograms();
   const featuredProgram = programs[0];
-  const { name, isAdmin, isAuthenticated } = await getAuthContext();
+  const { isAdmin } = await getAuthContext();
 
   return (
     <main className={styles.page}>
       <div className={styles.pageShell}>
-        {!isAdmin ? (
-          <nav className={styles.navbar} aria-label="Primary navigation">
-            <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
-              <Image src="/operation-surf.png" alt="Operation Surf" width={78} height={62} />
-            </Link>
-
-            <div className={styles.navLinks}>
-              {name && <span className={styles.navGreeting}>Hi, {name}</span>}
-              <Link href="/" className={styles.navLink}>
-                <Home size={17} aria-hidden="true" />
-                Home
-              </Link>
-              <Link href="/programs" className={styles.navLink}>
-                <CalendarDays size={17} aria-hidden="true" />
-                Programs
-              </Link>
-              {isAuthenticated ? <AccountMenu /> : null}
-            </div>
-          </nav>
-        ) : null}
-
         <header className={styles.hero}>
           <Image
             className={styles.heroImage}

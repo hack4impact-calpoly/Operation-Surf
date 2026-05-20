@@ -1,0 +1,32 @@
+.topBar {
+  min-height: 52px;
+  background: #f6f5f2;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid #ddd8cc;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 1px solid #ddd8cc;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #5f5b52;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  gap: 6px;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.backButton:hover {
+  border-color: #979483;
+  transform: translateY(-1px);
+}

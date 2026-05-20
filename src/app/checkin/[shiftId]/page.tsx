@@ -1,8 +1,7 @@
 "use client";
 
-import { CalendarDays, Check, ChevronDown, Home, Search, X } from "lucide-react";
+import { Check, ChevronDown, Search, X } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import styles from "./CheckIn.module.css";
 
@@ -14,6 +13,7 @@ interface LiabilityWaiver {
 }
 
 interface IVolunteer {
+  signupId?: string;
   userId?: string; // Made optional to account for API differences
   _id?: string; // Added standard MongoDB id format
   id?: string; // Added standard SQL id format
@@ -24,10 +24,16 @@ interface IVolunteer {
   sex: "female" | "male" | "intersex" | "prefer_not_to_say" | "other";
   birthday: Date | string;
   location: string;
-  liabilityWaiver: LiabilityWaiver[];
+  liabilityWaiver?: LiabilityWaiver[];
   backgroundCheck: boolean;
   service?: string;
 }
+
+type ApiSignup = {
+  signupId: string;
+  shiftId: string;
+  profileId: string;
+};
 
 type AttendanceStatus = "checkedIn" | "absent";
 type SortOption = "name" | "age" | "gender";
@@ -69,6 +75,68 @@ function getAge(birthday: Date | string): number | "-" {
 
 function formatGender(sex: IVolunteer["sex"]): string {
   return genderLabels[sex] || sex;
+}
+
+function getStorageKey(shiftId: string): string {
+  return `checkin-${shiftId}`;
+}
+
+function readCheckedInIds(shiftId: string): string[] {
+  if (typeof window === "undefined") return [];
+
+  const storageKey = getStorageKey(shiftId);
+  const storedValue = window.localStorage.getItem(storageKey);
+
+  if (!storedValue) {
+    window.localStorage.setItem(storageKey, JSON.stringify([]));
+    return [];
+  }
+
+  try {
+    const parsedValue = JSON.parse(storedValue);
+    return Array.isArray(parsedValue) ? parsedValue.filter((id): id is string => typeof id === "string") : [];
+  } catch {
+    window.localStorage.setItem(storageKey, JSON.stringify([]));
+    return [];
+  }
+}
+
+function writeCheckedInIds(shiftId: string, checkedInIds: Set<string>) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(getStorageKey(shiftId), JSON.stringify(Array.from(checkedInIds)));
+}
+
+function buildSignupOnlyVolunteer(signup: ApiSignup): IVolunteer {
+  return {
+    signupId: signup.signupId,
+    userId: signup.profileId,
+    name: "Unknown volunteer",
+    username: "",
+    email: signup.profileId,
+    phone: "-",
+    sex: "prefer_not_to_say",
+    birthday: "",
+    location: "",
+    backgroundCheck: false,
+  };
+}
+
+function mergeSignupVolunteer(signup: ApiSignup, volunteer?: IVolunteer): IVolunteer {
+  if (!volunteer) return buildSignupOnlyVolunteer(signup);
+
+  return {
+    ...volunteer,
+    signupId: signup.signupId,
+    userId: volunteer.userId ?? signup.profileId,
+    name: volunteer.name || "Unknown volunteer",
+    username: volunteer.username || "",
+    email: volunteer.email || signup.profileId,
+    phone: volunteer.phone || "-",
+    sex: volunteer.sex || "prefer_not_to_say",
+    birthday: volunteer.birthday || "",
+    location: volunteer.location || "",
+    backgroundCheck: Boolean(volunteer.backgroundCheck),
+  };
 }
 
 /* 
@@ -128,38 +196,59 @@ const CheckIn = ({ params }: Props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [attendance, setAttendance] = useState<Record<string, AttendanceStatus>>({});
+  const [checkedInIds, setCheckedInIds] = useState<Set<string>>(new Set());
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("name");
 
   useEffect(() => {
     const fetchVolunteers = async () => {
-      try {
-        const response = await fetch("/api/volunteer");
+      setLoading(true);
+      setError("");
 
-        if (!response.ok) {
+      try {
+        const [signupResponse, volunteerResponse] = await Promise.all([
+          fetch(`/api/signup?shiftId=${encodeURIComponent(shiftId)}`, { cache: "no-store" }),
+          fetch("/api/volunteer", { cache: "no-store" }),
+        ]);
+
+        if (!signupResponse.ok) {
+          throw new Error("Failed to fetch shift signups");
+        }
+
+        if (!volunteerResponse.ok) {
           throw new Error("Failed to fetch volunteers");
         }
 
-        const data = await response.json();
-        const volunteerList: IVolunteer[] = Array.isArray(data.volunteers) ? data.volunteers : [];
-        const shiftVolunteers = volunteerList.filter((volunteer) =>
-          Array.isArray(volunteer.liabilityWaiver)
-            ? volunteer.liabilityWaiver.some((waiver) => waiver.shiftId === shiftId)
-            : false,
-        );
+        const [signupData, volunteerData] = await Promise.all([signupResponse.json(), volunteerResponse.json()]);
+        const signupList: ApiSignup[] = Array.isArray(signupData.signups) ? signupData.signups : [];
+        const volunteerList: IVolunteer[] = Array.isArray(volunteerData.volunteers) ? volunteerData.volunteers : [];
 
-        // if there is no checkin data in localStorage for this shift, initialize it as an empty array
-        if (!localStorage.getItem(`checkin-${shiftId}`)) {
-          localStorage.setItem(`checkin-${shiftId}`, JSON.stringify([]));
-        }
-
-        const nonCheckedInVolunteers = shiftVolunteers.filter((volunteer) => {
+        const volunteersByUserId = new Map<string, IVolunteer>();
+        volunteerList.forEach((volunteer) => {
           const uniqueId = getUniqueId(volunteer);
-          const checkedInVolunteers: string[] = JSON.parse(localStorage.getItem(`checkin-${shiftId}`) || "[]");
-          return !checkedInVolunteers.includes(uniqueId);
+          if (uniqueId) volunteersByUserId.set(uniqueId, volunteer);
         });
 
-        setVolunteers(nonCheckedInVolunteers);
+        const seenVolunteerIds = new Set<string>();
+        const shiftVolunteers = signupList.reduce<IVolunteer[]>((roster, signup) => {
+          const volunteer = mergeSignupVolunteer(signup, volunteersByUserId.get(signup.profileId));
+          const uniqueId = getUniqueId(volunteer);
+
+          if (!uniqueId || seenVolunteerIds.has(uniqueId)) {
+            return roster;
+          }
+
+          seenVolunteerIds.add(uniqueId);
+          roster.push(volunteer);
+          return roster;
+        }, []);
+
+        const rosterIds = new Set(shiftVolunteers.map((volunteer) => getUniqueId(volunteer)).filter(Boolean));
+        const storedCheckedInIds = readCheckedInIds(shiftId).filter((id) => rosterIds.has(id));
+
+        setVolunteers(shiftVolunteers);
+        setCheckedInIds(new Set(storedCheckedInIds));
+        setAttendance({});
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
@@ -180,13 +269,7 @@ const CheckIn = ({ params }: Props) => {
     const filteredVolunteers = volunteers.filter((person) => {
       const uniqueId = getUniqueId(person);
 
-      // remove volunteer from frontend if they are successfully checked in
-      if (attendance[uniqueId] === "checkedIn") {
-        // Update localStorage to persist check-in status across page reloads
-        const checkedInVolunteers: string[] = JSON.parse(localStorage.getItem(`checkin-${shiftId}`) || "[]");
-        if (!checkedInVolunteers.includes(uniqueId)) {
-          localStorage.setItem(`checkin-${shiftId}`, JSON.stringify([...checkedInVolunteers, uniqueId]));
-        }
+      if (checkedInIds.has(uniqueId)) {
         return false;
       }
 
@@ -213,12 +296,9 @@ const CheckIn = ({ params }: Props) => {
 
       return first.name.localeCompare(second.name);
     });
-  }, [volunteers, searchTerm, sortBy, attendance]);
+  }, [volunteers, searchTerm, sortBy, checkedInIds]);
 
-  //const checkedInCount = Object.values(attendance).filter((status) => status === "checkedIn").length;
-  const checkedInCount = localStorage.getItem(`checkin-${shiftId}`)
-    ? JSON.parse(localStorage.getItem(`checkin-${shiftId}`) || "[]").length
-    : 0;
+  const checkedInCount = checkedInIds.size;
   const absentCount = Object.values(attendance).filter((status) => status === "absent").length;
 
   const handleStatusChange = (person: IVolunteer, status: AttendanceStatus) => {
@@ -226,6 +306,23 @@ const CheckIn = ({ params }: Props) => {
 
     // Prevent updating if we somehow can't find a valid ID
     if (!uniqueId) return;
+
+    if (status === "checkedIn") {
+      setAttendance((currentAttendance) => {
+        const nextAttendance = { ...currentAttendance };
+        delete nextAttendance[uniqueId];
+        return nextAttendance;
+      });
+
+      setCheckedInIds((currentIds) => {
+        const nextIds = new Set(currentIds);
+        nextIds.add(uniqueId);
+        writeCheckedInIds(shiftId, nextIds);
+        return nextIds;
+      });
+
+      return;
+    }
 
     setAttendance((currentAttendance) => ({
       ...currentAttendance,
@@ -235,37 +332,15 @@ const CheckIn = ({ params }: Props) => {
 
   const handleResetStatus = () => {
     setAttendance({});
-    localStorage.removeItem(`checkin-${shiftId}`);
+    setCheckedInIds(new Set());
+
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem(getStorageKey(shiftId));
+    }
   };
 
   return (
     <div className={styles.page}>
-      <nav className={styles.navbar} aria-label="Primary navigation">
-        <div className={styles.navInner}>
-          <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
-            <Image
-              className={styles.logoImage}
-              src="/op_surf_logo_no_bg.png"
-              alt="Operation Surf"
-              width={60}
-              height={48}
-              priority
-            />
-          </Link>
-
-          <div className={styles.navLinks}>
-            <Link href="/" className={styles.navLink}>
-              <Home size={16} strokeWidth={2} aria-hidden="true" />
-              <span>Home</span>
-            </Link>
-            <Link href="/programs" className={styles.navLink}>
-              <CalendarDays size={16} strokeWidth={2} aria-hidden="true" />
-              <span>Programs</span>
-            </Link>
-          </div>
-        </div>
-      </nav>
-
       <header className={styles.hero}>
         <Image
           className={styles.heroImage}

@@ -5,7 +5,6 @@ import Image from "next/image";
 import styles from "@/styles/Dashboard.module.css";
 import { User, Users, Pencil, Mail, Phone, MapPin, Clock, Check, Info } from "lucide-react";
 import { Inter } from "next/font/google";
-import GreyNavbar from "@/components/GreyNavbar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -169,8 +168,6 @@ export default function Dashboard({
   return (
     <div className={inter.className}>
       <div className={styles.page}>
-        <GreyNavbar />
-
         <header className={styles.hero}>
           <Image src="/hero-img.png" alt="Dashboard background" fill className={styles.heroBg} />
           <div className={styles.heroOverlay} />

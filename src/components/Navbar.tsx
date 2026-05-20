@@ -3,31 +3,72 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Roboto_Slab } from "next/font/google";
-import { BriefcaseBusiness, ClipboardCheck, Home, UserRound } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  CalendarDays,
+  ClipboardCheck,
+  Home,
+  type LucideIcon,
+  LogIn,
+  UserPlus,
+  // UserRound,
+} from "lucide-react";
 import AccountMenu from "@/components/AccountMenu";
 import styles from "@/components/Navbar.module.css";
 
 type NavbarProps = {
   name?: string | null;
+  isAuthenticated?: boolean;
+  isAdmin?: boolean;
 };
 
-const robotoSlab = Roboto_Slab({
-  subsets: ["latin"],
-});
+type NavItem = {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  activePaths?: string[];
+};
 
-const navItems = [
+const adminNavItems: NavItem[] = [
   { href: "/", label: "Home", icon: Home },
-  { href: "/opportunities", label: "Opportunities", icon: BriefcaseBusiness },
-  { href: "/signup", label: "Memberships", icon: UserRound },
-  { href: "/shift", label: "Check In", icon: ClipboardCheck },
+  {
+    href: "/opportunities",
+    label: "Opportunities",
+    icon: BriefcaseBusiness,
+    activePaths: ["/opportunities", "/create-event"],
+  },
+  // { href: "/signup", label: "Memberships", icon: UserRound },
+  { href: "/shift", label: "Check In", icon: ClipboardCheck, activePaths: ["/shift", "/checkin"] },
 ];
 
-export default function Navbar({ name }: NavbarProps) {
+const publicNavItems: NavItem[] = [
+  { href: "/", label: "Home", icon: Home },
+  {
+    href: "/programs",
+    label: "Programs",
+    icon: CalendarDays,
+    activePaths: ["/programs", "/program-details", "/day-details"],
+  },
+];
+
+function isActivePath(pathname: string, item: NavItem) {
+  const activePaths = item.activePaths ?? [item.href];
+
+  return activePaths.some((activePath) => {
+    if (activePath === "/") {
+      return pathname === "/";
+    }
+
+    return pathname === activePath || pathname.startsWith(`${activePath}/`);
+  });
+}
+
+export default function Navbar({ name, isAuthenticated = false, isAdmin = false }: NavbarProps) {
   const pathname = usePathname();
+  const navItems = isAdmin ? adminNavItems : publicNavItems;
 
   return (
-    <nav className={`${styles.navbar} ${robotoSlab.className}`} aria-label="Primary navigation">
+    <nav className={styles.navbar} aria-label="Primary navigation">
       <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
         <Image src="/operation-surf.png" alt="Operation Surf" width={86} height={34} priority />
       </Link>
@@ -35,8 +76,9 @@ export default function Navbar({ name }: NavbarProps) {
       <div className={styles.navGroup}>
         {name ? <span className={styles.navGreeting}>Hi, {name}</span> : null}
 
-        {navItems.map(({ href, label, icon: Icon }) => {
-          const isActive = pathname === href;
+        {navItems.map((item) => {
+          const { href, label, icon: Icon } = item;
+          const isActive = isActivePath(pathname, item);
 
           return (
             <Link
@@ -51,7 +93,30 @@ export default function Navbar({ name }: NavbarProps) {
           );
         })}
 
-        <AccountMenu />
+        {isAuthenticated ? (
+          <AccountMenu />
+        ) : (
+          <div className={styles.authLinks}>
+            <Link
+              href="/login"
+              className={pathname === "/login" ? `${styles.authLink} ${styles.navLinkActive}` : styles.authLink}
+              aria-current={pathname === "/login" ? "page" : undefined}
+            >
+              <LogIn size={14} aria-hidden="true" />
+              <span>Sign In</span>
+            </Link>
+            <Link
+              href="/signup"
+              className={
+                pathname === "/signup" ? `${styles.authLink} ${styles.authLinkPrimary}` : styles.authLinkPrimary
+              }
+              aria-current={pathname === "/signup" ? "page" : undefined}
+            >
+              <UserPlus size={14} aria-hidden="true" />
+              <span>Sign Up</span>
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );

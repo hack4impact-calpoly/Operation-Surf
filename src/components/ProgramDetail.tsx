@@ -1,6 +1,9 @@
 "use client";
 
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLinkLoading } from "@/hooks/useLinkLoading";
 import styles from "@/styles/ProgramDetail.module.css";
 
 interface Program {
@@ -26,8 +29,6 @@ interface Day {
 interface ProgramDetailProps {
   programId: string;
   program: Program;
-  viewerName?: string | null;
-  isAdmin?: boolean;
 }
 
 function normalizeImageSrc(imageURI: string): string {
@@ -74,11 +75,30 @@ function CalendarIcon() {
 }
 
 function DayCard({ day }: { day: Day }) {
+  const href = `/day-details/${encodeURIComponent(day.dayId)}`;
+  const { isLoading, handleClick } = useLinkLoading(href);
+
   return (
-    <div className={styles.dayCard}>
+    <Link
+      href={href}
+      className={`${styles.dayCard} ${isLoading ? styles.dayCardLoading : ""}`}
+      onClick={handleClick}
+      aria-busy={isLoading}
+      aria-label={`View details for ${day.name}`}
+    >
       <div className={styles.dayCardHeader}>
-        <span className={styles.dayOfWeek}>{day.dayOfWeek}</span>
-        <span className={styles.date}>{formatDate(day.date)}</span>
+        <span className={styles.dayDateGroup}>
+          <span className={styles.dayOfWeek}>{day.dayOfWeek}</span>
+          <span className={styles.date}>{formatDate(day.date)}</span>
+        </span>
+
+        <span
+          className={`${styles.dayCardLoadingStatus} ${isLoading ? styles.dayCardLoadingStatusVisible : ""}`}
+          aria-hidden={!isLoading}
+        >
+          <Loader2 size={15} aria-hidden="true" />
+          Loading
+        </span>
       </div>
       <p className={styles.dayName}>{day.name}</p>
       <div className={styles.timeRow}>
@@ -87,11 +107,11 @@ function DayCard({ day }: { day: Day }) {
           {day.startTime} - {day.endTime}
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
 
-export default function ProgramDetail({ programId, program, viewerName, isAdmin = false }: ProgramDetailProps) {
+export default function ProgramDetail({ programId, program }: ProgramDetailProps) {
   const [days, setDays] = useState<Day[]>([]);
   const [loadingDays, setLoadingDays] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -116,38 +136,6 @@ export default function ProgramDetail({ programId, program, viewerName, isAdmin 
 
   return (
     <div className={styles.page}>
-      {!isAdmin ? (
-        <nav className={styles.navbar}>
-          <div className={styles.navLogo}>
-            <img src="/operation-surf.png" alt="Operation Surf" className={styles.logoImg} />
-          </div>
-          <div className={styles.navLinks}>
-            {viewerName && <span className={styles.navGreeting}>Hi, {viewerName}</span>}
-            <a href="/" className={styles.navLink}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M2 6.5L8 2l6 4.5V14a1 1 0 01-1 1H3a1 1 0 01-1-1V6.5z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinejoin="round"
-                />
-                <path d="M6 15V9h4v6" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-              </svg>
-              Home
-            </a>
-            <a href="/programs" className={styles.navLink}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="1" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
-                <rect x="9" y="1" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
-                <rect x="1" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
-                <rect x="9" y="9" width="6" height="6" rx="1" stroke="currentColor" strokeWidth="1.5" />
-              </svg>
-              Programs
-            </a>
-          </div>
-        </nav>
-      ) : null}
-
       {/* hero */}
       <header className={styles.hero}>
         <img src={heroImageSrc} alt={`${program.programName} background`} className={styles.heroBg} />

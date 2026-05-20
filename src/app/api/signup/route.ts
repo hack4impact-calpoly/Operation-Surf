@@ -9,6 +9,7 @@ import Program from "@/database/models/programSchema";
  * Retrieves signups from the database.
  * Optional query parameters:
  * - profileId: Filter signups by a specific profile ID
+ * - shiftId: Filter signups by a specific shift ID
  * - view: If set to "registered-shifts", returns enriched data including shift and program details
  * Returns a JSON response with signups or registered shifts data.
  * On error, returns a 500 status with error details.
@@ -21,10 +22,13 @@ export async function GET(request: Request): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(request.url);
     const profileId = searchParams.get("profileId");
+    const shiftId = searchParams.get("shiftId");
     const view = searchParams.get("view");
 
-    // Build query: filter by profileId if provided, otherwise fetch all
-    const signupQuery = profileId ? { profileId } : {};
+    // Build query: filter by profileId and/or shiftId if provided, otherwise fetch all
+    const signupQuery: Record<string, string> = {};
+    if (profileId) signupQuery.profileId = profileId;
+    if (shiftId) signupQuery.shiftId = shiftId;
     const signups = await Signup.find(signupQuery).sort({ timestamp: -1 });
 
     if (view === "registered-shifts") {
@@ -128,6 +132,20 @@ export async function POST(request: Request): Promise<NextResponse> {
         }
         return NextResponse.json({ message: `Missing required field: ${field}` }, { status: 400 });
       }
+    }
+
+    const existingSignup = await Signup.findOne({
+      shiftId: body.shiftId,
+      profileId: body.profileId,
+    });
+
+    if (existingSignup) {
+      return NextResponse.json(
+        {
+          message: "You are already signed up for this shift.",
+        },
+        { status: 409 },
+      );
     }
 
     const newSignup = new Signup({

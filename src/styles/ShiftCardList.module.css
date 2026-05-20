@@ -1,9 +1,16 @@
+.container {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+}
+
 .title {
+  color: #7c7845;
   font-size: 25px;
   font-weight: 700;
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .card {
-  margin-top: 16px;
+  min-width: 0;
 }

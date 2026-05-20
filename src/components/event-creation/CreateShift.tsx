@@ -15,7 +15,7 @@ import {
   MapPlus,
 } from "lucide-react";
 import { Roboto_Slab } from "next/font/google";
-import CreateEventNavbar from "./CreateEventNavbar";
+import CreateEventToolbar from "./CreateEventToolbar";
 
 const roboto = Roboto_Slab({
   subsets: ["latin"],
@@ -36,6 +36,8 @@ const initialFormState = {
   shiftName: "",
   description: "",
   exactLocation: "",
+  locationInfo: "",
+  byoDescription: "",
   shiftDate: "",
   startTime: "",
   endTime: "",
@@ -112,6 +114,8 @@ export default function CreateShift() {
               name?: string;
               description?: string;
               location?: string;
+              locationInfo?: string;
+              byoDescription?: string;
               date?: string;
               startTime?: string;
               endTime?: string;
@@ -129,6 +133,8 @@ export default function CreateShift() {
             shiftName: shiftJson.data.name ?? "",
             description: shiftJson.data.description ?? "",
             exactLocation: shiftJson.data.location ?? "",
+            locationInfo: shiftJson.data.locationInfo ?? "",
+            byoDescription: shiftJson.data.byoDescription ?? "",
             shiftDate: shiftJson.data.date ? formatDateInput(shiftJson.data.date) : "",
             startTime: shiftJson.data.startTime ?? "",
             endTime: shiftJson.data.endTime ?? "",
@@ -208,6 +214,8 @@ export default function CreateShift() {
         name: formData.shiftName,
         description: formData.description,
         location: formData.exactLocation,
+        locationInfo: formData.locationInfo,
+        byoDescription: formData.byoDescription,
         date: `${formData.shiftDate}T00:00:00.000Z`,
         startTime: formData.startTime,
         endTime: formData.endTime,
@@ -252,7 +260,7 @@ export default function CreateShift() {
   return (
     <div className={roboto.className}>
       <div className={styles.page}>
-        <CreateEventNavbar />
+        <CreateEventToolbar />
 
         <div className={styles.content}>
           <div className={styles.pageIntro}>
@@ -329,6 +337,36 @@ export default function CreateShift() {
                     name="exactLocation"
                     placeholder="e.g. 1234 Ocean Blvd, San Diego, CA 92101"
                     value={formData.exactLocation}
+                    onChange={handleChange}
+                    disabled={isLoading || isSubmitting}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label className={styles.label}>
+                    <MapPin size={18} className={styles.labelIcon} />
+                    <span>What should volunteers know about the location?</span>
+                  </label>
+                  <textarea
+                    className={styles.textarea}
+                    name="locationInfo"
+                    placeholder="Share parking, meeting spot, access, or landmark details..."
+                    value={formData.locationInfo}
+                    onChange={handleChange}
+                    disabled={isLoading || isSubmitting}
+                  />
+                </div>
+
+                <div className={styles.field}>
+                  <label className={styles.label}>
+                    <ClipboardListIcon size={18} className={styles.labelIcon} />
+                    <span>What should volunteers bring/wear?</span>
+                  </label>
+                  <textarea
+                    className={styles.textarea}
+                    name="byoDescription"
+                    placeholder="List clothing, gear, food, water, sunscreen, or other helpful items..."
+                    value={formData.byoDescription}
                     onChange={handleChange}
                     disabled={isLoading || isSubmitting}
                   />

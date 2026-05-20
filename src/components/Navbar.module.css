@@ -1,11 +1,15 @@
 .navbar {
+  min-height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 8px 16px;
+  padding: 10px 24px;
   background: #979483;
-  border: 1px solid rgba(114, 110, 96, 0.8);
+  border-bottom: 1px solid rgba(114, 110, 96, 0.75);
+  box-shadow: 0 4px 14px rgba(31, 41, 55, 0.14);
+  position: relative;
+  z-index: 50;
 }
 
 .logoLink {
@@ -24,7 +28,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 18px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
@@ -44,11 +48,14 @@
   color: #ffffff;
   text-decoration: none;
   font-size: 0.87rem;
-  font-weight: 400;
+  font-weight: 500;
   opacity: 0.94;
   transition:
     opacity 0.15s ease,
-    transform 0.15s ease;
+    transform 0.15s ease,
+    background-color 0.15s ease;
+  border-radius: 999px;
+  padding: 8px 10px;
   white-space: nowrap;
   cursor: pointer;
 }
@@ -60,19 +67,64 @@
 
 .navLinkActive {
   opacity: 1;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.authLinks {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.authLink,
+.authLinkPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 34px;
+  border-radius: 999px;
+  padding: 8px 14px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.87rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.authLink {
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  background: transparent;
+}
+
+.authLinkPrimary {
+  border: 1px solid #ffffff;
+  background: #ffffff;
+  color: #737144;
+}
+
+.authLink:hover,
+.authLinkPrimary:hover {
+  transform: translateY(-1px);
 }
 
 @media (max-width: 760px) {
   .navbar {
-    padding: 10px 14px;
+    padding: 10px 16px;
   }
 
   .navGroup {
-    gap: 12px;
+    gap: 10px;
   }
 
   .navLink,
-  .navGreeting {
+  .navGreeting,
+  .authLink,
+  .authLinkPrimary {
     font-size: 0.8rem;
   }
 }
@@ -86,5 +138,16 @@
   .navGroup {
     width: 100%;
     justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .authLinks {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .authLink,
+  .authLinkPrimary {
+    flex: 1 1 120px;
   }
 }

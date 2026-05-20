@@ -1,5 +1,6 @@
 .cardContainer {
   width: 100%; /* Make the card take up the full width of its parent container */
+  height: 560px;
   font-family: "Inter", sans-serif;
   display: flex;
   font-weight: 300;
@@ -14,7 +15,7 @@
 /* Top Image */
 .cardImage {
   width: 100%;
-  height: auto;
+  height: 240px;
   display: block;
   object-fit: cover;
 }
@@ -25,6 +26,9 @@
   flex-direction: column;
   margin-left: 36px;
   gap: 10px;
+  flex: 1;
+  min-height: 0;
+  padding-right: 24px;
 }
 
 .cardMeta p {
@@ -35,9 +39,13 @@
 .cardTitle {
   font-size: 24px;
   font-weight: 400;
+  line-height: 1.25;
   color: #737144;
-  margin-bottom: 10px;
-  margin-top: 40px;
+  margin: 32px 0 8px;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 /* Button */
@@ -53,7 +61,7 @@
   color: white;
   margin: 0 auto 20px auto;
   display: block;
-  margin-top: 20px;
+  margin-top: auto;
 }
 
 /* On Hover */
@@ -79,6 +87,10 @@
   display: flex;
   align-items: center;
   gap: 14px;
+  min-height: 34px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .cardLocation::before,

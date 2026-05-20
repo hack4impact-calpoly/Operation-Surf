@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { Bell, CalendarDays, CheckCircle2, Home, Loader2, UserPlus } from "lucide-react";
+import { CheckCircle2, Loader2, UserPlus } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import styles from "./signup.module.css";
 
@@ -14,10 +14,6 @@ type FormState = {
   password: string;
 };
 
-type SignupFormProps = {
-  isAdmin?: boolean;
-};
-
 const initialFormState: FormState = {
   name: "",
   username: "",
@@ -25,7 +21,7 @@ const initialFormState: FormState = {
   password: "",
 };
 
-export default function SignupForm({ isAdmin = false }: SignupFormProps) {
+export default function SignupForm() {
   const [form, setForm] = useState<FormState>(initialFormState);
   const [ipAddress, setIpAddress] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
@@ -76,25 +72,6 @@ export default function SignupForm({ isAdmin = false }: SignupFormProps) {
     <main className={styles.page}>
       <Image className={styles.backgroundImage} src="/hero-img.png" alt="" fill priority />
       <div className={styles.tint} />
-
-      {!isAdmin ? (
-        <header className={styles.navbar}>
-          <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
-            <Image src="/operation-surf.png" alt="Operation Surf" width={78} height={62} />
-          </Link>
-
-          <nav className={styles.navLinks} aria-label="Primary navigation">
-            <Link href="/" className={styles.navLink}>
-              <Home size={15} />
-              Home
-            </Link>
-            <Link href="/#programs" className={styles.navLink}>
-              <CalendarDays size={15} />
-              Programs
-            </Link>
-          </nav>
-        </header>
-      ) : null}
 
       <section className={styles.signupPanel} aria-labelledby="signup-title">
         <h1 id="signup-title" className={styles.title}>

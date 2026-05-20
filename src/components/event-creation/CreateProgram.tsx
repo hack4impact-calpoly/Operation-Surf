@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import styles from "@/styles/CreateEvent/CreateProgram.module.css";
 import { ClipboardList, MapPin, CalendarDays, Eye, Upload, FileText } from "lucide-react";
 import { Roboto_Slab } from "next/font/google";
-import CreateEventNavbar from "./CreateEventNavbar";
+import CreateEventToolbar from "./CreateEventToolbar";
 
 const roboto = Roboto_Slab({
   subsets: ["latin"],
@@ -247,7 +247,7 @@ export default function CreateProgram() {
   return (
     <div className={roboto.className}>
       <div className={styles.page}>
-        <CreateEventNavbar />
+        <CreateEventToolbar />
 
         <div className={styles.formWrapper}>
           <form className={styles.card} onSubmit={handleSubmit}>

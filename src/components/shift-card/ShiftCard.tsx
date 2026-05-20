@@ -1,3 +1,5 @@
+import { CalendarDays, ClipboardCheck, Clock, MapPin, UsersRound } from "lucide-react";
+import Link from "next/link";
 import styles from "@/styles/ShiftCard.module.css";
 
 export function toGoogleMapsEmbed(url: string | undefined): string {
@@ -5,7 +7,6 @@ export function toGoogleMapsEmbed(url: string | undefined): string {
   try {
     const decoded = decodeURIComponent(url);
 
-    // 1. Try to extract place name from `/place/...`
     const placeMatch = decoded.match(/\/place\/([^\/@]+)/);
     if (placeMatch) {
       const place = placeMatch[1].replace(/\+/g, " ").trim().replace(/\s+/g, "+");
@@ -13,7 +14,6 @@ export function toGoogleMapsEmbed(url: string | undefined): string {
       return `https://www.google.com/maps?q=${place}&output=embed`;
     }
 
-    // 2. Fallback: extract coordinates (!3dLAT!4dLNG)
     const coordMatch = decoded.match(/!3d([-0-9.]+)!4d([-0-9.]+)/);
     if (coordMatch) {
       const lat = coordMatch[1];
@@ -21,7 +21,6 @@ export function toGoogleMapsEmbed(url: string | undefined): string {
       return `https://www.google.com/maps?q=${lat},${lng}&output=embed`;
     }
 
-    // 3. Fallback: look for @lat,lng
     const atMatch = decoded.match(/@([-0-9.]+),([-0-9.]+)/);
     if (atMatch) {
       const lat = atMatch[1];
@@ -49,6 +48,7 @@ export type ShiftCardProps = {
 };
 
 export default function ShiftCard({
+  id,
   name,
   description,
   dateRange,
@@ -59,49 +59,57 @@ export default function ShiftCard({
   spotsTaken,
   spotsTotal,
 }: ShiftCardProps) {
-  if (mapLink) mapLink = toGoogleMapsEmbed(mapLink);
+  const embeddedMapLink = toGoogleMapsEmbed(mapLink);
+
   return (
     <article className={styles.card} aria-label={`${name} shift`}>
-      <header className={styles.header}>
-        <h3 className={styles.title}>{name}</h3>
-      </header>
+      <div className={styles.cardBody}>
+        <header className={styles.header}>
+          <h3 className={styles.title}>{name}</h3>
+          {description ? <p className={styles.description}>{description}</p> : null}
+        </header>
 
-      {description ? <p className={styles.description}>{description}</p> : null}
-
-      <ul className={styles.metaList}>
-        <li className={styles.metaItem}>
-          <span className={styles.metaIcon} aria-hidden="true">
-            📅
-          </span>
-          <span>{dateRange}</span>
-        </li>
-        <li className={styles.metaItem}>
-          <span className={styles.metaIcon} aria-hidden="true">
-            ⏱️
-          </span>
-          <span>
-            {timeRange} {timezone ? `(${timezone})` : ""}
-          </span>
-        </li>
-        {location ? (
+        <ul className={styles.metaList}>
           <li className={styles.metaItem}>
-            <span className={styles.metaIcon} aria-hidden="true">
-              📍
+            <CalendarDays size={18} aria-hidden="true" />
+            <span>{dateRange}</span>
+          </li>
+          <li className={styles.metaItem}>
+            <Clock size={18} aria-hidden="true" />
+            <span>
+              {timeRange} {timezone ? `(${timezone})` : ""}
             </span>
-            <span>{location}</span>
           </li>
-        ) : null}
+          {location ? (
+            <li className={styles.metaItem}>
+              <MapPin size={18} aria-hidden="true" />
+              <span>{location}</span>
+            </li>
+          ) : null}
+        </ul>
+      </div>
 
-        {mapLink ? (
-          <li className={styles.metaItem}>
-            <iframe src={mapLink} title={`${name} map`} loading="lazy" className={styles.iframeMap} />
-          </li>
-        ) : null}
-      </ul>
+      {embeddedMapLink ? (
+        <div className={styles.mapPanel}>
+          <iframe src={embeddedMapLink} title={`${name} map`} loading="lazy" className={styles.iframeMap} />
+        </div>
+      ) : null}
 
-      <span className={styles.badge}>
-        {spotsTaken}/{spotsTotal} Spots Taken
-      </span>
+      <footer className={styles.footer}>
+        <span className={styles.badge}>
+          <UsersRound size={16} aria-hidden="true" />
+          <span>
+            {spotsTaken}/{spotsTotal} Spots Taken
+          </span>
+        </span>
+
+        {id ? (
+          <Link className={styles.checkInLink} href={`/checkin/${encodeURIComponent(id)}`}>
+            <ClipboardCheck size={16} aria-hidden="true" />
+            <span>Check In</span>
+          </Link>
+        ) : null}
+      </footer>
     </article>
   );
 }
