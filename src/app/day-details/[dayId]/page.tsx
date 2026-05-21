@@ -164,6 +164,16 @@ export default function DayDetailsPage() {
     setErrorCount((current) => current + 1);
   }
 
+  function showAlreadySignedUpPopup() {
+    const message = "You have already signed up.";
+    window.alert(message);
+    showError(message);
+  }
+
+  function showSignupSuccessPopup() {
+    window.alert("Signup successful.");
+  }
+
   // signup handler
   async function handleSignUp(shiftIds: string[]) {
     if (!userId) {
@@ -176,7 +186,7 @@ export default function DayDetailsPage() {
     );
 
     if (newShiftIds.length === 0) {
-      showError("You are already signed up for the selected shift(s).");
+      showAlreadySignedUpPopup();
       return;
     }
 
@@ -213,6 +223,12 @@ export default function DayDetailsPage() {
 
       if (failedResponse) {
         const errorData = await failedResponse.json().catch(() => null);
+
+        if (failedResponse.status === 409) {
+          showAlreadySignedUpPopup();
+          return;
+        }
+
         throw new Error(errorData?.message ?? "Failed to sign up for shift.");
       }
 
@@ -238,6 +254,8 @@ export default function DayDetailsPage() {
 
         return [...current, ...newSignups];
       });
+
+      showSignupSuccessPopup();
     } catch (err) {
       showError(err instanceof Error ? err.message : "Something went wrong signing up.");
     } finally {

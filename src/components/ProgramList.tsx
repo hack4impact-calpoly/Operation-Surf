@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BriefcaseBusiness, CalendarDays, MapPin } from "lucide-react";
+import { BriefcaseBusiness } from "lucide-react";
 import Link from "next/link";
 import connectDB from "@/database/db";
 import ProgramModel from "@/database/models/programSchema";
@@ -30,33 +30,6 @@ const formatProgramMonthYear = (value: Date | string) => {
   });
 };
 
-const formatProgramWeekday = (value: Date | string) => {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return "TBD";
-  }
-
-  return date.toLocaleDateString("en-US", {
-    weekday: "long",
-    timeZone: "UTC",
-  });
-};
-
-const formatProgramShortDate = (value: Date | string) => {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return "Date TBD";
-  }
-
-  return date.toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    timeZone: "UTC",
-  });
-};
-
 const getPrograms = async (): Promise<ProgramRecord[]> => {
   try {
     await connectDB();
@@ -71,10 +44,9 @@ function ProgramCard({ program }: { program: ProgramRecord }) {
   return (
     <ProgramListCard
       href={`/program-details?programId=${encodeURIComponent(program.programId)}`}
+      imageURI={program.imageURI}
       programName={program.programName}
-      weekday={formatProgramWeekday(program.date)}
-      date={formatProgramShortDate(program.date)}
-      duration={program.duration}
+      date={formatProgramMonthYear(program.date)}
       location={program.location}
     />
   );
@@ -82,7 +54,6 @@ function ProgramCard({ program }: { program: ProgramRecord }) {
 
 export default async function ProgramList() {
   const programs = await getPrograms();
-  const featuredProgram = programs[0];
   const { isAdmin } = await getAuthContext();
 
   return (
@@ -99,16 +70,6 @@ export default async function ProgramList() {
           <div className={styles.heroOverlay} />
           <div className={styles.heroContent}>
             <h1 className={styles.title}>Programs</h1>
-            <div className={styles.heroMeta}>
-              <span>
-                <MapPin size={20} aria-hidden="true" />
-                {featuredProgram?.location ?? "Santa Cruz, CA"}
-              </span>
-              <span>
-                <CalendarDays size={20} aria-hidden="true" />
-                {featuredProgram ? formatProgramMonthYear(featuredProgram.date) : "Upcoming programs"}
-              </span>
-            </div>
           </div>
         </header>
 

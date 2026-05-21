@@ -1,27 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { CalendarDays, Loader2, MapPin } from "lucide-react";
+import { ArrowRight, Loader2, MapPin } from "lucide-react";
+import ProgramCardImage from "@/components/ProgramCardImage";
 import { useLinkLoading } from "@/hooks/useLinkLoading";
 import styles from "@/styles/ProgramList.module.css";
 
 type ProgramListCardProps = {
   href: string;
+  imageURI?: string | null;
   programName: string;
-  weekday: string;
   date: string;
-  duration: string;
   location: string;
 };
 
-export default function ProgramListCard({
-  href,
-  programName,
-  weekday,
-  date,
-  duration,
-  location,
-}: ProgramListCardProps) {
+export default function ProgramListCard({ href, imageURI, programName, date, location }: ProgramListCardProps) {
   const { isLoading, handleClick } = useLinkLoading(href);
 
   return (
@@ -31,32 +24,36 @@ export default function ProgramListCard({
       onClick={handleClick}
       aria-busy={isLoading}
     >
-      <div className={styles.cardHeader}>
-        <span className={styles.cardDateGroup}>
-          <span className={styles.dayPill}>{weekday}</span>
-          <span className={styles.date}>{date}</span>
-        </span>
-
-        <span
-          className={`${styles.cardLoadingStatus} ${isLoading ? styles.cardLoadingStatusVisible : ""}`}
-          aria-hidden={!isLoading}
-        >
-          <Loader2 size={15} aria-hidden="true" />
-          Loading
-        </span>
+      <div className={styles.cardMedia}>
+        <ProgramCardImage className={styles.cardImage} src={imageURI} alt={`${programName} program`} />
       </div>
 
-      <h2 className={styles.programName}>{programName}</h2>
+      <div className={styles.cardBody}>
+        <div className={styles.cardTopRow}>
+          <span className={styles.locationRow}>
+            <MapPin size={18} aria-hidden="true" />
+            {location}
+          </span>
 
-      <div className={styles.cardMeta}>
-        <span className={styles.metaItem}>
-          <CalendarDays size={16} aria-hidden="true" />
-          {duration}
-        </span>
-        <span className={styles.metaItem}>
-          <MapPin size={16} aria-hidden="true" />
-          {location}
-        </span>
+          <span
+            className={`${styles.cardLoadingStatus} ${isLoading ? styles.cardLoadingStatusVisible : ""}`}
+            aria-hidden={!isLoading}
+          >
+            <Loader2 size={15} aria-hidden="true" />
+            Loading
+          </span>
+        </div>
+
+        <h2 className={styles.programName}>{programName}</h2>
+
+        <div className={styles.cardFooter}>
+          <span className={styles.datePill}>{date}</span>
+
+          <span className={styles.viewDaysButton}>
+            View Days
+            <ArrowRight size={18} aria-hidden="true" />
+          </span>
+        </div>
       </div>
     </Link>
   );
