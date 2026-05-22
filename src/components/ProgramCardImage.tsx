@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import type { SyntheticEvent } from "react";
 
-const fallbackImage = "/operation-surf.png";
+const fallbackImage = "/op_surf_logo_no_bg.png";
 
 const getImageSource = (src?: string | null) => {
   if (typeof src !== "string") {

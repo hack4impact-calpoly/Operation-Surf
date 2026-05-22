@@ -70,7 +70,7 @@ export default function Navbar({ name, isAuthenticated = false, isAdmin = false 
   return (
     <nav className={styles.navbar} aria-label="Primary navigation">
       <Link className={styles.logoLink} href="/" aria-label="Operation Surf home">
-        <Image src="/operation-surf.png" alt="Operation Surf" width={86} height={34} priority />
+        <Image src="/op_surf_logo_no_bg.png" alt="Operation Surf" width={180} height={70} priority />
       </Link>
 
       <div className={styles.navGroup}>

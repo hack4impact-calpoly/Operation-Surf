@@ -149,7 +149,7 @@
 
 .cardMedia {
   position: relative;
-  min-height: 268px;
+  min-height: 188px;
   background: #d9e2e8;
 }
 
@@ -164,8 +164,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 18px;
-  padding: 32px 38px;
+  gap: 12px;
+  padding: 18px 28px;
 }
 
 .cardTopRow {
@@ -294,11 +294,12 @@
   }
 
   .cardMedia {
-    min-height: 220px;
+    min-height: 168px;
   }
 
   .cardBody {
-    padding: 22px 20px 24px;
+    gap: 10px;
+    padding: 16px 18px 18px;
   }
 
   .sectionHeader,

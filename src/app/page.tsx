@@ -31,24 +31,42 @@ export default function Home() {
 
         <div className={style.aboutCards}>
           <div className={style.infoCard}>
-            <div className={style.cardIcon} aria-hidden="true">
-              Surf
+            <div className={style.cardImageWrap}>
+              <Image
+                className={style.cardImage}
+                src="/op_surf_image1.jpg"
+                alt="Operation Surf participants in the water"
+                width={360}
+                height={220}
+              />
             </div>
             <h3 className={style.cardTitle}>Surf Therapy</h3>
             <p className={style.cardText}>Therapeutic surfing sessions led by certified instructors</p>
           </div>
 
           <div className={style.infoCard}>
-            <div className={style.cardIcon} aria-hidden="true">
-              Community
+            <div className={style.cardImageWrap}>
+              <Image
+                className={style.cardImage}
+                src="/op_surf_image2.jpg"
+                alt="Operation Surf community gathering"
+                width={360}
+                height={220}
+              />
             </div>
             <h3 className={style.cardTitle}>Community</h3>
             <p className={style.cardText}>Building lasting connections and support networks</p>
           </div>
 
           <div className={style.infoCard}>
-            <div className={style.cardIcon} aria-hidden="true">
-              Empower
+            <div className={style.cardImageWrap}>
+              <Image
+                className={style.cardImage}
+                src="/op_surf_image3.jpg"
+                alt="Operation Surf empowerment moment"
+                width={360}
+                height={220}
+              />
             </div>
             <h3 className={style.cardTitle}>Empowerment</h3>
             <p className={style.cardText}>Helping individuals overcome challenges and thrive</p>

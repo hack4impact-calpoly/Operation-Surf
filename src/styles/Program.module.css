@@ -10,6 +10,7 @@
   border-radius: 20px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  border: 1px solid rgba(124, 120, 69, 0.08);
 }
 
 /* Top Image */
@@ -25,10 +26,10 @@
   display: flex;
   flex-direction: column;
   margin-left: 36px;
-  gap: 10px;
+  margin-right: 24px;
+  gap: 12px;
   flex: 1;
   min-height: 0;
-  padding-right: 24px;
 }
 
 .cardMeta p {
@@ -50,23 +51,45 @@
 
 /* Button */
 .cardButton {
-  width: 90%;
-  padding: 16px;
-  font-size: 18px;
+  width: fit-content;
+  min-width: 170px;
+  min-height: 46px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
   text-align: center;
   text-decoration: none;
-  border-radius: 14px;
+  border-radius: 12px;
   border: none;
-  background-color: #737144;
+  background-color: #7d7946;
   color: white;
-  margin: 0 auto 20px auto;
-  display: block;
+  margin: 20px auto 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-top: auto;
+  box-shadow: 0 8px 18px rgba(125, 121, 70, 0.18);
+  transition:
+    transform 0.15s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 /* On Hover */
 .cardButton:hover {
-  background-color: #737144;
+  background-color: #706c3f;
+  box-shadow: 0 14px 28px rgba(125, 121, 70, 0.24);
+  transform: translateY(-1px);
+}
+
+.cardButton:active {
+  transform: translateY(0);
+}
+
+.cardButton:focus-visible {
+  outline: 3px solid rgba(125, 121, 70, 0.22);
+  outline-offset: 2px;
 }
 
 .cardLocation::before {

@@ -78,7 +78,7 @@ export default function SignupForm() {
           Create Account
         </h1>
 
-        <Image className={styles.panelLogo} src="/operation-surf.png" alt="Operation Surf" width={118} height={94} />
+        <Image className={styles.panelLogo} src="/op_surf_logo.png" alt="Operation Surf" width={118} height={94} />
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <label className={styles.fieldLabel}>
