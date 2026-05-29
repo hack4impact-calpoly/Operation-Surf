@@ -14,8 +14,8 @@ export default function Home() {
         <div className={style.heroContent}>
           <h1 className={style.heroTitle}>Operation Surf</h1>
           <p className={style.heroSubtitle}>
-            Empowering wounded, ill, and injured service members, veterans, and youth through the healing powers of the
-            ocean.
+            Our mission is to channel the healing powers of the ocean to restore hope, renew purpose, and revitalize
+            community.
           </p>
           <ExploreProgramsLink />
         </div>
