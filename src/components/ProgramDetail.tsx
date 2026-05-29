@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { Loader2, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLinkLoading } from "@/hooks/useLinkLoading";
 import styles from "@/styles/ProgramDetail.module.css";
@@ -57,6 +57,19 @@ function formatDate(dateStr: string): string {
   return d.toLocaleDateString("en-US", { month: "long", day: "numeric" });
 }
 
+function formatDateBadge(dateStr: string) {
+  const d = new Date(dateStr);
+  if (Number.isNaN(d.getTime())) {
+    return { weekday: "TBD", day: "--", month: "TBD" };
+  }
+
+  return {
+    weekday: d.toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" }).toUpperCase(),
+    day: d.toLocaleDateString("en-US", { day: "2-digit", timeZone: "UTC" }),
+    month: d.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" }).toUpperCase(),
+  };
+}
+
 function CalendarIcon() {
   return (
     <svg
@@ -74,9 +87,11 @@ function CalendarIcon() {
   );
 }
 
-function DayCard({ day }: { day: Day }) {
+function DayCard({ day, program }: { day: Day; program: Program }) {
   const href = `/day-details/${encodeURIComponent(day.dayId)}`;
   const { isLoading, handleClick } = useLinkLoading(href);
+  const badge = formatDateBadge(day.date);
+  const heroImageSrc = normalizeImageSrc(program.imageURI);
 
   return (
     <Link
@@ -86,12 +101,13 @@ function DayCard({ day }: { day: Day }) {
       aria-busy={isLoading}
       aria-label={`View details for ${day.name}`}
     >
-      <div className={styles.dayCardHeader}>
-        <span className={styles.dayDateGroup}>
-          <span className={styles.dayOfWeek}>{day.dayOfWeek}</span>
-          <span className={styles.date}>{formatDate(day.date)}</span>
-        </span>
-
+      <div className={styles.dayCardImageWrap}>
+        <img src={heroImageSrc} alt={program.programName} className={styles.dayCardImage} />
+        <div className={styles.dayDateBadge} aria-label={formatDate(day.date)}>
+          <span>{badge.weekday}</span>
+          <strong>{badge.day}</strong>
+          <span>{badge.month}</span>
+        </div>
         <span
           className={`${styles.dayCardLoadingStatus} ${isLoading ? styles.dayCardLoadingStatusVisible : ""}`}
           aria-hidden={!isLoading}
@@ -99,13 +115,24 @@ function DayCard({ day }: { day: Day }) {
           <Loader2 size={15} aria-hidden="true" />
           Loading
         </span>
+        <span className={styles.dayLabel}>{day.name}</span>
       </div>
-      <p className={styles.dayName}>{day.name}</p>
-      <div className={styles.timeRow}>
-        <CalendarIcon />
-        <span className={styles.time}>
-          {day.startTime} - {day.endTime}
-        </span>
+
+      <div className={styles.dayCardBody}>
+        <div className={styles.locationRow}>
+          <MapPin size={14} aria-hidden="true" />
+          <span>{program.location}</span>
+        </div>
+        <p className={styles.dayName}>{program.programName}</p>
+        <div className={styles.dayCardFooter}>
+          <div className={styles.timeRow}>
+            <CalendarIcon />
+            <span className={styles.time}>
+              {day.startTime} - {day.endTime}
+            </span>
+          </div>
+          <span className={styles.dayPill}>View Day</span>
+        </div>
       </div>
     </Link>
   );
@@ -156,7 +183,13 @@ export default function ProgramDetail({ programId, program }: ProgramDetailProps
         {loadingDays && <p className={styles.statusMsg}>Loading...</p>}
         {error && <p className={styles.errorMsg}>{error}</p>}
         {!loadingDays && !error && days.length === 0 && <p className={styles.statusMsg}>No days available</p>}
-        {!loadingDays && !error && days.map((day) => <DayCard key={day.dayId} day={day} />)}
+        {!loadingDays && !error ? (
+          <div className={styles.daysGrid}>
+            {days.map((day) => (
+              <DayCard key={day.dayId} day={day} program={program} />
+            ))}
+          </div>
+        ) : null}
       </section>
     </div>
   );

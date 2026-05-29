@@ -9,9 +9,10 @@ import styles from "@/components/AccountMenu.module.css";
 
 type AccountMenuProps = {
   variant?: "light" | "dark";
+  isAdmin?: boolean;
 };
 
-export default function AccountMenu({ variant = "dark" }: AccountMenuProps) {
+export default function AccountMenu({ variant = "dark", isAdmin = false }: AccountMenuProps) {
   const pathname = usePathname();
   const router = useRouter();
   const accountMenuRef = useRef<HTMLDivElement | null>(null);
@@ -76,14 +77,16 @@ export default function AccountMenu({ variant = "dark" }: AccountMenuProps) {
 
       {isAccountOpen ? (
         <div className={styles.accountDropdown} role="menu" aria-label="My account menu">
-          <Link
-            href="/volunteer-application"
-            className={styles.dropdownLink}
-            role="menuitem"
-            onClick={() => setIsAccountOpen(false)}
-          >
-            Volunteer Application
-          </Link>
+          {!isAdmin ? (
+            <Link
+              href="/volunteer-application"
+              className={styles.dropdownLink}
+              role="menuitem"
+              onClick={() => setIsAccountOpen(false)}
+            >
+              Volunteer Application
+            </Link>
+          ) : null}
 
           <Link
             href="/volunteer-dashboard"

@@ -100,7 +100,6 @@ export default function OpportunitiesDashboard({ programs, days, shifts }: Oppor
 
   const programById = useMemo(() => new Map(programs.map((program) => [program.programId, program])), [programs]);
   const dayById = useMemo(() => new Map(days.map((day) => [day.dayId, day])), [days]);
-
   const filteredDays = useMemo(() => {
     if (!selectedProgramId) return days;
     return days.filter((day) => day.programId === selectedProgramId);

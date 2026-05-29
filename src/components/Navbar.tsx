@@ -33,6 +33,12 @@ type NavItem = {
 const adminNavItems: NavItem[] = [
   { href: "/", label: "Home", icon: Home },
   {
+    href: "/programs",
+    label: "Programs",
+    icon: CalendarDays,
+    activePaths: ["/programs", "/program-details", "/day-details"],
+  },
+  {
     href: "/opportunities",
     label: "Opportunities",
     icon: BriefcaseBusiness,
@@ -101,7 +107,7 @@ export default function Navbar({ name, isAuthenticated = false, isAdmin = false 
         })}
 
         {isAuthenticated ? (
-          <AccountMenu />
+          <AccountMenu isAdmin={isAdmin} />
         ) : (
           <div className={styles.authLinks}>
             <Link
