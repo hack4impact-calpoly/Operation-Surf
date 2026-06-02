@@ -70,6 +70,7 @@ export default function CreateProgram() {
   const searchParams = useSearchParams();
   const programId = searchParams.get("programId");
   const isEditMode = programId !== null;
+  const encodedProgramId = programId ? encodeURIComponent(programId) : null;
 
   const [formData, setFormData] = useState(initialFormState);
   const [photoName, setPhotoName] = useState("");
@@ -84,13 +85,13 @@ export default function CreateProgram() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!isEditMode || !programId) return;
+    if (!isEditMode || !encodedProgramId) return;
 
     let isMounted = true;
 
     async function loadProgram() {
       try {
-        const response = await fetch(`/api/program/${encodeURIComponent(programId)}`, {
+        const response = await fetch(`/api/program/${encodedProgramId}`, {
           cache: "no-store",
         });
 
@@ -135,7 +136,7 @@ export default function CreateProgram() {
     return () => {
       isMounted = false;
     };
-  }, [isEditMode, programId]);
+  }, [encodedProgramId, isEditMode]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
@@ -213,7 +214,7 @@ export default function CreateProgram() {
         ...(isEditMode ? {} : { programId: crypto.randomUUID() }),
       };
 
-      const endpoint = isEditMode ? `/api/program/${encodeURIComponent(programId as string)}` : "/api/program";
+      const endpoint = isEditMode && encodedProgramId ? `/api/program/${encodedProgramId}` : "/api/program";
       const method = isEditMode ? "PATCH" : "POST";
 
       const response = await fetch(endpoint, {

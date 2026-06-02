@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Roboto_Slab } from "next/font/google";
@@ -204,7 +205,16 @@ export default function OpportunitiesDashboard({ programs, days, shifts }: Oppor
           {activeTab === "programs" &&
             programs.map((program) => (
               <article key={program.programId} className={styles.card}>
-                <img className={styles.cardImage} src={normalizeImageSrc(program.imageURI)} alt={program.programName} />
+                <div className={styles.cardImageWrap}>
+                  <Image
+                    className={styles.cardImage}
+                    src={normalizeImageSrc(program.imageURI)}
+                    alt={program.programName}
+                    fill
+                    sizes="(max-width: 900px) 100vw, 280px"
+                    unoptimized
+                  />
+                </div>
                 <div className={styles.cardBody}>
                   <div className={styles.cardMeta}>
                     <span className={styles.locationRow}>
@@ -241,11 +251,16 @@ export default function OpportunitiesDashboard({ programs, days, shifts }: Oppor
 
               return (
                 <article key={day.dayId} className={styles.card}>
-                  <img
-                    className={styles.cardImage}
-                    src={normalizeImageSrc(program?.imageURI ?? "/hero-img.png")}
-                    alt={program?.programName ?? day.name}
-                  />
+                  <div className={styles.cardImageWrap}>
+                    <Image
+                      className={styles.cardImage}
+                      src={normalizeImageSrc(program?.imageURI ?? "/hero-img.png")}
+                      alt={program?.programName ?? day.name}
+                      fill
+                      sizes="(max-width: 900px) 100vw, 280px"
+                      unoptimized
+                    />
+                  </div>
                   <div className={styles.cardBody}>
                     <div className={styles.cardMeta}>
                       <span className={styles.locationRow}>
@@ -287,11 +302,16 @@ export default function OpportunitiesDashboard({ programs, days, shifts }: Oppor
 
               return (
                 <article key={shift.shiftId} className={styles.card}>
-                  <img
-                    className={styles.cardImage}
-                    src={normalizeImageSrc(program?.imageURI ?? "/hero-img.png")}
-                    alt={shift.name}
-                  />
+                  <div className={styles.cardImageWrap}>
+                    <Image
+                      className={styles.cardImage}
+                      src={normalizeImageSrc(program?.imageURI ?? "/hero-img.png")}
+                      alt={shift.name}
+                      fill
+                      sizes="(max-width: 900px) 100vw, 280px"
+                      unoptimized
+                    />
+                  </div>
                   <div className={styles.cardBody}>
                     <div className={styles.cardMeta}>
                       <span className={styles.locationRow}>

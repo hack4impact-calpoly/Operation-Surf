@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Loader2, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -102,7 +103,14 @@ function DayCard({ day, program }: { day: Day; program: Program }) {
       aria-label={`View details for ${day.name}`}
     >
       <div className={styles.dayCardImageWrap}>
-        <img src={heroImageSrc} alt={program.programName} className={styles.dayCardImage} />
+        <Image
+          src={heroImageSrc}
+          alt={program.programName}
+          className={styles.dayCardImage}
+          fill
+          sizes="(max-width: 640px) 100vw, 50vw"
+          unoptimized
+        />
         <div className={styles.dayDateBadge} aria-label={formatDate(day.date)}>
           <span>{badge.weekday}</span>
           <strong>{badge.day}</strong>
@@ -165,7 +173,15 @@ export default function ProgramDetail({ programId, program }: ProgramDetailProps
     <div className={styles.page}>
       {/* hero */}
       <header className={styles.hero}>
-        <img src={heroImageSrc} alt={`${program.programName} background`} className={styles.heroBg} />
+        <Image
+          src={heroImageSrc}
+          alt={`${program.programName} background`}
+          className={styles.heroBg}
+          fill
+          priority
+          sizes="100vw"
+          unoptimized
+        />
         <div className={styles.heroOverlay} />
         <div className={styles.heroContent}>
           <h1 className={styles.programName}>{program.programName}</h1>
