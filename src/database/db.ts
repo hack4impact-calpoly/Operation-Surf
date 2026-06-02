@@ -1,15 +1,26 @@
 import mongoose from "mongoose";
 import { MongoClient } from "mongodb";
 
-const url: string = process.env.MONGO_URI as string;
+const url = process.env.MONGO_URI;
+const fallbackUrl = "mongodb://127.0.0.1:27017/operation-surf-build";
 let connection: typeof mongoose;
 let mongooseConnectionPromise: Promise<typeof mongoose> | null = null;
 let mongoClientConnectionPromise: Promise<MongoClient> | null = null;
 
-// Create a native MongoDB client instance for better-auth
-export const client = new MongoClient(url);
+// Avoid crashing during Next.js build analysis when envs are not loaded yet.
+export const client = new MongoClient(url ?? fallbackUrl);
+
+function getMongoUri(): string {
+  if (!url) {
+    throw new Error("MONGO_URI is not set.");
+  }
+
+  return url;
+}
 
 const connectMongoClient = async () => {
+  getMongoUri();
+
   if (!mongoClientConnectionPromise) {
     mongoClientConnectionPromise = client.connect();
   }
@@ -23,6 +34,7 @@ const connectMongoClient = async () => {
  * @returns {Promise<typeof mongoose>}
  */
 const connectDB = async () => {
+  const mongoUri = getMongoUri();
   await connectMongoClient();
 
   if (connection) {
@@ -30,7 +42,7 @@ const connectDB = async () => {
   }
 
   if (!mongooseConnectionPromise) {
-    mongooseConnectionPromise = mongoose.connect(url);
+    mongooseConnectionPromise = mongoose.connect(mongoUri);
   }
 
   connection = await mongooseConnectionPromise;

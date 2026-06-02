@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { User, Mail, Phone, MapPin, Pencil } from "lucide-react";
 import styles from "@/styles/AdminUserDashboard.module.css";
@@ -92,7 +93,7 @@ export default function AdminUserDashboard({ profile, registeredEvents }: AdminU
     <div className={styles.page}>
       {/* HERO */}
       <header className={styles.hero}>
-        <img src="/hero-img.png" alt="Dashboard background" className={styles.heroBg} />
+        <Image src="/hero-img.png" alt="Dashboard background" className={styles.heroBg} fill priority sizes="100vw" />
         <div className={styles.heroOverlay} />
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>{firstName}&apos;s Dashboard</h1>

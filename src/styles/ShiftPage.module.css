@@ -61,7 +61,7 @@
 }
 
 .sectionHeader {
-  align-items: end;
+  align-items: flex-end;
   display: flex;
   justify-content: space-between;
   margin-bottom: 18px;

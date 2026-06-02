@@ -27,7 +27,6 @@ The {non-profit name} team consists of {#} Cal Poly students. Over the course of
 - [Brooke Higuera](https://www.linkedin.com/in/brooke-higuera/) - Designer
 - [Kris Huang](https://www.linkedin.com/in/krishuang47/) - Designer
 - [Ishika Jain](https://www.linkedin.com/in/ishika-jain-973686215/) - Designer
-    
 - [Alfredo Galicia](https://www.linkedin.com/in/alfredo-galicia2) - Software Developer
 - [Kyle Fan](https://www.linkedin.com/in/kylemfan/) - Software Developer
 - [Valeria Arnao](https://www.linkedin.com/in/valeria-arnao-039b202b6/) - Software Developer

@@ -41,10 +41,11 @@ export async function GET(): Promise<NextResponse> {
       { status: 200 },
     );
   } catch (error: unknown) {
-    // Handle errors and return a detailed error response
-    console.error("Database Test Error:", error);
-    console.log("hello");
     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
+
+    if (errorMessage !== "MONGO_URI is not set.") {
+      console.error("Database Test Error:", error);
+    }
 
     return NextResponse.json(
       {
