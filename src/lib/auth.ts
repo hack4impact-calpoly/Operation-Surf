@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import connectDB, { client } from "@/database/db";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { username } from "better-auth/plugins";
 
 const baseURL = process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
